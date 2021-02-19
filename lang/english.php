@@ -15,7 +15,7 @@ $strings["document"] = "Document";
 $strings["spreadsheet"] = "Spreadsheet";
 $strings["presentation"] = "Presentation";
 $strings["create"] = "Create";
-$strings["fileIsExist"] = "File already exist";
+$strings["fileIsExist"] = "File already exists";
 $strings["impossibleCreateFile"] = "Impossible to create file";
 $strings["createNewDocument"] = "Create new document";
 
