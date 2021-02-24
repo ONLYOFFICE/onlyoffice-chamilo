@@ -4,7 +4,14 @@ This app enables users to edit office documents from [Chamilo](https://chamilo.o
 
 ## Features
 
+The plugin allows to:
 
+* Create and edit text documents, spreadsheets, and presentations.
+* Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
+
+Supported formats:
+
+* For editing: DOCX, XLSX, PPTX.
 
 ## Installing ONLYOFFICE Docs
 
@@ -24,17 +31,19 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
 
 ## Installing Chamilo ONLYOFFICE integration plugin
 
+To install the plugin, go to Chamilo Administration -> Plugins -> Upload plugin. Upload `onlyoffice.zip` (you'll find it in the Releases section in this repo). You'll see the plugin list.
 
+To register the plugin, go to Chamilo project root and use the `composer install` command.
+
+Return to the plugin list, select it, and click Enable the selected plugins.
 
 ## Configuring Chamilo ONLYOFFICE integration plugin
 
-
+On the Plugins page, find ONLYOFFICE and click Configure. You'll see the Settings page. Enable the plugin and specify Document Server address. 
 
 ## How it works
 
 The ONLYOFFICE integration follows the API documented here https://api.onlyoffice.com/editors/basic:
-
-
 
 ## ONLYOFFICE Docs editions
 
@@ -92,6 +101,7 @@ The table below will help you to make the right choice.
 | Table templates                 | + | + |
 | Pivot tables                    | + | + |
 | Conditional formatting  for viewing | +** | +** |
+| Sheet Views                    | - | + |
 | **Presentation Editor features** | **Community Edition** | **Enterprise Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
