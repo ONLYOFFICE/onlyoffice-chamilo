@@ -45,7 +45,26 @@ On the Plugins page, find ONLYOFFICE and click Configure. You'll see the Setting
 
 ## How it works
 
-The ONLYOFFICE integration follows the API documented here https://api.onlyoffice.com/editors/basic:
+* To create a new file, the user opens the necessesary folder and clicks the ONLYOFFICE icon "Create new".
+* The user is redirected to the file creation page where they need to enter the file name and format (text document, spreadsheet, or presentation). The browser calls `/plugin/onlyoffice/create.php` method. It adds the copy of the empty file to the user folder.
+* To open an existing file, the user chooses the Open with ONLYOFFICE icon.
+* The request is being sent to `/plugin/onlyoffice/editor.php?docId=«document identificator»`. The server processes the request, generates the editor initialization configuration with the properties:
+
+  * **url** - the URL that ONLYOFFICE Document Server uses to download the document;
+  * **callbackUrl** - the URL that ONLYOFFICE Document Server informs about status of the document editing;
+  * **documentServerUrl** - the URL that the client needs to respond to ONLYOFFICE Document Server (can be set at the administrative settings page);
+  * **key** - the etag to instruct ONLYOFFICE Document Server whether to download the document again or not;
+
+* The server returns a page with a script to open the editor.
+* The browser opens this page and loads the editor.
+* The browser makes a request to Document Server and passes the document configuration to it.
+* Document Server loads the document and the user starts editing. 
+* Document Server sends a POST request to **callbackUrl** to inform Chamilo that the user is editing the document.
+* When all users have finished editing, they close the editor window.
+* After 10 seconds, Document Server makes a POST request to **callbackUrl** with the information that editing has ended and sends a link to the new document version.
+* Chamilo loads a new version of the document and overwrites the file.
+
+More information on integration ONLYOFFICE Docs can be found in the [API documentation](https://api.onlyoffice.com/editors/basic). 
 
 ## ONLYOFFICE Docs editions
 
