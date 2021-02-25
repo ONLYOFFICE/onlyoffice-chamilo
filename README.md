@@ -2,6 +2,8 @@
 
 This app enables users to edit office documents from [Chamilo](https://chamilo.org) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
+The app is compatible with Chamilo v1.11.14 or newer. 
+
 ## Features
 
 The plugin allows to:
