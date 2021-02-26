@@ -33,11 +33,13 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
 
 ## Installing Chamilo ONLYOFFICE integration plugin
 
-To install the plugin, go to Chamilo Administration -> Plugins -> Upload plugin. Upload `onlyoffice.zip` (you'll find it in the Releases section in this repo). You'll see the plugin list.
+To install the plugin, go to Chamilo Administration -> Plugins -> Upload plugin. 
 
-To register the plugin, go to Chamilo project root and use the `composer install` command.
+Upload `onlyoffice.zip` (you'll find it in the Releases section in this repo). You'll see the plugin list.
 
-Return to the plugin list, select it, and click Enable the selected plugins.
+Then launch `composer install` from the Chamilo root folder. 
+
+Return to the plugin list, select the ONLYOFFICE plugin, and click Enable the selected plugins.
 
 ## Configuring Chamilo ONLYOFFICE integration plugin
 
