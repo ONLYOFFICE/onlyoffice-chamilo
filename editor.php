@@ -70,7 +70,8 @@ $config = [
                 "requestClose" => false,
                 "text" => get_lang("Back"),
                 "url" => $_SERVER["HTTP_REFERER"]
-            ]
+            ],
+            "compactHeader" => true
         ]
     ]
 ];
@@ -136,13 +137,12 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 <style>
     #app-onlyoffice {
         display: flex;
-        min-height: calc(100% - 140px);
-        width: 112.1%;
-        box-sizing: border-box;
+        height: 100%;
         position: relative;
-        margin-left: -69px;
     }
     #app > iframe {
+        height: calc(100% - 140px);
+        width: 100%;
         position: absolute;
         top: 0px;
         left: 0px;
@@ -152,6 +152,7 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
         width: 100%;
         overflow-y: hidden;
     }
+    .chatboxheadmain,
     .pull-right,
     .breadcrumb {
         display: none;
@@ -179,6 +180,10 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
         $(".navbar").css({
             "margin-bottom": "0px"
         });
+        if (userAgentMobile) {
+            var frameEditor = $("#app > iframe")[0];
+            $(frameEditor).css({"height": "100%"});
+        }
     }
 
     if (window.addEventListener) {
