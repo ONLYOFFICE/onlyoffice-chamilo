@@ -71,7 +71,8 @@ $config = [
                 "text" => get_lang("Back"),
                 "url" => $_SERVER["HTTP_REFERER"]
             ],
-            "compactHeader" => true
+            "compactHeader" => true,
+            "toolbarNoTabs" => true
         ]
     ]
 ];
