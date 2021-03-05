@@ -16,9 +16,9 @@ class TemplateManager {
         $lang = api_get_language_info($langId);
         $templateFolder = api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/" . $lang["isocode"];
         if (file_exists($templateFolder)) {
-            return $templateFolder . "/new." . $extension;
+            return $templateFolder . "/" . ltrim($extension, ".") . ".zip";
         }
 
-        return api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/en/new." . $extension;
+        return api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/en/" . ltrim($extension, ".") . ".zip";
     }
 }
