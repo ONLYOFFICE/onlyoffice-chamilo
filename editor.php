@@ -61,7 +61,7 @@ $config = [
         "lang" => $lang["isocode"],
         "region" => $lang["isocode"],
         "user" => [
-            "id" => $userId,
+            "id" => strval($userId),
             "name" => $userInfo["username"]
         ],
         "customization" => [
