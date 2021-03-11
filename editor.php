@@ -43,9 +43,6 @@ $docType = FileUtility::getDocType($extension);
 $key = FileUtility::getKey($courseCode, $docId);
 $fileUrl = FileUtility::getFileUrl($courseId, $userId, $docId, $sessionId, $groupId);
 
-$isAllowToEdit = api_is_allowed_to_edit(true, true);
-$isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
-
 $type = "desktop";
 
 $config = [
@@ -77,17 +74,38 @@ $config = [
     ]
 ];
 
+$isAllowToEdit = api_is_allowed_to_edit(true, true);
+$isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
+
 $isGroupAccess = false;
 if (!empty($groupId)) {
     $groupProperties = GroupManager::get_group_properties($groupId);
     $docInfoGroup = api_get_item_property_info(api_get_course_int_id(), 'document', $docId, $sessionId);
     $isGroupAccess = GroupManager::allowUploadEditDocument($userId, $courseCode, $groupProperties, $docInfoGroup);
+
+    $isMemberGroup = GroupManager::is_user_in_group($userId, $groupProperties);
+
+    if (!$isGroupAccess) {
+        if (!$groupProperties["status"]) {
+            api_not_allowed(true);
+        }
+        if (!$isMemberGroup && $groupProperties["doc_state"] != 1) {
+            api_not_allowed(true);
+        }
+    }
 }
 
 $accessRights = $isAllowToEdit || $isMyDir || $isGroupAccess ? true : false;
 $canEdit = in_array($extension, FileUtility::$can_edit_types) ? true : false;
 
-if ($canEdit && $accessRights) {
+$isVisible = DocumentManager::check_visibility_tree($docId, $courseInfo, $sessionId, $userId, $groupId);
+$isReadonly = $docInfo["readonly"];
+
+if (!$isVisible) {
+    api_not_allowed(true);
+}
+
+if ($canEdit && $accessRights && !$isReadonly) {
     $config["editorConfig"]["mode"] = "edit";
     $config["editorConfig"]["callbackUrl"] = getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId);
 } else {
@@ -98,7 +116,7 @@ if ($canEdit && $accessRights) {
         api_not_allowed(true);
     }
 }
-$config["document"]["permissions"]["edit"] = $accessRights;
+$config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
 
 /**
  * Return callback url

@@ -119,7 +119,11 @@ function track() {
                 return $result;
             }
 
-            list ($isAllowToEdit, $isMyDir, $isGroupAccess) = getPermissions($docInfo, $userId, $courseCode, $groupId, $sessionId);
+            list ($isAllowToEdit, $isMyDir, $isGroupAccess, $isReadonly) = getPermissions($docInfo, $userId, $courseCode, $groupId, $sessionId);
+
+            if ($isReadonly) {
+                break;
+            }
 
             if (($new_data = file_get_contents($downloadUri)) === false) {
                 break;
@@ -216,5 +220,7 @@ function getPermissions($docInfo, $userId, $courseCode, $groupId, $sessionId) {
         $isGroupAccess = GroupManager::allowUploadEditDocument($userId, $courseCode, $groupProperties, $docInfoGroup);
     }
 
-    return [$isAllowToEdit, $isMyDir, $isGroupAccess];
+    $isReadonly = $docInfo["readonly"];
+
+    return [$isAllowToEdit, $isMyDir, $isGroupAccess, $isReadonly];
 }
