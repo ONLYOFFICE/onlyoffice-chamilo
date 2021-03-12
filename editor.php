@@ -2,6 +2,8 @@
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
+const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
+
 $plugin = OnlyofficePlugin::create();
 
 $isEnable = $plugin->get("enableOnlyofficePlugin") === 'true';
@@ -43,10 +45,8 @@ $docType = FileUtility::getDocType($extension);
 $key = FileUtility::getKey($courseCode, $docId);
 $fileUrl = FileUtility::getFileUrl($courseId, $userId, $docId, $sessionId, $groupId);
 
-$type = "desktop";
-
 $config = [
-    "type" => $type,
+    "type" => "desktop",
     "documentType" => $docType,
     "document" => [
         "fileType" => $extension,
@@ -73,6 +73,13 @@ $config = [
         ]
     ]
 ];
+
+$userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+$isMobileAgent = preg_match(USER_AGENT_MOBILE, $userAgent);
+if ($isMobileAgent) {
+    $config['type'] = 'mobile';
+}
 
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
 $isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
@@ -179,12 +186,9 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
                                 '</div>' +
                             '</div>' +
                           '</div>');
-        var userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
-        var config = <?php echo json_encode($config)?>;
 
-        if (userAgentMobile) {
-            config.type = "mobile";
-        }
+        var config = <?php echo json_encode($config)?>;
+        var isMobileAgent = <?php echo json_encode($isMobileAgent)?>;
 
         config.events = {
             "onAppReady": onAppReady
@@ -194,7 +198,7 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 
         $(".navbar").css({"margin-bottom": "0px"});
         $("body").css({"margin": "0 0 0px"});
-        if (userAgentMobile) {
+        if (isMobileAgent) {
             var frameEditor = $("#app > iframe")[0];
             $(frameEditor).css({"height": "100%", "top": "0px"});
         }
