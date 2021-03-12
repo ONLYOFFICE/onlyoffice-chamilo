@@ -154,22 +154,11 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 ?>
 <title>ONLYOFFICE</title>
 <style>
-    #app-onlyoffice {
-        display: flex;
-        height: 100%;
-        position: relative;
-    }
     #app > iframe {
         height: calc(100% - 140px);
-        width: 100%;
-        position: absolute;
-        top: 0px;
-        left: 0px;
     }
     body {
         height: 100%;
-        width: 100%;
-        overflow-y: hidden;
     }
     .chatboxheadmain,
     .pull-right,
@@ -179,10 +168,17 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 </style>
 <script type="text/javascript" src=<?php echo $docApiUrl?>></script>
 <script type="text/javascript">
-        var onAppReady = function () {
+    var onAppReady = function () {
         innerAlert("Document editor ready");
     };
     var connectEditor = function () {
+        $("#cm-content")[0].remove(".container");
+        $("#main").append('<div id="app-onlyoffice">' +
+                            '<div id="app">' +
+                                '<div id="iframeEditor">' +
+                                '</div>' +
+                            '</div>' +
+                          '</div>');
         var userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
         var config = <?php echo json_encode($config)?>;
 
@@ -196,12 +192,11 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 
         docEditor = new DocsAPI.DocEditor("iframeEditor", config);
 
-        $(".navbar").css({
-            "margin-bottom": "0px"
-        });
+        $(".navbar").css({"margin-bottom": "0px"});
+        $("body").css({"margin": "0 0 0px"});
         if (userAgentMobile) {
             var frameEditor = $("#app > iframe")[0];
-            $(frameEditor).css({"height": "100%"});
+            $(frameEditor).css({"height": "100%", "top": "0px"});
         }
     }
 
@@ -213,9 +208,3 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 
 </script>
 <?php echo Display::display_header(); ?>
-<div id="app-onlyoffice">
-    <div id="app">
-        <div id="iframeEditor">
-        </div>
-    </div>
-</div>
