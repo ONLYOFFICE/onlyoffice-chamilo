@@ -18,4 +18,3 @@ $strings["create"] = "Create";
 $strings["fileIsExist"] = "File already exists";
 $strings["impossibleCreateFile"] = "Impossible to create file";
 $strings["createNewDocument"] = "Create new document";
-
