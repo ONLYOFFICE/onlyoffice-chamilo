@@ -24,9 +24,9 @@ use ChamiloSession as Session;
 $plugin = OnlyofficePlugin::create();
 
 $mapFileFormat = [
-    "text" => get_lang("document"), 
-    "spreadsheet" => get_lang("spreadsheet"),
-    "presentation" => get_lang("presentation")
+    "text" => $plugin->get_lang("document"), 
+    "spreadsheet" => $plugin->get_lang("spreadsheet"),
+    "presentation" => $plugin->get_lang("presentation")
 ];
 
 $userId = $_GET["userId"];
@@ -50,9 +50,9 @@ $form = new FormValidator("doc_create",
                           "post",
                           api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/create.php");
 
-$form->addText("fileName", get_lang("title"), true);
-$form->addSelect("fileFormat", get_lang("chooseFileFormat"), $mapFileFormat);
-$form->addButtonCreate(get_lang("create"));
+$form->addText("fileName", $plugin->get_lang("title"), true);
+$form->addSelect("fileFormat", $plugin->get_lang("chooseFileFormat"), $mapFileFormat);
+$form->addButtonCreate($plugin->get_lang("create"));
 
 $form->addHidden("groupId", $_GET["groupId"]);
 $form->addHidden("courseId", $_GET["courseId"]);
@@ -101,7 +101,7 @@ if ($form->validate()) {
     $filePath = $folderPath . "/" . $fileName;
 
     if (file_exists($filePath)) {
-        Display::addFlash(Display::return_message(get_lang("fileIsExist"), "error"));
+        Display::addFlash(Display::return_message($plugin->get_lang("fileIsExist"), "error"));
         goto display;
     }
 
@@ -136,7 +136,7 @@ if ($form->validate()) {
         }
 
     } else {
-        Display::addFlash(Display::return_message(get_lang("impossibleCreateFile"), "error"));
+        Display::addFlash(Display::return_message($plugin->get_lang("impossibleCreateFile"), "error"));
     }
 }
 
@@ -144,7 +144,7 @@ display:
     $goBackUrl = $goBackUrl ?: $_SERVER["HTTP_REFERER"];
     $actionsLeft = '<a href="'. $goBackUrl . '">' . Display::return_icon("back.png", get_lang("Back") . " " . get_lang("To") . " " . get_lang("DocumentsOverview"), "", ICON_SIZE_MEDIUM) . "</a>";
 
-    Display::display_header(get_lang("createNewDocument"));
+    Display::display_header($plugin->get_lang("createNewDocument"));
     echo Display::toolbarAction("actions-documents", [$actionsLeft]);
     echo $form->returnForm();
     Display::display_footer();
