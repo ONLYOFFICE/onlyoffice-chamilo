@@ -55,8 +55,7 @@ $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, 
 
 $extension = strtolower(pathinfo($docInfo["title"], PATHINFO_EXTENSION));
 
-$langId = SubLanguageManager::get_platform_language_id();
-$lang = api_get_language_info($langId);
+$langInfo = LangManager::getLangUser();
 
 $docType = FileUtility::getDocType($extension);
 $key = FileUtility::getKey($courseCode, $docId);
@@ -72,8 +71,8 @@ $config = [
         "url" => $fileUrl
     ],
     "editorConfig" => [
-        "lang" => $lang["isocode"],
-        "region" => $lang["isocode"],
+        "lang" => $langInfo["isocode"],
+        "region" => $langInfo["isocode"],
         "user" => [
             "id" => strval($userId),
             "name" => $userInfo["username"]
