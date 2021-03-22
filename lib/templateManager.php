@@ -22,6 +22,25 @@ require_once __DIR__.'/../../../main/inc/global.inc.php';
 class TemplateManager {
 
     /**
+     * Mapping local path to templates
+     *
+     * @var Array
+     */
+    private static $localPath = [
+        "bg" => "bg-BG",
+        "de" => "de-DE",
+        "el" => "el-GR",
+        "en" => "en-US",
+        "es" => "es-ES",
+        "fr" => "fr-FR",
+        "it" => "it-IT",
+        "nl" => "nl-NL",
+        "pl" => "pl-PL",
+        "pt" => "pt-PT",
+        "ru" => "ru-RU",
+    ];
+
+    /**
      * Return path to template new file
      * 
      * @param string $extension - extension of file
@@ -30,7 +49,7 @@ class TemplateManager {
      */
     public static function getEmptyTemplate($extension) {
         $langInfo = LangManager::getLangUser();
-        $templateFolder = api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/" . $langInfo["isocode"];
+        $templateFolder = api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/" . self::$localPath[$langInfo["isocode"]];
         if (file_exists($templateFolder)) {
             return $templateFolder . "/" . ltrim($extension, ".") . ".zip";
         }
