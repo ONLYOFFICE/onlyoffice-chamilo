@@ -49,11 +49,12 @@ class TemplateManager {
      */
     public static function getEmptyTemplate($extension) {
         $langInfo = LangManager::getLangUser();
-        $templateFolder = api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/" . self::$localPath[$langInfo["isocode"]];
-        if (file_exists($templateFolder)) {
-            return $templateFolder . "/" . ltrim($extension, ".") . ".zip";
+        $lang = $langInfo["isocode"];
+        if (!array_key_exists($lang, self::$localPath)) {
+            $lang = "en";
         }
+        $templateFolder = api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/" . self::$localPath[$lang];
 
-        return api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/en/" . ltrim($extension, ".") . ".zip";
+        return $templateFolder . "/" . ltrim($extension, ".") . ".zip";
     }
 }
