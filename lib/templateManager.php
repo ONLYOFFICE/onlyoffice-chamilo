@@ -28,16 +28,26 @@ class TemplateManager {
      */
     private static $localPath = [
         "bg" => "bg-BG",
+        "cs" => "cs-CS",
         "de" => "de-DE",
         "el" => "el-GR",
         "en" => "en-US",
         "es" => "es-ES",
         "fr" => "fr-FR",
         "it" => "it-IT",
+        "ja" => "ja-JP",
+        "ko" => "ko-KR",
+        "lv" => "lv-LV",
         "nl" => "nl-NL",
         "pl" => "pl-PL",
         "pt" => "pt-PT",
+        "pt-BR" => "pt-BR",
         "ru" => "ru-RU",
+        "sk" => "sk-SK",
+        "sv" => "sv-SE",
+        "uk" => "uk-UA",
+        "vi" => "vi-VN",
+        "zh" => "zh-CN"
     ];
 
     /**
