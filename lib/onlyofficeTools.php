@@ -30,7 +30,7 @@ class OnlyofficeTools {
 
         $plugin = OnlyofficePlugin::create();
 
-        $isEnable = $plugin->get("enableOnlyofficePlugin") === 'true';
+        $isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
         if (!$isEnable) {
             return;
         }
@@ -66,7 +66,7 @@ class OnlyofficeTools {
 
         $plugin = OnlyofficePlugin::create();
 
-        $isEnable = $plugin->get("enableOnlyofficePlugin") === 'true';
+        $isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
         if (!$isEnable) {
             return;
         }
@@ -76,7 +76,7 @@ class OnlyofficeTools {
         $groupId = api_get_group_id();
         $userId = api_get_user_id();
 
-        $urlToCreate = api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/create.php?folderId=" . $_GET["id"] 
+        $urlToCreate = api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/create.php?folderId=" . (empty($_GET["id"])?'0':(int)$_GET["id"])
                                                         . "&courseId=" . $courseId 
                                                         . "&groupId=" . $groupId 
                                                         . "&sessionId=" . $sessionId

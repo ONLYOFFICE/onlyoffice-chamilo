@@ -33,8 +33,8 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             "1.0",
             "Asensio System SIA",
             [
-                "enableOnlyofficePlugin" => "boolean",
-                "documentServerUrl" => "text"
+                "enable_onlyoffice_plugin" => "boolean",
+                "document_server_url" => "text"
             ]
         );
     }
