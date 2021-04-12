@@ -23,15 +23,15 @@ const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|el
 
 $plugin = OnlyofficePlugin::create();
 
-$isEnable = $plugin->get("enableOnlyofficePlugin") === 'true';
+$isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
 if (!$isEnable) {
-    die ("Document server is't enable");
+    die ("Document server isn't enabled");
     return;
 }
 
-$documentServerUrl = $plugin->get("documentServerUrl");
+$documentServerUrl = $plugin->get("document_server_url");
 if (empty($documentServerUrl)) {
-    die ("Document server is't configured");
+    die ("Document server isn't configured");
     return;
 }
 
