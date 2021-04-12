@@ -31,6 +31,8 @@ const TrackerStatus_Closed = 4;
 const TrackerStatus_ForceSave = 6;
 const TrackerStatus_CorruptedForceSave = 7;
 
+$plugin = OnlyofficePlugin::create();
+
 if (isset($_GET["hash"]) && !empty($_GET["hash"])) {
     $response_array;
     @header( 'Content-Type: application/json; charset==utf-8');
@@ -186,12 +188,25 @@ function track() {
  * Downloading file by the document service
  */
 function download() {
+    global $plugin;
     global $courseCode;
     global $userId;
     global $docId;
     global $groupId;
     global $sessionId;
     global $courseInfo;
+
+    if (!empty($plugin->get("jwt_secret"))) {
+        $token = substr($_SERVER["HTTP_AUTHORIZATIONJWT"], strlen("Bearer "));
+        try {
+            $payload = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
+
+        } catch (\UnexpectedValueException $e) {
+            $result["status"] = "error";
+            $result["error"] = "403 Access denied";
+            return $result;
+        }
+    }
 
     if (!empty($docId) && !empty($courseCode)) {
         $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
