@@ -127,7 +127,7 @@ function track() {
                 return $result;
             }
         } else {
-            $token = substr($_SERVER['HTTP_AUTHORIZATIONJWT'], strlen("Bearer "));
+            $token = substr($_SERVER[AppConfig::JwtHeader()], strlen("Bearer "));
             try {
                 $decodeToken = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
                 $payload = $decodeToken->payload;
@@ -224,7 +224,7 @@ function download() {
     global $courseInfo;
 
     if (!empty($plugin->get("jwt_secret"))) {
-        $token = substr($_SERVER["HTTP_AUTHORIZATIONJWT"], strlen("Bearer "));
+        $token = substr($_SERVER[AppConfig::JwtHeader()], strlen("Bearer "));
         try {
             $payload = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
 
