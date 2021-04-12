@@ -96,6 +96,7 @@ if (isset($_GET["hash"]) && !empty($_GET["hash"])) {
 function track() {
     $result = [];
 
+    global $plugin;
     global $courseCode;
     global $userId;
     global $docId;
@@ -113,6 +114,32 @@ function track() {
     if ($data === null) {
         $result["error"] = "Bad Response";
         return $result;
+    }
+
+    if (!empty($plugin->get("jwt_secret"))) {
+
+        if (!empty($data["token"])) {
+            try {
+                $payload = \Firebase\JWT\JWT::decode($data["token"], $plugin->get("jwt_secret"), array("HS256"));
+            } catch (\UnexpectedValueException $e) {
+                $result["status"] = "error";
+                $result["error"] = "403 Access denied";
+                return $result;
+            }
+        } else {
+            $token = substr($_SERVER['HTTP_AUTHORIZATIONJWT'], strlen("Bearer "));
+            try {
+                $decodeToken = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
+                $payload = $decodeToken->payload;
+            } catch (\UnexpectedValueException $e) {
+                $result["status"] = "error";
+                $result["error"] = "403 Access denied";
+                return $result;
+            }
+        }
+
+        $data["url"] = isset($payload->url) ? $payload->url : null;
+        $data["status"] = $payload->status;
     }
 
     $status = $data["status"];
