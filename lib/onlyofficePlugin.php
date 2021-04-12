@@ -34,7 +34,8 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             "Asensio System SIA",
             [
                 "enableOnlyofficePlugin" => "boolean",
-                "documentServerUrl" => "text"
+                "documentServerUrl" => "text",
+                "jwt_secret" => "text"
             ]
         );
     }
