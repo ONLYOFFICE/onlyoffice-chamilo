@@ -5,8 +5,9 @@
  */
 $strings["plugin_title"] = "ONLYOFFICE";
 $strings['plugin_comment'] = "ONLYOFFICE connector maakt het mogelijk om tekstdocumenten, spreadsheets en presentaties te bekijken, te bewerken en samen te werken binnen Chamilo met behulp van ONLYOFFICE Docs.";
-$strings["enableOnlyofficePlugin"] = "Inschakelen";
-$strings["documentServerUrl"] = "Document Bewerking Service adres";
+$strings["enable_onlyoffice_plugin"] = "Inschakelen";
+$strings["document_server_url"] = "Document Bewerking Service adres";
+$strings["jwt_secret"] = "Geheime sleutel (leeg laten om niet te te gebruiken)";
 $strings["openByOnlyoffice"] = "Open met ONLYOFFICE";
 $strings["createNew"] = "Nieuwe maken";
 $strings["title"] = "Titel";

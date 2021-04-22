@@ -5,8 +5,9 @@
  */
 $strings["plugin_title"] = "ONLYOFFICE";
 $strings['plugin_comment'] = "ONLYOFFICE конекторът ви позволява да преглеждате, редактирате и да си сътрудничите с текстови документи, таблици и презентациив рамките на Chamilo с помощта на ONLYOFFICE Docs.";
-$strings["enableOnlyofficePlugin"] = "Активирай";
-$strings["documentServerUrl"] = "Адрес на документа Editing Service";
+$strings["enable_onlyoffice_plugin"] = "Активирай";
+$strings["document_server_url"] = "Адрес на документа Editing Service";
+$strings["jwt_secret"] = "Секретен ключ (оставете празно за забрана)";
 $strings["openByOnlyoffice"] = "Отвори с ONLYOFFICE";
 $strings["createNew"] = "Създай нов";
 $strings["title"] = "Заглавие";
