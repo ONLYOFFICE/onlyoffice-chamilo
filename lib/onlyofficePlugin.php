@@ -42,7 +42,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
 
     /**
      * Create OnlyofficePlugin
-     * 
+     *
      * @return OnlyofficePlugin
      */
     public static function create()

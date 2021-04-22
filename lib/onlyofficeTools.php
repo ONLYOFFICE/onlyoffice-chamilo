@@ -21,16 +21,16 @@ class OnlyofficeTools {
 
     /**
      * Return button-link to onlyoffice editor for file
-     * 
+     *
      * @param array $document_data - document info
-     * 
+     *
      * @return Display
      */
     public static function getButtonEdit ($document_data) {
 
         $plugin = OnlyofficePlugin::create();
 
-        $isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
+        $isEnable = $plugin->get("enable_onlyoffice_plugin") === "true";
         if (!$isEnable) {
             return;
         }
@@ -59,14 +59,14 @@ class OnlyofficeTools {
 
     /**
      * Return button-link to onlyoffice create new
-     * 
+     *
      * @return Display
      */
     public static function getButtonCreateNew () {
 
         $plugin = OnlyofficePlugin::create();
 
-        $isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
+        $isEnable = $plugin->get("enable_onlyoffice_plugin") === "true";
         if (!$isEnable) {
             return;
         }
@@ -82,6 +82,6 @@ class OnlyofficeTools {
                                                         . "&sessionId=" . $sessionId
                                                         . "&userId=" . $userId;
 
-        return Display::url(Display::return_icon('../../plugin/onlyoffice/resources/onlyoffice_create.png', $plugin->get_lang('createNew')), $urlToCreate);
+        return Display::url(Display::return_icon("../../plugin/onlyoffice/resources/onlyoffice_create.png", $plugin->get_lang("createNew")), $urlToCreate);
     }
 }

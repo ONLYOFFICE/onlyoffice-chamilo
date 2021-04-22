@@ -17,7 +17,7 @@
  *
  */
 
-require_once __DIR__.'/../../../main/inc/global.inc.php';
+require_once __DIR__ . "/../../../main/inc/global.inc.php";
 
 class FileUtility {
  
@@ -28,7 +28,7 @@ class FileUtility {
 
     /**
      * Extensions of files that can edit
-     * 
+     *
      * @var array
      */
     public static $can_edit_types = [
@@ -40,7 +40,7 @@ class FileUtility {
 
     /**
      * Extensions of files that can view
-     * 
+     *
      * @var array
      */
     public static $can_view_types = [
@@ -52,7 +52,7 @@ class FileUtility {
 
     /**
      * Extensions of text files
-     * 
+     *
      * @var array
      */
     public static $text_doc = [
@@ -62,7 +62,7 @@ class FileUtility {
 
     /**
      * Extensions of presentation files
-     * 
+     *
      * @var array
      */
     public static $presentation_doc  = [
@@ -71,7 +71,7 @@ class FileUtility {
 
     /**
      * Extensions of spreadsheet files
-     * 
+     *
      * @var array
      */
     public static $spreadsheet_doc = [
@@ -80,9 +80,9 @@ class FileUtility {
 
     /**
      * Return file type by extension
-     * 
+     *
      * @param string $extension - extension of file
-     * 
+     *
      * @return string
      */
     public static function getDocType($extension) {
@@ -101,9 +101,9 @@ class FileUtility {
 
     /**
      * Return file extension by file type
-     * 
+     *
      * @param string $type - type of file
-     * 
+     *
      * @return string
      */
     public static function getDocExt($type) {
@@ -122,13 +122,13 @@ class FileUtility {
 
     /**
      * Return file url for download
-     * 
+     *
      * @param int $courseId - identifier of course
      * @param int $userId - identifier of user
      * @param int $docId - identifier of document
      * @param int $sessionId - identifier of session
      * @param int $groupId - identifier of group or null if file out of group
-     * 
+     *
      * @return string
      */
     public static function getFileUrl($courseId, $userId, $docId, $sessionId, $groupId) {
@@ -154,13 +154,13 @@ class FileUtility {
 
     /**
      * Return file key
-     * 
+     *
      * @param string $courseCode - identifier of course
      * @param int $userId - identifier of user
      * @param int $docId - identifier of document
      * @param int $sessionId - identifier of session
      * @param int $groupId - identifier of group or null if file out of group
-     * 
+     *
      * @return string
      */
     public static function getKey($courseCode, $docId) {
@@ -173,9 +173,9 @@ class FileUtility {
 
     /**
      * Translation key to a supported form
-     * 
+     *
      * @param string $expected_key - Expected key
-     * 
+     *
      * @return string
      */
     public static function GenerateRevisionId($expected_key) {

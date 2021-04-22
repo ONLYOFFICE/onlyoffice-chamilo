@@ -24,8 +24,8 @@ class OnlyofficeItemActionObserver extends HookObserver implements HookDocumentI
      */
     public function __construct() {
         parent::__construct(
-            'plugin/onlyoffice/onlyoffice_plugin.php',
-            'onlyoffice'
+            "plugin/onlyoffice/lib/onlyofficePlugin.php",
+            "onlyoffice"
         );
     }
 
@@ -37,8 +37,8 @@ class OnlyofficeItemActionObserver extends HookObserver implements HookDocumentI
     public function notifyDocumentItemAction(HookDocumentItemActionEventInterface $event) {
         $data = $event->getEventData();
 
-        if ($data['type'] === HOOK_EVENT_TYPE_PRE) {
-            $data['actions'][] = OnlyofficeTools::getButtonEdit($data);
+        if ($data["type"] === HOOK_EVENT_TYPE_PRE) {
+            $data["actions"][] = OnlyofficeTools::getButtonEdit($data);
             return $data;
         }
     }
