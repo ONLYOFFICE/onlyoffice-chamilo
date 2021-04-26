@@ -78,6 +78,9 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
 
         $actionObserver = OnlyofficeActionObserver::create();
         HookDocumentAction::create()->attach($actionObserver);
+
+        $viewObserver = OnlyofficeItemViewObserver::create();
+        HookDocumentItemView::create()->attach($viewObserver);
     }
 
     /**
@@ -90,5 +93,8 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
 
         $actionObserver = OnlyofficeActionObserver::create();
         HookDocumentAction::create()->detach($actionObserver);
+
+        $viewObserver = OnlyofficeItemViewObserver::create();
+        HookDocumentItemView::create()->detach($viewObserver);
     }
 }
