@@ -35,6 +35,8 @@ class OnlyofficeItemViewObserver extends HookObserver implements HookDocumentIte
      * @param HookDocumentItemViewEventInterface $event - the hook event
      */
     public function notifyDocumentItemView(HookDocumentItemViewEventInterface $event): string {
-        return " ";
+        $data = $event->getEventData();
+
+        return OnlyofficeTools::getButtonView($data);
     }
 }
