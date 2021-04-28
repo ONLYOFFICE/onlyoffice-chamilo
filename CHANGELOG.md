@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- View option for DOCX, XLSX, PPTX.
 - JWT support
 
 ## 1.0.0
