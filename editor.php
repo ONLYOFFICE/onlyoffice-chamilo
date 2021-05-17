@@ -183,15 +183,21 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 <title>ONLYOFFICE</title>
 <style>
     #app > iframe {
-        height: calc(100% - 140px);
+        height: calc(100% - 52px);
     }
     body {
         height: 100%;
+        margin: 0 0 0px !important;
     }
+    #cm-content,
+    #cm-header .row,
     .chatboxheadmain,
     .pull-right,
     .breadcrumb {
         display: none;
+    }
+    .navbar {
+        margin-bottom: 0px !important;
     }
 </style>
 <script type="text/javascript" src=<?php echo $docApiUrl?>></script>
@@ -200,7 +206,6 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
         innerAlert("Document editor ready");
     };
     var connectEditor = function () {
-        $("#cm-content")[0].remove(".container");
         $("#main").append('<div id="app-onlyoffice">' +
                             '<div id="app">' +
                                 '<div id="iframeEditor">' +
@@ -209,20 +214,12 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
                           '</div>');
 
         var config = <?php echo json_encode($config)?>;
-        var isMobileAgent = <?php echo json_encode($isMobileAgent)?>;
 
         config.events = {
             "onAppReady": onAppReady
         };
 
         docEditor = new DocsAPI.DocEditor("iframeEditor", config);
-
-        $(".navbar").css({"margin-bottom": "0px"});
-        $("body").css({"margin": "0 0 0px"});
-        if (isMobileAgent) {
-            var frameEditor = $("#app > iframe")[0];
-            $(frameEditor).css({"height": "100%", "top": "0px"});
-        }
     }
 
     if (window.addEventListener) {
