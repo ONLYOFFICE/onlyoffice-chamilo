@@ -58,6 +58,60 @@ class OnlyofficeTools {
     }
 
     /**
+     * Return button-link to onlyoffice editor for view file
+     *
+     * @param array $document_data - document info
+     *
+     * @return Display
+     */
+    public static function getButtonView ($document_data) {
+
+        $plugin = OnlyofficePlugin::create();
+
+        $isEnable = $plugin->get("enable_onlyoffice_plugin") === "true";
+        if (!$isEnable) {
+            return "";
+        }
+
+        $urlToEdit = api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/editor.php";
+
+        $sessionId = api_get_session_id();
+        $courseInfo = api_get_course_info();
+        $documentId = $document_data["id"];
+        $userId = api_get_user_id();
+
+        $docInfo = DocumentManager::get_document_data_by_id($documentId, $courseInfo["code"], false, $sessionId);
+
+        $extension = strtolower(pathinfo($document_data["title"], PATHINFO_EXTENSION));
+        $canView = in_array($extension, FileUtility::$can_view_types) ? true : false;
+
+        $isGroupAccess = false;
+        $groupId = api_get_group_id();
+        if (!empty($groupId)) {
+            $groupProperties = GroupManager::get_group_properties($groupId);
+            $docInfoGroup = api_get_item_property_info(api_get_course_int_id(), 'document', $documentId, $sessionId);
+            $isGroupAccess = GroupManager::allowUploadEditDocument($userId, $courseInfo["code"], $groupProperties, $docInfoGroup);
+
+            $urlToEdit = $urlToEdit . "?groupId=" . $groupId . "&";
+        } else {
+            $urlToEdit = $urlToEdit . "?";
+        }
+
+        $isAllowToEdit = api_is_allowed_to_edit(true, true);
+        $isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
+
+        $accessRights = $isAllowToEdit || $isMyDir || $isGroupAccess ? true : false;
+
+        $urlToEdit = $urlToEdit . "docId=" . $documentId;
+
+        if ($canView && !$accessRights) {
+            return Display::url(Display::return_icon('../../plugin/onlyoffice/resources/onlyoffice_view.png', $plugin->get_lang('openByOnlyoffice')), $urlToEdit, ["style" => "float:right; margin-right:8px"]);
+        }
+
+        return "";
+    }
+
+    /**
      * Return button-link to onlyoffice create new
      *
      * @return Display
