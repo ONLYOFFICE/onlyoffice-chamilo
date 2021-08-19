@@ -54,11 +54,11 @@ $form->addText("fileName", $plugin->get_lang("title"), true);
 $form->addSelect("fileFormat", $plugin->get_lang("chooseFileFormat"), $mapFileFormat);
 $form->addButtonCreate($plugin->get_lang("create"));
 
-$form->addHidden("groupId", $_GET["groupId"]);
-$form->addHidden("courseId", $_GET["courseId"]);
-$form->addHidden("sessionId", $_GET["sessionId"]);
-$form->addHidden("userId", $_GET["userId"]);
-$form->addHidden("folderId", $_GET["folderId"]);
+$form->addHidden("groupId", (int) $_GET["groupId"]);
+$form->addHidden("courseId", (int) $_GET["courseId"]);
+$form->addHidden("sessionId", (int) $_GET["sessionId"]);
+$form->addHidden("userId", (int) $_GET["userId"]);
+$form->addHidden("folderId", (int) $_GET["folderId"]);
 $form->addHidden("goBackUrl", $_SERVER["HTTP_REFERER"]);
 
 if ($form->validate()) {

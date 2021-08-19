@@ -25,13 +25,13 @@ $plugin = OnlyofficePlugin::create();
 
 $isEnable = $plugin->get("enableOnlyofficePlugin") === 'true';
 if (!$isEnable) {
-    die ("Document server is't enable");
+    die ("Document server isn't enabled");
     return;
 }
 
 $documentServerUrl = $plugin->get("documentServerUrl");
 if (empty($documentServerUrl)) {
-    die ("Document server is't configured");
+    die ("Document server isn't configured");
     return;
 }
 

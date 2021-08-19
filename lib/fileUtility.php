@@ -167,7 +167,7 @@ class FileUtility {
         $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode);
         $mtime = filemtime($docInfo["absolute_path"]);
 
-        $key = $mtime . $courseId . $docId;
+        $key = $mtime . $courseCode . $docId;
         return self::GenerateRevisionId($key);
     }
 
