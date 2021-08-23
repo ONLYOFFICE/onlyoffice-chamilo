@@ -115,7 +115,7 @@ class FileUtility {
     /**
      * Return file url for download
      */
-    public static function getFileUrl(int $courseId, int $userId, int $docId, int $sessionId, int $groupId): string {
+    public static function getFileUrl(int $courseId, int $userId, int $docId, int $sessionId = null, int $groupId = null): string {
 
         $data = [
             "type" => "download",
