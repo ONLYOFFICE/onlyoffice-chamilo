@@ -24,7 +24,7 @@ use ChamiloSession as Session;
 $plugin = OnlyofficePlugin::create();
 
 $mapFileFormat = [
-    "text" => $plugin->get_lang("document"), 
+    "text" => $plugin->get_lang("document"),
     "spreadsheet" => $plugin->get_lang("spreadsheet"),
     "presentation" => $plugin->get_lang("presentation")
 ];
@@ -37,18 +37,29 @@ $courseId = $_GET["courseId"];
 $courseInfo = api_get_course_info_by_id($courseId);
 $courseCode = $courseInfo["code"];
 
-$docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, true, $sessionId);
+$docInfo = DocumentManager::get_document_data_by_id(
+    $docId,
+    $courseCode,
+    true,
+    $sessionId
+);
 
 $groupRights = Session::read('group_member_with_upload_rights');
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
-$isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_path"], $sessionId);
+$isMyDir = DocumentManager::is_my_shared_folder(
+    $userId,
+    $docInfo["absolute_path"],
+    $sessionId
+);
 if (!($isAllowToEdit || $isMyDir || $groupRights)) {
     api_not_allowed(true);
 }
 
-$form = new FormValidator("doc_create",
-                          "post",
-                          api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/create.php");
+$form = new FormValidator(
+    "doc_create",
+    "post",
+    api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/create.php"
+);
 
 $form->addText("fileName", $plugin->get_lang("title"), true);
 $form->addSelect("fileFormat", $plugin->get_lang("chooseFileFormat"), $mapFileFormat);
@@ -59,7 +70,7 @@ $form->addHidden("courseId", (int) $_GET["courseId"]);
 $form->addHidden("sessionId", (int) $_GET["sessionId"]);
 $form->addHidden("userId", (int) $_GET["userId"]);
 $form->addHidden("folderId", (int) $_GET["folderId"]);
-$form->addHidden("goBackUrl", $_SERVER["HTTP_REFERER"]);
+$form->addHidden("goBackUrl", Security::remove_XSS($_SERVER["HTTP_REFERER"]));
 
 if ($form->validate()) {
     $values = $form->exportValues();
@@ -69,7 +80,7 @@ if ($form->validate()) {
     $groupId = $values["groupId"];
     $sessionId = $values["sessionId"];
     $courseId = $values["courseId"];
-    $goBackUrl = $values["goBackUrl"];
+    $goBackUrl = Security::remove_XSS($values["goBackUrl"]);
 
     $fileType = $values["fileFormat"];
     $fileExt = FileUtility::getDocExt($fileType);
@@ -77,7 +88,7 @@ if ($form->validate()) {
 
     $courseInfo = api_get_course_info_by_id($courseId);
     $courseCode = $courseInfo["code"];
-    
+
     $fileNamePrefix = DocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
     $fileName = $values["fileName"] . $fileNamePrefix . "." . $fileExt;
 
@@ -85,9 +96,15 @@ if ($form->validate()) {
 
     $emptyTemplatePath = TemplateManager::getEmptyTemplate($fileExt);
 
+    $folderPath = '';
     $fileRelatedPath = "/";
     if (!empty($folderId)) {
-        $document_data = DocumentManager::get_document_data_by_id($folderId, $courseCode, true, $sessionId);
+        $document_data = DocumentManager::get_document_data_by_id(
+            $folderId,
+            $courseCode,
+            true,
+            $sessionId
+        );
         $folderPath = $document_data["absolute_path"];
         $fileRelatedPath = $fileRelatedPath . substr($document_data["absolute_path_from_document"], 10) . "/" . $fileName;
     } else {
@@ -104,6 +121,10 @@ if ($form->validate()) {
         Display::addFlash(Display::return_message($plugin->get_lang("fileIsExist"), "error"));
         goto display;
     }
+    if (!Security::check_abs_path($filePath, $folderPath)) {
+        Display::addFlash(Display::return_message(get_lang('SendFileError'), 'error'));
+        goto display;
+    }
 
     if ($fp = @fopen($filePath, "w")) {
         $content = file_get_contents($emptyTemplatePath);
@@ -112,40 +133,48 @@ if ($form->validate()) {
 
         chmod($filePath, api_get_permissions_for_new_files());
 
-        $documentId = add_document($courseInfo,
-                                    $fileRelatedPath,
-                                    "file",
-                                    filesize($filePath),
-                                    $fileTitle,
-                                    null,
-                                    false);
+        $documentId = add_document(
+            $courseInfo,
+            $fileRelatedPath,
+            "file",
+            filesize($filePath),
+            $fileTitle,
+            null,
+            false
+        );
         if ($documentId) {
-            api_item_property_update($courseInfo,
-                                        TOOL_DOCUMENT,
-                                        $documentId,
-                                        "DocumentAdded",
-                                        $userId,
-                                        $groupInfo,
-                                        null,
-                                        null,
-                                        null,
-                                        $sessionId);
+            api_item_property_update(
+                $courseInfo,
+               TOOL_DOCUMENT,
+                $documentId,
+                "DocumentAdded",
+                $userId,
+                $groupInfo,
+                null,
+                null,
+                null,
+                $sessionId
+            );
 
             header("Location: " . $goBackUrl);
             exit();
         }
 
     } else {
-        Display::addFlash(Display::return_message($plugin->get_lang("impossibleCreateFile"), "error"));
+        Display::addFlash(
+            Display::return_message(
+                $plugin->get_lang("impossibleCreateFile"),
+                "error"
+            )
+        );
     }
 }
 
 display:
-    $goBackUrl = $goBackUrl ?: $_SERVER["HTTP_REFERER"];
+    $goBackUrl = $goBackUrl ?: Security::remove_XSS($_SERVER["HTTP_REFERER"]);
     $actionsLeft = '<a href="'. $goBackUrl . '">' . Display::return_icon("back.png", get_lang("Back") . " " . get_lang("To") . " " . get_lang("DocumentsOverview"), "", ICON_SIZE_MEDIUM) . "</a>";
 
     Display::display_header($plugin->get_lang("createNewDocument"));
     echo Display::toolbarAction("actions-documents", [$actionsLeft]);
     echo $form->returnForm();
     Display::display_footer();
-?>
