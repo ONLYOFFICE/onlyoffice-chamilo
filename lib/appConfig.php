@@ -33,7 +33,8 @@ class AppConfig {
      *
      * @return string
      */
-    public static function JwtHeader() {
+    public static function JwtHeader()
+    {
         $header = api_get_configuration_value(self::jwtHeader);
         if (empty($header)) {
             $header = "Authorization";

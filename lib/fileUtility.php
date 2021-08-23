@@ -81,7 +81,8 @@ class FileUtility {
     /**
      * Return file type by extension
      */
-    public static function getDocType(string $extension): string {
+    public static function getDocType(string $extension): string
+    {
         if (in_array($extension, self::$text_doc)) {
             return "text";
         }
@@ -98,7 +99,8 @@ class FileUtility {
     /**
      * Return file extension by file type
      */
-    public static function getDocExt(string $type): string {
+    public static function getDocExt(string $type): string
+    {
         if ($type === "text") {
             return "docx";
         }
@@ -115,7 +117,8 @@ class FileUtility {
     /**
      * Return file url for download
      */
-    public static function getFileUrl(int $courseId, int $userId, int $docId, int $sessionId = null, int $groupId = null): string {
+    public static function getFileUrl(int $courseId, int $userId, int $docId, int $sessionId = null, int $groupId = null): string
+    {
 
         $data = [
             "type" => "download",
@@ -137,7 +140,8 @@ class FileUtility {
     /**
      * Return file key
      */
-    public static function getKey(string $courseCode, int $docId): string {
+    public static function getKey(string $courseCode, int $docId): string
+    {
         $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode);
         $mtime = filemtime($docInfo["absolute_path"]);
 
@@ -148,7 +152,8 @@ class FileUtility {
     /**
      * Translation key to a supported form
      */
-    public static function GenerateRevisionId(string $expectedKey): string {
+    public static function GenerateRevisionId(string $expectedKey): string
+    {
         if (strlen($expectedKey) > 20) $expectedKey = crc32( $expectedKey);
         $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expectedKey);
         $key = substr($key, 0, min(array(strlen($key), 20)));

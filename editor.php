@@ -169,7 +169,8 @@ if (!empty($plugin->get("jwt_secret"))) {
 /**
  * Return callback url
  */
-function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, int $groupId = null): string {
+function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, int $groupId = null): string
+{
     $url = "";
 
     $data = [

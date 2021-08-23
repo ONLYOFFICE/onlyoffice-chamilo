@@ -93,7 +93,8 @@ if (isset($_GET["hash"]) && !empty($_GET["hash"])) {
 /**
  * Handle request from the document server with the document status information
  */
-function track(): array {
+function track(): array
+{
     $result = [];
 
     global $plugin;
@@ -214,7 +215,8 @@ function track(): array {
 /**
  * Downloading file by the document service
  */
-function download() {
+function download()
+{
     global $plugin;
     global $courseCode;
     global $userId;
@@ -258,7 +260,8 @@ function download() {
 /**
  * Method checks access rights to document and returns permissions
  */
-function getPermissions(array $docInfo, int $userId, string $courseCode, int $groupId = null, int $sessionId = null): array {
+function getPermissions(array $docInfo, int $userId, string $courseCode, int $groupId = null, int $sessionId = null): array
+{
     $isAllowToEdit = api_is_allowed_to_edit(true, true);
     $isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
 

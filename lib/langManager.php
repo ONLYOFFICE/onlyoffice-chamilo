@@ -24,7 +24,8 @@ class LangManager {
     /**
      * Return lang info for current user
      */
-    public static function getLangUser(): array {
+    public static function getLangUser(): array
+    {
         $langInfo = [];
         $userLang = api_get_language_from_type("user_profil_lang");
         if (empty($userLang)) {

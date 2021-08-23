@@ -22,7 +22,8 @@ class OnlyofficeItemViewObserver extends HookObserver implements HookDocumentIte
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(
             "plugin/onlyoffice/lib/onlyofficePlugin.php",
             "onlyoffice"
@@ -34,7 +35,8 @@ class OnlyofficeItemViewObserver extends HookObserver implements HookDocumentIte
      *
      * @param HookDocumentItemViewEventInterface $event - the hook event
      */
-    public function notifyDocumentItemView(HookDocumentItemViewEventInterface $event): string {
+    public function notifyDocumentItemView(HookDocumentItemViewEventInterface $event): string
+    {
         $data = $event->getEventData();
 
         return OnlyofficeTools::getButtonView($data);

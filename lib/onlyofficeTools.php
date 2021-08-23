@@ -22,7 +22,8 @@ class OnlyofficeTools {
     /**
      * Return button-link to onlyoffice editor for file
      */
-    public static function getButtonEdit(array $document_data): string {
+    public static function getButtonEdit(array $document_data): string
+    {
 
         $plugin = OnlyofficePlugin::create();
 
@@ -64,7 +65,8 @@ class OnlyofficeTools {
     /**
      * Return button-link to onlyoffice editor for view file
      */
-    public static function getButtonView (array $document_data): string {
+    public static function getButtonView (array $document_data): string
+    {
 
         $plugin = OnlyofficePlugin::create();
 
@@ -114,7 +116,8 @@ class OnlyofficeTools {
     /**
      * Return button-link to onlyoffice create new
      */
-    public static function getButtonCreateNew (): string {
+    public static function getButtonCreateNew (): string
+    {
 
         $plugin = OnlyofficePlugin::create();
 

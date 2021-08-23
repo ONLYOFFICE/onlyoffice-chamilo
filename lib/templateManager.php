@@ -53,7 +53,8 @@ class TemplateManager {
     /**
      * Return path to template new file
      */
-    public static function getEmptyTemplate($fileExtension): string {
+    public static function getEmptyTemplate($fileExtension): string
+    {
         $langInfo = LangManager::getLangUser();
         $lang = $langInfo["isocode"];
         if (!array_key_exists($lang, self::$localPath)) {
