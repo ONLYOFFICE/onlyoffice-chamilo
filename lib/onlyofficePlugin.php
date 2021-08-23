@@ -41,11 +41,9 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Create OnlyofficePlugin
-     *
-     * @return OnlyofficePlugin
+     * Create OnlyofficePlugin object
      */
-    public static function create()
+    public static function create(): OnlyofficePlugin
     {
         static $result = null;
 
@@ -69,7 +67,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Install the create hooks.
+     * Install the "create" hooks.
      */
     public function installHook()
     {
@@ -84,7 +82,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Uninstall the create hooks.
+     * Uninstall the "create" hooks.
      */
     public function uninstallHook()
     {

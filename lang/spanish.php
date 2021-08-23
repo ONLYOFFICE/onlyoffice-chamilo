@@ -6,7 +6,7 @@
 $strings["plugin_title"] = "ONLYOFFICE";
 $strings['plugin_comment'] = "El conector de ONLYOFFICE le permite ver, editar y colaborar en documentos de texto, hojas de cálculo y presentaciones dentro de Chamilo utilizando ONLYOFFICE Docs.";
 $strings["enable_onlyoffice_plugin"] = "Habilitar";
-$strings["document_server_url"] = "URL del ONLYOFFICE Docs";
+$strings["document_server_url"] = "URL del servidor ONLYOFFICE Docs";
 $strings["jwt_secret"] = "Clave secreta (deje en blanco o desactive)";
 $strings["openByOnlyoffice"] = "Abrir con ONLYOFFICE";
 $strings["createNew"] = "Crear nuevo";

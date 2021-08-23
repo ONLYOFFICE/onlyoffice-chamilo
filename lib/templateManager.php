@@ -52,12 +52,8 @@ class TemplateManager {
 
     /**
      * Return path to template new file
-     * 
-     * @param string $extension - extension of file
-     * 
-     * @return string
      */
-    public static function getEmptyTemplate($extension) {
+    public static function getEmptyTemplate($fileExtension): string {
         $langInfo = LangManager::getLangUser();
         $lang = $langInfo["isocode"];
         if (!array_key_exists($lang, self::$localPath)) {
@@ -65,6 +61,6 @@ class TemplateManager {
         }
         $templateFolder = api_get_path(SYS_PLUGIN_PATH) . "onlyoffice/assets/" . self::$localPath[$lang];
 
-        return $templateFolder . "/" . ltrim($extension, ".") . ".zip";
+        return $templateFolder . "/" . ltrim($fileExtension, ".") . ".zip";
     }
 }

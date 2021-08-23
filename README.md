@@ -2,11 +2,11 @@
 
 This app enables users to edit office documents from [Chamilo](https://chamilo.org) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
-The app is compatible with Chamilo v1.11.14 or newer. 
+The app is compatible with Chamilo v1.11.16 or newer. 
 
 ## Features
 
-The plugin allows to:
+The plugin allows teachers to:
 
 * Create and edit text documents, spreadsheets, and presentations.
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
@@ -21,39 +21,37 @@ You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvabl
 
 ONLYOFFICE Document Server and Chamilo can be installed either on different computers, or on the same machine. If you use one machine, set up a custom port for Document Server as by default both ONLYOFFICE Document Server and Chamilo work on port 80.
 
-You can install free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
+You can install the free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
 
-To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx) for Debian, Ubuntu, or derivatives.  
+To install the free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx) for Debian, Ubuntu, or derivatives.  
 
-To install Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx).
+To install the Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx).
 
-Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
+The Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
 To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/server/document/document-server-proxy.aspx).
 
 ## Installing Chamilo ONLYOFFICE integration plugin
 
-To install the plugin, go to Chamilo Administration -> Plugins -> Upload plugin. 
+The plugin comes integrated into Chamilo 1.11.16.
 
-Upload `onlyoffice.zip` (you'll find it in the Releases section in this repo). You'll see the plugin list.
+To enable, go to the plugins list, select the ONLYOFFICE plugin, and click _Enable_ the selected plugins.
 
-Then launch `composer install` from the Chamilo root folder. 
-
-Return to the plugin list, select the ONLYOFFICE plugin, and click Enable the selected plugins.
+If you want more up-to-date versions of the plugin, you can update the plugin/onlyoffice/ folder with the original plugin code [here](https://github.com/ONLYOFFICE/onlyoffice-chamilo) together with the compilation instructions.
 
 ## Configuring Chamilo ONLYOFFICE integration plugin
 
-On the Plugins page, find ONLYOFFICE and click Configure. You'll see the Settings page. Enable the plugin and specify Document Server address. 
+On the Plugins page, find ONLYOFFICE and click _Configure_. You'll see the _Settings_ page. Enable the plugin and specify the _Document Server address_. 
 
 ## How it works
 
-* To create a new file, the user opens the necessesary folder and clicks the ONLYOFFICE icon "Create new".
-* The user is redirected to the file creation page where they need to enter the file name and format (text document, spreadsheet, or presentation). The browser calls `/plugin/onlyoffice/create.php` method. It adds the copy of the empty file to the user folder.
-* To open an existing file, the user chooses the Open with ONLYOFFICE icon.
+* To create a new file, the teacher opens the necessary folder and clicks the ONLYOFFICE icon "Create new".
+* The user is redirected to the file creation page where they need to enter the file name and format (text document, spreadsheet, or presentation). The browser calls `/plugin/onlyoffice/create.php` method. It adds the copy of the empty file to the course folder.
+* To open an existing file, the user chooses the _Open with ONLYOFFICE_ icon.
 * The request is being sent to `/plugin/onlyoffice/editor.php?docId=«document identificator»`. The server processes the request, generates the editor initialization configuration with the properties:
 
   * **url** - the URL that ONLYOFFICE Document Server uses to download the document;
-  * **callbackUrl** - the URL that ONLYOFFICE Document Server informs about status of the document editing;
+  * **callbackUrl** - the URL at which ONLYOFFICE Document Server informs Chamilo about the status of the document editing;
   * **documentServerUrl** - the URL that the client needs to respond to ONLYOFFICE Document Server (can be set at the administrative settings page);
   * **key** - the etag to instruct ONLYOFFICE Document Server whether to download the document again or not;
 
