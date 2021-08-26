@@ -34,16 +34,16 @@ const TrackerStatus_CorruptedForceSave = 7;
 $plugin = OnlyofficePlugin::create();
 
 if (isset($_GET["hash"]) && !empty($_GET["hash"])) {
-    $response_array;
+    $callbackResponseArray = [];
     @header( 'Content-Type: application/json; charset==utf-8');
     @header( 'X-Robots-Tag: noindex' );
     @header( 'X-Content-Type-Options: nosniff' );
 
     list ($hashData, $error) = Crypt::ReadHash($_GET["hash"]);
     if ($hashData === null) {
-        $response_array["status"] = "error";
-        $response_array["error"] = $error;
-        die(json_encode($response_array));
+        $callbackResponseArray["status"] = "error";
+        $callbackResponseArray["error"] = $error;
+        die(json_encode($callbackResponseArray));
     }
 
     $type = $hashData->type;
@@ -78,22 +78,23 @@ if (isset($_GET["hash"]) && !empty($_GET["hash"])) {
 
     switch($type) {
         case "track":
-            $response_array = track();
-            die (json_encode($response_array));
+            $callbackResponseArray = track();
+            die (json_encode($callbackResponseArray));
         case "download":
-            $response_array = download();
-            die (json_encode($response_array));
+            $callbackResponseArray = download();
+            die (json_encode($callbackResponseArray));
         default:
-            $response_array["status"] = "error";
-            $response_array["error"] = "404 Method not found";
-            die(json_encode($response_array));
+            $callbackResponseArray["status"] = "error";
+            $callbackResponseArray["error"] = "404 Method not found";
+            die(json_encode($callbackResponseArray));
     }
 }
 
 /**
  * Handle request from the document server with the document status information
  */
-function track() {
+function track(): array
+{
     $result = [];
 
     global $plugin;
@@ -214,7 +215,8 @@ function track() {
 /**
  * Downloading file by the document service
  */
-function download() {
+function download()
+{
     global $plugin;
     global $courseCode;
     global $userId;
@@ -257,16 +259,9 @@ function download() {
 
 /**
  * Method checks access rights to document and returns permissions
- * 
- * @param array $docInfo - identifier of document
- * @param int $userId - identifier of user
- * @param string $courseCode - identifier of course
- * @param int $groupId - identifier of group or null if file out of group
- * @param int $sessionId - identifier of session
- * 
- * @return array
  */
-function getPermissions($docInfo, $userId, $courseCode, $groupId, $sessionId) {
+function getPermissions(array $docInfo, int $userId, string $courseCode, int $groupId = null, int $sessionId = null): array
+{
     $isAllowToEdit = api_is_allowed_to_edit(true, true);
     $isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
 
