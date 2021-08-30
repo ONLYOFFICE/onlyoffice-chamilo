@@ -31,13 +31,47 @@ The Community Edition vs Enterprise Edition comparison can be found [here](#only
 
 To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/server/document/document-server-proxy.aspx).
 
+## Collect Chamilo ONLYOFFICE integration plugin
+
+1. Get the latest version of this repository running the command:
+    ```
+    git clone https://github.com/ONLYOFFICE/onlyoffice-chamilo
+    cd onlyoffice-chamilo
+    ```
+
+2. Get a submodule:
+    ```
+    git submodule update --init --recursive
+    ```
+
+3. Collect all files
+    ```
+    mkdir /tmp/onlyoffice-deploy
+    mkdir /tmp/onlyoffice-deploy/onlyoffice
+    cp -r ./ /tmp/onlyoffice-deploy/onlyoffice
+    cd /tmp/onlyoffice-deploy/onlyoffice
+    rm -rf ./.git*
+    ```
+
+4. Archive
+    ```
+    cd ../
+    zip onlyoffice.zip -r onlyoffice
+    ```
+
 ## Installing Chamilo ONLYOFFICE integration plugin
 
-The plugin comes integrated into Chamilo 1.11.16.
+The plugin has been integrated into Chamilo since version 1.11.16.
 
 To enable, go to the plugins list, select the ONLYOFFICE plugin, and click _Enable_ the selected plugins.
 
-If you want more up-to-date versions of the plugin, you can update the plugin/onlyoffice/ folder with the original plugin code [here](https://github.com/ONLYOFFICE/onlyoffice-chamilo) together with the compilation instructions.
+If you want more up-to-date versions of the plugin, go to Chamilo Administration -> Plugins -> Upload plugin.
+
+Upload `onlyoffice.zip` (you'll find it in the Releases section). You'll see the plugin list.
+
+Then launch `composer install` from the Chamilo root folder. 
+
+Return to the plugin list, select the ONLYOFFICE plugin, and click Enable the selected plugins.
 
 ## Configuring Chamilo ONLYOFFICE integration plugin
 
