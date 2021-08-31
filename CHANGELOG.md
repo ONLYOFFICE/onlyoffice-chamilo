@@ -2,6 +2,7 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+## 1.1.2
 - Add security filtering
 - Minor documentation and code style changes
 - View option for DOCX, XLSX, PPTX.
