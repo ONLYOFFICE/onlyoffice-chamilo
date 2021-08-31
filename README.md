@@ -23,13 +23,13 @@ ONLYOFFICE Document Server and Chamilo can be installed either on different comp
 
 You can install the free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
 
-To install the free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx) for Debian, Ubuntu, or derivatives.  
+To install the free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx) for Debian, Ubuntu, or derivatives.  
 
-To install the Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx).
+To install the Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/installation/docs-enterprise-index.aspx).
 
 The Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
-To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/server/document/document-server-proxy.aspx).
+To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/installation/docs-community-proxy.aspx).
 
 ## Collect Chamilo ONLYOFFICE integration plugin
 
@@ -111,7 +111,7 @@ The table below will help you to make the right choice.
 
 | Pricing and licensing | Community Edition | Enterprise Edition |
 | ------------- | ------------- | ------------- |
-| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo)  | [Start Free Trial](https://www.onlyoffice.com/enterprise-edition-free.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo)  |
+| | [Get it now](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo#docs-enterprise)  |
 | Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/docs-enterprise-prices.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo)  |
 | Simultaneous connections | up to 20 maximum  | As in chosen pricing plan |
 | Number of users | up to 20 recommended | As in chosen pricing plan |
@@ -166,7 +166,7 @@ The table below will help you to make the right choice.
 | Transitions                     | + | + |
 | Presenter mode                  | + | + |
 | Notes                           | + | + |
-| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo)  | [Start Free Trial](https://www.onlyoffice.com/enterprise-edition-free.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo)  |
+| | [Get it now](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubChamilo#docs-enterprise)  |
 
 \*  It's possible to add documents for comparison from your local drive, from URL and from Chamilo storage.
 
