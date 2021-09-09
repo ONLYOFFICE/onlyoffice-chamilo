@@ -74,8 +74,6 @@ $form->addHidden("courseId", $courseId);
 $form->addHidden("sessionId", $sessionId);
 $form->addHidden("userId", $userId);
 $form->addHidden("folderId", $folderId);
-$goBackUrl = Security::remove_XSS($_SERVER["HTTP_REFERER"]);
-$form->addHidden("goBackUrl", $goBackUrl);
 
 if ($form->validate()) {
     $values = $form->exportValues();
@@ -85,7 +83,6 @@ if ($form->validate()) {
     $groupId = $values["groupId"];
     $sessionId = $values["sessionId"];
     $courseId = $values["courseId"];
-    $goBackUrl = Security::remove_XSS($values["goBackUrl"]);
 
     $fileType = $values["fileFormat"];
     $fileExt = FileUtility::getDocExt($fileType);
@@ -156,10 +153,9 @@ if ($form->validate()) {
                 $sessionId
             );
 
-            header("Location: " . $goBackUrl);
+            header("Location: " . FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId));
             exit();
         }
-
     } else {
         Display::addFlash(
             Display::return_message(
@@ -171,7 +167,7 @@ if ($form->validate()) {
 }
 
 display:
-    $goBackUrl = $goBackUrl ?: Security::remove_XSS($_SERVER["HTTP_REFERER"]);
+    $goBackUrl = FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId);
     $actionsLeft = '<a href="'. $goBackUrl . '">' . Display::return_icon("back.png", get_lang("Back") . " " . get_lang("To") . " " . get_lang("DocumentsOverview"), "", ICON_SIZE_MEDIUM) . "</a>";
 
     Display::display_header($plugin->get_lang("createNewDocument"));
