@@ -138,6 +138,17 @@ class FileUtility {
     }
 
     /**
+     * Return location file in chamilo documents
+     */
+    function getUrlToLocation($courseCode, $sessionId, $groupId, $folderId) {
+        return api_get_path(WEB_CODE_PATH)."document/document.php"
+                                            . "?cidReq=" . Security::remove_XSS($courseCode)
+                                            . "&id_session=" . Security::remove_XSS($sessionId)
+                                            . "&gidReq=" . Security::remove_XSS($groupId)
+                                            . "&id=" . Security::remove_XSS($folderId);
+    }
+
+    /**
      * Return file key
      */
     public static function getKey(string $courseCode, int $docId): string

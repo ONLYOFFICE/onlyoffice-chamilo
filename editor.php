@@ -82,7 +82,7 @@ $config = [
                 "blank" => false,
                 "requestClose" => false,
                 "text" => get_lang("Back"),
-                "url" => Security::remove_XSS($_SERVER["HTTP_REFERER"])
+                "url" => FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $docInfo["parent_id"])
             ],
             "compactHeader" => true,
             "toolbarNoTabs" => true
