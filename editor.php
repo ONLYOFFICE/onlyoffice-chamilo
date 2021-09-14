@@ -23,15 +23,15 @@ const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|el
 
 $plugin = OnlyofficePlugin::create();
 
-$isEnable = $plugin->get("enableOnlyofficePlugin") === 'true';
+$isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
 if (!$isEnable) {
-    die ("Document server is't enable");
+    die ("Document server isn't enabled");
     return;
 }
 
-$documentServerUrl = $plugin->get("documentServerUrl");
+$documentServerUrl = $plugin->get("document_server_url");
 if (empty($documentServerUrl)) {
-    die ("Document server is't configured");
+    die ("Document server isn't configured");
     return;
 }
 
@@ -82,7 +82,7 @@ $config = [
                 "blank" => false,
                 "requestClose" => false,
                 "text" => get_lang("Back"),
-                "url" => $_SERVER["HTTP_REFERER"]
+                "url" => FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $docInfo["parent_id"])
             ],
             "compactHeader" => true,
             "toolbarNoTabs" => true
@@ -98,13 +98,27 @@ if ($isMobileAgent) {
 }
 
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
-$isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
+$isMyDir = DocumentManager::is_my_shared_folder(
+    $userId,
+    $docInfo["absolute_parent_path"],
+    $sessionId
+);
 
 $isGroupAccess = false;
 if (!empty($groupId)) {
     $groupProperties = GroupManager::get_group_properties($groupId);
-    $docInfoGroup = api_get_item_property_info(api_get_course_int_id(), 'document', $docId, $sessionId);
-    $isGroupAccess = GroupManager::allowUploadEditDocument($userId, $courseCode, $groupProperties, $docInfoGroup);
+    $docInfoGroup = api_get_item_property_info(
+        api_get_course_int_id(),
+        'document',
+        $docId,
+        $sessionId
+    );
+    $isGroupAccess = GroupManager::allowUploadEditDocument(
+        $userId,
+        $courseCode,
+        $groupProperties,
+        $docInfoGroup
+    );
 
     $isMemberGroup = GroupManager::is_user_in_group($userId, $groupProperties);
 
@@ -118,8 +132,8 @@ if (!empty($groupId)) {
     }
 }
 
-$accessRights = $isAllowToEdit || $isMyDir || $isGroupAccess ? true : false;
-$canEdit = in_array($extension, FileUtility::$can_edit_types) ? true : false;
+$accessRights = $isAllowToEdit || $isMyDir || $isGroupAccess;
+$canEdit = in_array($extension, FileUtility::$can_edit_types);
 
 $isVisible = DocumentManager::check_visibility_tree($docId, $courseInfo, $sessionId, $userId, $groupId);
 $isReadonly = $docInfo["readonly"];
@@ -130,9 +144,15 @@ if (!$isVisible) {
 
 if ($canEdit && $accessRights && !$isReadonly) {
     $config["editorConfig"]["mode"] = "edit";
-    $config["editorConfig"]["callbackUrl"] = getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId);
+    $config["editorConfig"]["callbackUrl"] = getCallbackUrl(
+        $docId,
+        $userId,
+        $courseId,
+        $sessionId,
+        $groupId
+    );
 } else {
-    $canView = in_array($extension, FileUtility::$can_view_types) ? true : false;
+    $canView = in_array($extension, FileUtility::$can_view_types);
     if ($canView) {
         $config["editorConfig"]["mode"] = "view";
     } else {
@@ -141,18 +161,16 @@ if ($canEdit && $accessRights && !$isReadonly) {
 }
 $config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
 
+if (!empty($plugin->get("jwt_secret"))) {
+    $token = \Firebase\JWT\JWT::encode($config, $plugin->get("jwt_secret"));
+    $config["token"] = $token;
+}
+
 /**
  * Return callback url
- * 
- * @param int $docId - identifier of document
- * @param int $userId - identifier of user
- * @param int $courseId - identifier of course
- * @param int $sessionId - identifier of session
- * @param int $groupId - identifier of group or null if file out of group
- * 
- * @return string
  */
-function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
+function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, int $groupId = null): string
+{
     $url = "";
 
     $data = [
@@ -169,9 +187,7 @@ function getCallbackUrl($docId, $userId, $courseId, $sessionId, $groupId) {
 
     $hashUrl = Crypt::GetHash($data);
 
-    $url = $url . api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/callback.php?hash=" . $hashUrl;
-
-    return $url;
+    return $url . api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/callback.php?hash=" . $hashUrl;
 }
 
 ?>

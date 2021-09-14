@@ -1,12 +1,13 @@
 <?php
 /**
  * @author ASENSIO SYSTEM SIA
- * 
+ *
  */
 $strings["plugin_title"] = "ONLYOFFICE";
 $strings['plugin_comment'] = "Il connettore ONLYOFFICE ti consente di visualizzare, modificare e collaborare su documenti di testo, fogli di calcolo e presentazioni all'interno di Chamilo con ONLYOFFICE Docs.";
-$strings["enableOnlyofficePlugin"] = "Attiva";
-$strings["documentServerUrl"] = "Indirizzo del servizio di modifica documenti";
+$strings["enable_onlyoffice_plugin"] = "Attiva";
+$strings["document_server_url"] = "Indirizzo del ONLYOFFICE Docs";
+$strings["jwt_secret"] = "Chiave segreta (lasciare vuoto per disabilitare)";
 $strings["openByOnlyoffice"] = "Apri con ONLYOFFICE";
 $strings["createNew"] = "Crea ora";
 $strings["title"] = "Titolo ";

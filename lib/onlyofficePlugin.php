@@ -30,21 +30,20 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     protected function __construct()
     {
         parent::__construct(
-            "1.0",
+            "1.1.2",
             "Asensio System SIA",
             [
-                "enableOnlyofficePlugin" => "boolean",
-                "documentServerUrl" => "text"
+                "enable_onlyoffice_plugin" => "boolean",
+                "document_server_url" => "text",
+                "jwt_secret" => "text"
             ]
         );
     }
 
     /**
-     * Create OnlyofficePlugin
-     * 
-     * @return OnlyofficePlugin
+     * Create OnlyofficePlugin object
      */
-    public static function create()
+    public static function create(): OnlyofficePlugin
     {
         static $result = null;
 
@@ -68,7 +67,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Install the create hooks.
+     * Install the "create" hooks.
      */
     public function installHook()
     {
@@ -77,10 +76,13 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
 
         $actionObserver = OnlyofficeActionObserver::create();
         HookDocumentAction::create()->attach($actionObserver);
+
+        $viewObserver = OnlyofficeItemViewObserver::create();
+        HookDocumentItemView::create()->attach($viewObserver);
     }
 
     /**
-     * Uninstall the create hooks.
+     * Uninstall the "create" hooks.
      */
     public function uninstallHook()
     {
@@ -89,5 +91,8 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
 
         $actionObserver = OnlyofficeActionObserver::create();
         HookDocumentAction::create()->detach($actionObserver);
+
+        $viewObserver = OnlyofficeItemViewObserver::create();
+        HookDocumentItemView::create()->detach($viewObserver);
     }
 }

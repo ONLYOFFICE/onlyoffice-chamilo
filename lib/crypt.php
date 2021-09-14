@@ -17,7 +17,7 @@
  *
  */
 
-require_once __DIR__.'/../../../main/inc/global.inc.php';
+require_once __DIR__ . "/../../../main/inc/global.inc.php";
 
 class Crypt {
 
@@ -28,7 +28,8 @@ class Crypt {
      *
      * @return string
      */
-    public static function GetHash($object) {
+    public static function GetHash($object)
+    {
         return \Firebase\JWT\JWT::encode($object, api_get_security_key());
     }
 
@@ -39,7 +40,8 @@ class Crypt {
      *
      * @return array
      */
-    public static function ReadHash($token) {
+    public static function ReadHash($token)
+    {
         $result = null;
         $error = null;
         if ($token === null) {

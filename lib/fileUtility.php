@@ -17,10 +17,10 @@
  *
  */
 
-require_once __DIR__.'/../../../main/inc/global.inc.php';
+require_once __DIR__ . "/../../../main/inc/global.inc.php";
 
 class FileUtility {
- 
+
     /**
      * Application name
      */
@@ -28,19 +28,19 @@ class FileUtility {
 
     /**
      * Extensions of files that can edit
-     * 
+     *
      * @var array
      */
     public static $can_edit_types = [
-        "docx", 
-        "xlsx", 
-        "pptx", 
+        "docx",
+        "xlsx",
+        "pptx",
         "ppsx"
     ];
 
     /**
      * Extensions of files that can view
-     * 
+     *
      * @var array
      */
     public static $can_view_types = [
@@ -52,7 +52,7 @@ class FileUtility {
 
     /**
      * Extensions of text files
-     * 
+     *
      * @var array
      */
     public static $text_doc = [
@@ -62,7 +62,7 @@ class FileUtility {
 
     /**
      * Extensions of presentation files
-     * 
+     *
      * @var array
      */
     public static $presentation_doc  = [
@@ -71,7 +71,7 @@ class FileUtility {
 
     /**
      * Extensions of spreadsheet files
-     * 
+     *
      * @var array
      */
     public static $spreadsheet_doc = [
@@ -80,12 +80,9 @@ class FileUtility {
 
     /**
      * Return file type by extension
-     * 
-     * @param string $extension - extension of file
-     * 
-     * @return string
      */
-    public static function getDocType($extension) {
+    public static function getDocType(string $extension): string
+    {
         if (in_array($extension, self::$text_doc)) {
             return "text";
         }
@@ -101,12 +98,9 @@ class FileUtility {
 
     /**
      * Return file extension by file type
-     * 
-     * @param string $type - type of file
-     * 
-     * @return string
      */
-    public static function getDocExt($type) {
+    public static function getDocExt(string $type): string
+    {
         if ($type === "text") {
             return "docx";
         }
@@ -122,16 +116,9 @@ class FileUtility {
 
     /**
      * Return file url for download
-     * 
-     * @param int $courseId - identifier of course
-     * @param int $userId - identifier of user
-     * @param int $docId - identifier of document
-     * @param int $sessionId - identifier of session
-     * @param int $groupId - identifier of group or null if file out of group
-     * 
-     * @return string
      */
-    public static function getFileUrl($courseId, $userId, $docId, $sessionId, $groupId) {
+    public static function getFileUrl(int $courseId, int $userId, int $docId, int $sessionId = null, int $groupId = null): string
+    {
 
         $data = [
             "type" => "download",
@@ -147,40 +134,39 @@ class FileUtility {
 
         $hashUrl = Crypt::GetHash($data);
 
-        $url = api_get_path(WEB_PLUGIN_PATH) . self::app_name . "/" . "callback.php?hash=" . $hashUrl;
+        return api_get_path(WEB_PLUGIN_PATH) . self::app_name . "/" . "callback.php?hash=" . $hashUrl;
+    }
 
-        return $url;
+    /**
+     * Return location file in chamilo documents
+     */
+    function getUrlToLocation($courseCode, $sessionId, $groupId, $folderId) {
+        return api_get_path(WEB_CODE_PATH)."document/document.php"
+                                            . "?cidReq=" . Security::remove_XSS($courseCode)
+                                            . "&id_session=" . Security::remove_XSS($sessionId)
+                                            . "&gidReq=" . Security::remove_XSS($groupId)
+                                            . "&id=" . Security::remove_XSS($folderId);
     }
 
     /**
      * Return file key
-     * 
-     * @param string $courseCode - identifier of course
-     * @param int $userId - identifier of user
-     * @param int $docId - identifier of document
-     * @param int $sessionId - identifier of session
-     * @param int $groupId - identifier of group or null if file out of group
-     * 
-     * @return string
      */
-    public static function getKey($courseCode, $docId) {
+    public static function getKey(string $courseCode, int $docId): string
+    {
         $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode);
         $mtime = filemtime($docInfo["absolute_path"]);
 
-        $key = $mtime . $courseId . $docId;
+        $key = $mtime . $courseCode . $docId;
         return self::GenerateRevisionId($key);
     }
 
     /**
      * Translation key to a supported form
-     * 
-     * @param string $expected_key - Expected key
-     * 
-     * @return string
      */
-    public static function GenerateRevisionId($expected_key) {
-        if (strlen($expected_key) > 20) $expected_key = crc32( $expected_key);
-        $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expected_key);
+    public static function GenerateRevisionId(string $expectedKey): string
+    {
+        if (strlen($expectedKey) > 20) $expectedKey = crc32( $expectedKey);
+        $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expectedKey);
         $key = substr($key, 0, min(array(strlen($key), 20)));
         return $key;
     }

@@ -17,7 +17,7 @@
  *
  */
 
-class OnlyofficeItemActionObserver extends HookObserver implements HookDocumentItemActionObserverInterface
+class OnlyofficeItemViewObserver extends HookObserver implements HookDocumentItemViewObserverInterface
 {
     /**
      * Constructor
@@ -31,17 +31,14 @@ class OnlyofficeItemActionObserver extends HookObserver implements HookDocumentI
     }
 
     /**
-     * Create a Onlyoffice edit tools when the Chamilo loads document items
+     * Create a Onlyoffice view tools when the Chamilo loads document items
      *
-     * @param HookDocumentItemActionEventInterface $event - the hook event
+     * @param HookDocumentItemViewEventInterface $event - the hook event
      */
-    public function notifyDocumentItemAction(HookDocumentItemActionEventInterface $event)
+    public function notifyDocumentItemView(HookDocumentItemViewEventInterface $event): string
     {
         $data = $event->getEventData();
 
-        if ($data["type"] === HOOK_EVENT_TYPE_PRE) {
-            $data["actions"][] = OnlyofficeTools::getButtonEdit($data);
-            return $data;
-        }
+        return OnlyofficeTools::getButtonView($data);
     }
 }
