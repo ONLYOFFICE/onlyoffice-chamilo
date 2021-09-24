@@ -65,7 +65,13 @@ The plugin has been integrated into Chamilo since version 1.11.16.
 
 To enable, go to the plugins list, select the ONLYOFFICE plugin, and click _Enable_ the selected plugins.
 
-If you want more up-to-date versions of the plugin, go to Chamilo Administration -> Plugins -> Upload plugin.
+If you want more up-to-date versions of the plugin, you need to replace the pre-installed default plugin folder with the newly collected plugin: 
+
+`/var/www/html/chamilo-1.11.16/plugin/onlyoffice`
+
+where `chamilo-1.11.16` is your current Chamilo version.
+
+If your Chamilo version is lower than 1.11.16, go to Chamilo Administration -> Plugins -> Upload plugin.
 
 Upload `onlyoffice.zip` (you'll find it in the Releases section). You'll see the plugin list.
 
