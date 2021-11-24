@@ -210,6 +210,31 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
     var onAppReady = function () {
         innerAlert("Document editor ready");
     };
+
+    var onRequestSaveAs = function (event) {
+        var url = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH))?> + "onlyoffice/ajax/saveas.php";
+        var folderId = <?php echo json_encode($docInfo["parent_id"])?>;
+        var saveData = {
+            title: event.data.title,
+            url: event.data.url,
+            folderId: folderId ? folderId : 0,
+            sessionId: <?php echo json_encode($sessionId)?>,
+            courseId: <?php echo json_encode($courseId)?>,
+            groupId: <?php echo json_encode($groupId)?>
+        };
+
+        $.ajax(url, {
+            method: "POST",
+            data: saveData,
+            success: function (response) {
+                console.log(response);
+            },
+            error: function () {
+                console.log("Create error");
+            }
+        });
+    };
+
     var connectEditor = function () {
         $("#cm-content")[0].remove(".container");
         $("#main").append('<div id="app-onlyoffice">' +
@@ -223,7 +248,8 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
         var isMobileAgent = <?php echo json_encode($isMobileAgent)?>;
 
         config.events = {
-            "onAppReady": onAppReady
+            "onAppReady": onAppReady,
+            "onRequestSaveAs": onRequestSaveAs
         };
 
         docEditor = new DocsAPI.DocEditor("iframeEditor", config);
