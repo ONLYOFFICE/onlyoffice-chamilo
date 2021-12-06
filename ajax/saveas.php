@@ -58,68 +58,19 @@ if (!($isAllowToEdit || $isMyDir || $groupRights)) {
 $fileExt = strtolower(pathinfo($title, PATHINFO_EXTENSION));
 $baseName = strtolower(pathinfo($title, PATHINFO_FILENAME));
 
-$fileNamePrefix = DocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
-$fileName = preg_replace('/\.\./', '', $baseName) . $fileNamePrefix . "." . $fileExt;
-$groupInfo = GroupManager::get_group_properties($groupId);
+$result = FileUtility::createFile(
+    $baseName,
+    $fileExt,
+    $folderId,
+    $userId,
+    $sessionId,
+    $courseId,
+    $groupId,
+    $url
+);
 
-$folderPath = '';
-$fileRelatedPath = "/";
-if (!empty($folderId)) {
-    $document_data = DocumentManager::get_document_data_by_id(
-        $folderId,
-        $courseCode,
-        true,
-        $sessionId
-    );
-    $folderPath = $document_data["absolute_path"];
-    $fileRelatedPath = $fileRelatedPath . substr($document_data["absolute_path_from_document"], 10) . "/" . $fileName;
-} else {
-    $folderPath = api_get_path(SYS_COURSE_PATH) . api_get_course_path($courseCode) . "/document";
-    if (!empty($groupId)) {
-        $folderPath = $folderPath . "/" . $groupInfo["directory"];
-        $fileRelatedPath = $groupInfo["directory"] . "/";
-    }
-    $fileRelatedPath = $fileRelatedPath . $fileName;
-}
-$filePath = $folderPath . "/" . $fileName;
-
-if (file_exists($filePath)) {
-    echo json_encode(["error" => "File is exist"]);
-    return;
-}
-
-if ($fp = @fopen($filePath, "w")) {
-    $content = file_get_contents($url);
-    fputs($fp, $content);
-    fclose($fp);
-
-    chmod($filePath, api_get_permissions_for_new_files());
-
-    $documentId = add_document(
-        $courseInfo,
-        $fileRelatedPath,
-        "file",
-        filesize($filePath),
-        $title,
-        null,
-        false
-    );
-    if ($documentId) {
-        api_item_property_update(
-            $courseInfo,
-           TOOL_DOCUMENT,
-            $documentId,
-            "DocumentAdded",
-            $userId,
-            $groupInfo,
-            null,
-            null,
-            null,
-            $sessionId
-        );
-    }
-} else {
-    echo json_encode(["error" => "File is't created"]);
+if (isset($result["error"])) {
+    echo json_encode($result);
     return;
 }
 

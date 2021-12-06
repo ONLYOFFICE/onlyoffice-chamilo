@@ -77,84 +77,30 @@ if ($form->validate()) {
 
     $fileType = $values["fileFormat"];
     $fileExt = FileUtility::getDocExt($fileType);
-    $fileTitle = Security::remove_XSS($values["fileName"]).".".$fileExt;
 
-    $fileNamePrefix = DocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
-    $fileName = preg_replace('/\.\./', '', $values["fileName"]).$fileNamePrefix.".".$fileExt;
-    $groupInfo = GroupManager::get_group_properties($groupId);
+    $result = FileUtility::createFile(
+        $values["fileName"],
+        $fileExt,
+        $folderId,
+        $userId,
+        $sessionId,
+        $courseId,
+        $groupId
+    );
 
-    $emptyTemplatePath = TemplateManager::getEmptyTemplate($fileExt);
-
-    $folderPath = '';
-    $fileRelatedPath = "/";
-    if (!empty($folderId)) {
-        $document_data = DocumentManager::get_document_data_by_id(
-            $folderId,
-            $courseCode,
-            true,
-            $sessionId
-        );
-        $folderPath = $document_data["absolute_path"];
-        $fileRelatedPath = $fileRelatedPath . substr($document_data["absolute_path_from_document"], 10) . "/" . $fileName;
-    } else {
-        $folderPath = api_get_path(SYS_COURSE_PATH) . api_get_course_path($courseCode) . "/document";
-        if (!empty($groupId)) {
-            $folderPath = $folderPath . "/" . $groupInfo["directory"];
-            $fileRelatedPath = $groupInfo["directory"] . "/";
-        }
-        $fileRelatedPath = $fileRelatedPath . $fileName;
-    }
-    $filePath = $folderPath . "/" . $fileName;
-
-    if (file_exists($filePath)) {
-        Display::addFlash(Display::return_message($plugin->get_lang("fileIsExist"), "error"));
-        goto display;
-    }
-
-    if ($fp = @fopen($filePath, "w")) {
-        $content = file_get_contents($emptyTemplatePath);
-        fputs($fp, $content);
-        fclose($fp);
-
-        chmod($filePath, api_get_permissions_for_new_files());
-
-        $documentId = add_document(
-            $courseInfo,
-            $fileRelatedPath,
-            "file",
-            filesize($filePath),
-            $fileTitle,
-            null,
-            false
-        );
-        if ($documentId) {
-            api_item_property_update(
-                $courseInfo,
-               TOOL_DOCUMENT,
-                $documentId,
-                "DocumentAdded",
-                $userId,
-                $groupInfo,
-                null,
-                null,
-                null,
-                $sessionId
-            );
-
-            header("Location: " . FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId));
-            exit();
-        }
-    } else {
+    if (isset($result["error"])) {
         Display::addFlash(
             Display::return_message(
-                $plugin->get_lang("impossibleCreateFile"),
+                $plugin->get_lang($result["error"]),
                 "error"
             )
         );
+    } else {
+        header("Location: " . FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId));
+        exit();
     }
 }
 
-display:
     $goBackUrl = FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId);
     $actionsLeft = '<a href="'. $goBackUrl . '">' . Display::return_icon("back.png", get_lang("Back") . " " . get_lang("To") . " " . get_lang("DocumentsOverview"), "", ICON_SIZE_MEDIUM) . "</a>";
 
