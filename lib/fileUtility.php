@@ -33,6 +33,8 @@ class FileUtility {
      */
     public static $can_edit_types = [
         "docx",
+        "docxf",
+        "oform",
         "xlsx",
         "pptx",
         "ppsx"
@@ -56,7 +58,7 @@ class FileUtility {
      * @var array
      */
     public static $text_doc = [
-        "docx", "txt", "odt", "doc", "rtf", "html",
+        "docx", "docxf", "oform", "txt", "odt", "doc", "rtf", "html",
         "htm", "xps", "pdf", "djvu"
     ];
 
@@ -109,6 +111,9 @@ class FileUtility {
         }
         if ($type === "presentation") {
             return "pptx";
+        }
+        if ($type === "formTemplate") {
+            return "docxf";
         }
 
         return "";

@@ -26,7 +26,8 @@ $plugin = OnlyofficePlugin::create();
 $mapFileFormat = [
     "text" => $plugin->get_lang("document"),
     "spreadsheet" => $plugin->get_lang("spreadsheet"),
-    "presentation" => $plugin->get_lang("presentation")
+    "presentation" => $plugin->get_lang("presentation"),
+    "formTemplate" => $plugin->get_lang("formTemplate")
 ];
 
 $userId = !empty($_GET["userId"])? $_GET['userId'] : 0;
