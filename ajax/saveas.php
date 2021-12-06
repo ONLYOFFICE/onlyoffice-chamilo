@@ -23,13 +23,15 @@ use ChamiloSession as Session;
 
 $userId = api_get_user_id();
 
-$title = $_POST["title"];
-$url = $_POST["url"];
+$body = json_decode(file_get_contents('php://input'), true);
 
-$folderId = !empty($_POST["folderId"]) ? $_POST["folderId"] : 0;
-$sessionId = !empty($_POST["sessionId"]) ? $_POST["sessionId"] : 0;
-$courseId = !empty($_POST["courseId"]) ? $_POST["courseId"] : 0;
-$groupId = !empty($_POST["groupId"]) ? $_POST["groupId"] : 0;
+$title = $body["title"];
+$url = $body["url"];
+
+$folderId = !empty($body["folderId"]) ? $body["folderId"] : 0;
+$sessionId = !empty($body["sessionId"]) ? $body["sessionId"] : 0;
+$courseId = !empty($body["courseId"]) ? $body["courseId"] : 0;
+$groupId = !empty($body["groupId"]) ? $body["groupId"] : 0;
 
 $courseInfo = api_get_course_info_by_id($courseId);
 $courseCode = $courseInfo["code"];
@@ -48,7 +50,7 @@ if (!empty($folderId)) {
         $sessionId
     );
 }
-$groupRights = Session::read('group_member_with_upload_rights');
+$groupRights = Session::read("group_member_with_upload_rights");
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
 if (!($isAllowToEdit || $isMyDir || $groupRights)) {
     echo json_encode(["error" => "Not permitted"]);
@@ -70,6 +72,13 @@ $result = FileUtility::createFile(
 );
 
 if (isset($result["error"])) {
+    if ($result["error"] === "fileIsExist") {
+        $result["error"] = "File is exist";
+    }
+    if ($result["error"] === "impossibleCreateFile") {
+        $result["error"] = "Impossible to create file";
+    }
+
     echo json_encode($result);
     return;
 }
