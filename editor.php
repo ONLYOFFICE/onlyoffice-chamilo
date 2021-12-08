@@ -211,6 +211,21 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
         innerAlert("Document editor ready");
     };
     var connectEditor = function () {
+        var config = <?php echo json_encode($config)?>;
+
+        if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
+            && DocsAPI.DocEditor.version().split(".")[0] < 7) {
+            <?php
+                echo Display::addFlash(
+                        Display::return_message(
+                            $plugin->get_lang("UpdateOnlyoffice"),
+                            "error"
+                        )
+                    ); 
+            ?>;
+            return;
+        }
+
         $("#cm-content")[0].remove(".container");
         $("#main").append('<div id="app-onlyoffice">' +
                             '<div id="app">' +
@@ -219,7 +234,6 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
                             '</div>' +
                           '</div>');
 
-        var config = <?php echo json_encode($config)?>;
         var isMobileAgent = <?php echo json_encode($isMobileAgent)?>;
 
         config.events = {
