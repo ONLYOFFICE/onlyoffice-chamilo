@@ -2,6 +2,7 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+## 1.2.0
 ## Added
 - support docxf and oform formats
 - create blank docxf from creation menu
