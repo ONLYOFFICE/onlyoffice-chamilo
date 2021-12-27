@@ -13,7 +13,7 @@ The plugin allows teachers to:
 
 Supported formats:
 
-* For editing: DOCX, XLSX, PPTX.
+* For editing: DOCX, XLSX, PPTX, DOCXF, OFORM.
 
 ## Installing ONLYOFFICE Docs
 
