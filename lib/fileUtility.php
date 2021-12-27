@@ -33,6 +33,8 @@ class FileUtility {
      */
     public static $can_edit_types = [
         "docx",
+        "docxf",
+        "oform",
         "xlsx",
         "pptx",
         "ppsx"
@@ -56,7 +58,7 @@ class FileUtility {
      * @var array
      */
     public static $text_doc = [
-        "docx", "txt", "odt", "doc", "rtf", "html",
+        "docx", "docxf", "oform", "txt", "odt", "doc", "rtf", "html",
         "htm", "xps", "pdf", "djvu"
     ];
 
@@ -109,6 +111,9 @@ class FileUtility {
         }
         if ($type === "presentation") {
             return "pptx";
+        }
+        if ($type === "formTemplate") {
+            return "docxf";
         }
 
         return "";
@@ -169,5 +174,93 @@ class FileUtility {
         $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expectedKey);
         $key = substr($key, 0, min(array(strlen($key), 20)));
         return $key;
+    }
+
+    /**
+     * Create new file
+     */
+    public static function createFile(
+        string $basename,
+        string $fileExt,
+        int $folderId,
+        int $userId,
+        int $sessionId,
+        int $courseId,
+        int $groupId,
+        string $templatePath = ""): array
+    {
+        $courseInfo = api_get_course_info_by_id($courseId);
+        $courseCode = $courseInfo["code"];
+        $groupInfo = GroupManager::get_group_properties($groupId);
+
+        $fileTitle = Security::remove_XSS($basename). "." .$fileExt;
+
+        $fileNamePrefix = DocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
+        $fileName = preg_replace('/\.\./', '', $basename) . $fileNamePrefix . "." . $fileExt;
+
+        if (empty($templatePath)) {
+            $templatePath = TemplateManager::getEmptyTemplate($fileExt);
+        }
+
+        $folderPath = '';
+        $fileRelatedPath = "/";
+        if (!empty($folderId)) {
+            $document_data = DocumentManager::get_document_data_by_id(
+                $folderId,
+                $courseCode,
+                true,
+                $sessionId
+            );
+            $folderPath = $document_data["absolute_path"];
+            $fileRelatedPath = $fileRelatedPath . substr($document_data["absolute_path_from_document"], 10) . "/" . $fileName;
+        } else {
+            $folderPath = api_get_path(SYS_COURSE_PATH) . api_get_course_path($courseCode) . "/document";
+            if (!empty($groupId)) {
+                $folderPath = $folderPath . "/" . $groupInfo["directory"];
+                $fileRelatedPath = $groupInfo["directory"] . "/";
+            }
+            $fileRelatedPath = $fileRelatedPath . $fileName;
+        }
+        $filePath = $folderPath . "/" . $fileName;
+
+        if (file_exists($filePath)) {
+            return ["error" => "fileIsExist"];
+        }
+    
+        if ($fp = @fopen($filePath, "w")) {
+            $content = file_get_contents($templatePath);
+            fputs($fp, $content);
+            fclose($fp);
+    
+            chmod($filePath, api_get_permissions_for_new_files());
+    
+            $documentId = add_document(
+                $courseInfo,
+                $fileRelatedPath,
+                "file",
+                filesize($filePath),
+                $fileTitle,
+                null,
+                false
+            );
+            if ($documentId) {
+                api_item_property_update(
+                    $courseInfo,
+                   TOOL_DOCUMENT,
+                    $documentId,
+                    "DocumentAdded",
+                    $userId,
+                    $groupInfo,
+                    null,
+                    null,
+                    null,
+                    $sessionId
+                );
+            } else {
+                return ["error" => "impossibleCreateFile"];
+            }
+        }
+
+        return ["documentId" => $documentId];
     }
 }
