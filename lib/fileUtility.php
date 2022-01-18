@@ -46,7 +46,7 @@ class FileUtility {
      * @var array
      */
     public static $can_view_types = [
-        "docx", "xlsx", "pptx", "ppsx",
+        "docx", "docxf", "oform", "xlsx", "pptx", "ppsx",
         "txt", "csv", "odt", "ods","odp",
         "doc", "xls", "ppt", "pps","epub",
         "rtf", "mht", "html", "htm","xps","pdf","djvu"

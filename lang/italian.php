@@ -19,3 +19,6 @@ $strings["create"] = "Crea";
 $strings["fileIsExist"] = "Il file esiste già";
 $strings["impossibleCreateFile"] = "Impossibile creare file";
 $strings["createNewDocument"] = "Crea nuovo documento";
+$strings["formTemplate"] = "Modello di modulo";
+$strings["fillInFormInOnlyoffice"] = "Compilare il modulo in ONLYOFFICE";
+$strings["UpdateOnlyoffice"] = "Si prega di aggiornare ONLYOFFICE Docs alla versione 7.0 per lavorare su moduli compilabili online";
