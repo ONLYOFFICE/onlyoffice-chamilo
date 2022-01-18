@@ -19,3 +19,6 @@ $strings["create"] = "Создать ";
 $strings["fileIsExist"] = "Файл уже существует";
 $strings["impossibleCreateFile"] = "Невозможно создать файл";
 $strings["createNewDocument"] = "Создать новый документ";
+$strings["formTemplate"] = "Шаблон формы";
+$strings["fillInFormInOnlyoffice"] = "Заполнить форму в ONLYOFFICE";
+$strings["UpdateOnlyoffice"] = "Обновите сервер ONLYOFFICE Docs до версии 7.0 для работы с формами онлайн";

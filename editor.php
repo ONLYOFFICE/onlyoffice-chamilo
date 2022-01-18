@@ -90,11 +90,11 @@ $config = [
     ]
 ];
 
-$userAgent = $_SERVER['HTTP_USER_AGENT'];
+$userAgent = $_SERVER["HTTP_USER_AGENT"];
 
 $isMobileAgent = preg_match(USER_AGENT_MOBILE, $userAgent);
 if ($isMobileAgent) {
-    $config['type'] = 'mobile';
+    $config["type"] = "mobile";
 }
 
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
@@ -109,7 +109,7 @@ if (!empty($groupId)) {
     $groupProperties = GroupManager::get_group_properties($groupId);
     $docInfoGroup = api_get_item_property_info(
         api_get_course_int_id(),
-        'document',
+        "document",
         $docId,
         $sessionId
     );
@@ -210,7 +210,52 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
     var onAppReady = function () {
         innerAlert("Document editor ready");
     };
+
+    var onRequestSaveAs = function (event) {
+        var url = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH))?> + "onlyoffice/ajax/saveas.php";
+        var folderId = <?php echo json_encode($docInfo["parent_id"])?>;
+        var saveData = {
+            title: event.data.title,
+            url: event.data.url,
+            folderId: folderId ? folderId : 0,
+            sessionId: <?php echo json_encode($sessionId)?>,
+            courseId: <?php echo json_encode($courseId)?>,
+            groupId: <?php echo json_encode($groupId)?>
+        };
+
+        $.ajax(url, {
+            method: "POST",
+            data: JSON.stringify(saveData),
+            processData: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                if (response.error) {
+                    console.error("Create error: ", response.error);
+                }
+            },
+            error: function (e) {
+                console.error("Create error: ", e);
+            }
+        });
+    };
+
     var connectEditor = function () {
+        var config = <?php echo json_encode($config)?>;
+
+        if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
+            && DocsAPI.DocEditor.version().split(".")[0] < 7) {
+            <?php
+                echo Display::addFlash(
+                        Display::return_message(
+                            $plugin->get_lang("UpdateOnlyoffice"),
+                            "error"
+                        )
+                    ); 
+            ?>;
+            return;
+        }
+
         $("#cm-content")[0].remove(".container");
         $("#main").append('<div id="app-onlyoffice">' +
                             '<div id="app">' +
@@ -219,11 +264,11 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
                             '</div>' +
                           '</div>');
 
-        var config = <?php echo json_encode($config)?>;
         var isMobileAgent = <?php echo json_encode($isMobileAgent)?>;
 
         config.events = {
-            "onAppReady": onAppReady
+            "onAppReady": onAppReady,
+            "onRequestSaveAs": onRequestSaveAs
         };
 
         docEditor = new DocsAPI.DocEditor("iframeEditor", config);
