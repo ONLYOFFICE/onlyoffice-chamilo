@@ -1,0 +1,33 @@
+name: artifact
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+    branches: [master]
+  
+jobs:
+  artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Zip
+        run: sudo apt-get install zip
+      - name: Get Info 
+        run: | 
+          echo "::set-output name=version::$(jq -r '.version' module.json)"
+          echo "::set-output name=id::$(jq -r '.id' module.json)"
+        id: info
+      - name: Build Artifact
+        run: |
+          cd ${{ github.workspace }}
+          chmod +x ./pack.sh
+          ./pack.sh
+      - name: Pack Artifact
+        run: zip -r ${{ steps.info.outputs.id }}.zip deploy/
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.info.outputs.id }}.zip
+          path: ${{ steps.info.outputs.id }}.zip
