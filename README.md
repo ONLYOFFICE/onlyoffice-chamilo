@@ -51,6 +51,7 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
     cp -r ./ /tmp/onlyoffice-deploy/onlyoffice
     cd /tmp/onlyoffice-deploy/onlyoffice
     rm -rf ./.git*
+    rm -rf */.git*
     ```
 
 4. Archive
