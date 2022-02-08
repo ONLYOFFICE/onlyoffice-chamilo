@@ -8,7 +8,7 @@ git submodule update --init --recursive
 
 mkdir ./onlyoffice
 rsync -av --exclude='onlyoffice' ./ ./onlyoffice/
-cd ./deploy
+cd ./onlyoffice
 
 rm -rf ./.github
 rm -rf ./.git/
