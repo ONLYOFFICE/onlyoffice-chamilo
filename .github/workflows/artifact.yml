@@ -16,8 +16,7 @@ jobs:
         run: sudo apt-get install zip
       - name: Get Info 
         run: | 
-          echo "::set-output name=version::$(jq -r '.version' module.json)"
-          echo "::set-output name=id::$(jq -r '.id' module.json)"
+          echo "::set-output name=version::$(awk '/##/{gsub(/[^0-9]+.[^0-9]+.[^0-9]/, "", $NF); print $NF}' CHANGELOG.md | awk 'NR==1{print $1}')"
         id: info
       - name: Build Artifact
         run: |
@@ -25,9 +24,9 @@ jobs:
           chmod +x ./pack.sh
           ./pack.sh
       - name: Pack Artifact
-        run: zip -r ${{ steps.info.outputs.id }}.zip deploy/
+        run: zip -r onlyoffice.zip deploy/
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.info.outputs.id }}.zip
-          path: ${{ steps.info.outputs.id }}.zip
+          name: onlyoffice.zip
+          path: onlyoffice.zip
