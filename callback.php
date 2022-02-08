@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2021
+ * (c) Copyright Ascensio System SIA 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,7 +128,7 @@ function track(): array
                 return $result;
             }
         } else {
-            $token = substr($_SERVER[AppConfig::JwtHeader()], strlen("Bearer "));
+            $token = substr(getallheaders()[AppConfig::JwtHeader()], strlen("Bearer "));
             try {
                 $decodeToken = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
                 $payload = $decodeToken->payload;
@@ -226,7 +226,7 @@ function download()
     global $courseInfo;
 
     if (!empty($plugin->get("jwt_secret"))) {
-        $token = substr($_SERVER[AppConfig::JwtHeader()], strlen("Bearer "));
+        $token = substr(getallheaders()[AppConfig::JwtHeader()], strlen("Bearer "));
         try {
             $payload = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
 

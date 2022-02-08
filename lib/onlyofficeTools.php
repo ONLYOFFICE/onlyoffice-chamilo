@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2021
+ * (c) Copyright Ascensio System SIA 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,15 @@ class OnlyofficeTools {
         $urlToEdit = $urlToEdit . "docId=" . $documentId;
 
         if ($canEdit || $canView) {
+            $tooltip = $plugin->get_lang('openByOnlyoffice');
+            if ($extension === "oform") {
+                $tooltip = $plugin->get_lang('fillInFormInOnlyoffice');
+            }
+
             return Display::url(
                 Display::return_icon(
                     '../../plugin/onlyoffice/resources/onlyoffice_edit.png',
-                    $plugin->get_lang('openByOnlyoffice')
+                    $tooltip
                 ),
                 $urlToEdit
             );
