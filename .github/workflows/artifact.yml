@@ -1,0 +1,35 @@
+name: Artifact
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+    branches: [master]
+  
+jobs:
+  artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Artifact
+        run: |
+          cd ${{ github.workspace }}
+          cwd=$(pwd)
+          git submodule update --init --recursive
+          mkdir -p ./deploy/onlyoffice
+          rsync -av --exclude='deploy' ./ ./deploy/onlyoffice
+          cd ./deploy/onlyoffice
+          rm -rf ./.github
+          rm -rf ./.git/
+          rm ./.gitignore
+          rm ./.gitmodules
+          cd ./assets
+          rm .git
+          cd $cwd
+          awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: onlyoffice
+          path: deploy
