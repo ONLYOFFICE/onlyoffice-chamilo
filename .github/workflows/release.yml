@@ -1,4 +1,4 @@
-name: release
+name: Release
 
 on:
   push:
@@ -14,16 +14,26 @@ jobs:
         run: sudo apt-get install zip
       - name: Get Info 
         run: |
-          echo "::set-output name=version::$(jq -r '.version' module.json)"
-          echo "::set-output name=id::$(jq -r '.id' module.json)"
+          echo "::set-output name=version::$(awk '/##/{gsub(/[^0-9]+.[^0-9]+.[^0-9]/, "", $NF); print $NF}' CHANGELOG.md | awk 'NR==1{print $1}')"
         id: info
       - name: Build Artifact
         run: |
           cd ${{ github.workspace }}
-          chmod +x ./pack.sh
-          ./pack.sh
+          cwd=$(pwd)
+          git submodule update --init --recursive
+          mkdir -p ./onlyoffice
+          rsync -av --exclude='onlyoffice' ./ ./onlyoffice
+          cd ./onlyoffice
+          rm -rf .github/
+          rm -rf .git/
+          rm .gitignore
+          rm .gitmodules
+          cd ./assets
+          rm .git
+          cd $cwd
+          awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
       - name: Pack Artifact
-        run: zip -r ${{ steps.info.outputs.id }}.zip deploy/
+        run: zip -r onlyoffice onlyoffice
       - name: Release Artifact
         uses: actions/create-release@v1
         id: create_release
@@ -41,6 +51,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.info.outputs.id }}.zip
-          asset_name: ${{ steps.info.outputs.id }}.zip
+          asset_path: onlyoffice.zip
+          asset_name: onlyoffice.zip
           asset_content_type: application/zip

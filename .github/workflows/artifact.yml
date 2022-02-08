@@ -1,4 +1,4 @@
-name: artifact
+name: Artifact
 
 on:
   workflow_dispatch:
@@ -12,22 +12,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install Zip
-        run: sudo apt-get install zip
-      - name: Get Info 
-        run: | 
-          echo "::set-output name=version::$(jq -r '.version' module.json)"
-          echo "::set-output name=id::$(jq -r '.id' module.json)"
-        id: info
       - name: Build Artifact
         run: |
           cd ${{ github.workspace }}
-          chmod +x ./pack.sh
-          ./pack.sh
-      - name: Pack Artifact
-        run: zip -r ${{ steps.info.outputs.id }}.zip deploy/
+          cwd=$(pwd)
+          git submodule update --init --recursive
+          mkdir -p ./deploy/onlyoffice
+          rsync -av --exclude='deploy' ./ ./deploy/onlyoffice
+          cd ./deploy/onlyoffice
+          rm -rf ./.github
+          rm -rf ./.git/
+          rm ./.gitignore
+          rm ./.gitmodules
+          cd ./assets
+          rm .git
+          cd $cwd
+          awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.info.outputs.id }}.zip
-          path: ${{ steps.info.outputs.id }}.zip
+          name: onlyoffice
+          path: deploy
