@@ -24,7 +24,7 @@ jobs:
           chmod +x ./pack.sh
           ./pack.sh
       - name: Pack Artifact
-        run: zip -r onlyoffice.zip deploy/
+        run: zip -r onlyoffice.zip onlyoffice/
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:

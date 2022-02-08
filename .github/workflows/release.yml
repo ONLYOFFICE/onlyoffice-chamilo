@@ -22,7 +22,7 @@ jobs:
           chmod +x ./pack.sh
           ./pack.sh
       - name: Pack Artifact
-        run: zip -r onlyoffice.zip deploy/
+        run: zip -r onlyoffice.zip onlyoffice/
       - name: Release Artifact
         uses: actions/create-release@v1
         id: create_release
