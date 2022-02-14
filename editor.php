@@ -242,17 +242,12 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
 
     var connectEditor = function () {
         var config = <?php echo json_encode($config)?>;
+        var errorPage = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/error.php")?>;
 
+        var docsVersion = DocsAPI.DocEditor.version().split(".");
         if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
-            && DocsAPI.DocEditor.version().split(".")[0] < 7) {
-            <?php
-                echo Display::addFlash(
-                        Display::return_message(
-                            $plugin->get_lang("UpdateOnlyoffice"),
-                            "error"
-                        )
-                    ); 
-            ?>;
+            && docsVersion[0] < 7) {
+            window.location.href = errorPage;
             return;
         }
 
