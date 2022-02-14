@@ -22,3 +22,4 @@ $strings["createNewDocument"] = "Criar novo documento";
 $strings["formTemplate"] = "Modelo de formulário";
 $strings["fillInFormInOnlyoffice"] = "Preencher formulário no ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online";
+$strings["NotSupportedVersion"] = "Versão não suportada";
