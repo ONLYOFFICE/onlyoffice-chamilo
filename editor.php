@@ -247,7 +247,12 @@ function getCallbackUrl(int $docId, int $userId, int $courseId, int $sessionId, 
         var docsVersion = DocsAPI.DocEditor.version().split(".");
         if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
             && docsVersion[0] < 7) {
-            window.location.href = errorPage;
+            window.location.href = errorPage + "?status=" + 1;
+            return;
+        }
+        if (docsVersion[0] < 6
+            || docsVersion[0] == 6 && docsVersion[1] == 0) {
+            window.location.href = errorPage + "?status=" + 2;
             return;
         }
 

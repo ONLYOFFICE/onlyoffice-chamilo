@@ -19,11 +19,25 @@
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
+const ErrorStatus_UpdateOnlyoffice = 1;
+const ErrorStatus_NotSupportedVersion = 2;
+
 $plugin = OnlyofficePlugin::create();
+
+$message = "";
+$status = $_GET["status"];
+switch ($status) {
+    case ErrorStatus_UpdateOnlyoffice:
+        $message = "UpdateOnlyoffice";
+        break;
+    case ErrorStatus_NotSupportedVersion:
+        $message = "NotSupportedVersion";
+        break;
+}
 
 Display::addFlash(
     Display::return_message(
-        $plugin->get_lang("UpdateOnlyoffice"),
+        $plugin->get_lang($message),
         "error"
     )
 );
