@@ -22,3 +22,4 @@ $strings["createNewDocument"] = "Neues Dokument erstellen";
 $strings["formTemplate"] = "Formularvorlage";
 $strings["fillInFormInOnlyoffice"] = "Formular in ONLYOFFICE ausfüllen";
 $strings["UpdateOnlyoffice"] = "Für Online-Arbeit mit Formularen ist Version 7.0 von ONLYOFFICE Docs erforderlich";
+$strings["NotSupportedVersion"] = "Nicht unterstützte Version";

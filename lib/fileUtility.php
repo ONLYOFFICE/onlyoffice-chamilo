@@ -86,13 +86,13 @@ class FileUtility {
     public static function getDocType(string $extension): string
     {
         if (in_array($extension, self::$text_doc)) {
-            return "text";
+            return "word";
         }
         if (in_array($extension, self::$presentation_doc)) {
-            return "presentation";
+            return "slide";
         }
         if (in_array($extension, self::$spreadsheet_doc)) {
-            return "spreadsheet";
+            return "cell";
         }
 
         return "";
