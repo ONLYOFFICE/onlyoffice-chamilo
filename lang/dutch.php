@@ -19,3 +19,6 @@ $strings["create"] = "Maak";
 $strings["fileIsExist"] = "Bestand bestaat al";
 $strings["impossibleCreateFile"] = "Onmogelijk om bestand te maken";
 $strings["createNewDocument"] = "Nieuw document maken";
+$strings["formTemplate"] = "Formulier sjabloon";
+$strings["fillInFormInOnlyoffice"] = "Formulier invullen in ONLYOFFICE";
+$strings["UpdateOnlyoffice"] = "Update ONLYOFFICE Docs naar versie 7.0 om online invulbare formulieren te kunnen gebruiken";
