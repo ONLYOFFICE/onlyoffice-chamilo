@@ -19,3 +19,6 @@ $strings["create"] = "Utwórz";
 $strings["fileIsExist"] = "Plik już istnieje";
 $strings["impossibleCreateFile"] = "Nie można utworzyć pliku";
 $strings["createNewDocument"] = "Utwórz nowy dokument";
+$strings["formTemplate"] = "Szablon formularza";
+$strings["fillInFormInOnlyoffice"] = "Wypełnić formularz w ONLYOFFICE";
+$strings["UpdateOnlyoffice"] = "Zaktualizuj ONLYOFFICE Docs do wersji 7.0, aby działały w formularzach do wypełniania online";
