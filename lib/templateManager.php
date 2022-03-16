@@ -34,6 +34,7 @@ class TemplateManager {
         "en" => "en-US",
         "es" => "es-ES",
         "fr" => "fr-FR",
+        "gl" => "ge-ES",
         "it" => "it-IT",
         "ja" => "ja-JP",
         "ko" => "ko-KR",
@@ -45,6 +46,7 @@ class TemplateManager {
         "ru" => "ru-RU",
         "sk" => "sk-SK",
         "sv" => "sv-SE",
+        "tr" => "tr-TR",
         "uk" => "uk-UA",
         "vi" => "vi-VN",
         "zh" => "zh-CN"

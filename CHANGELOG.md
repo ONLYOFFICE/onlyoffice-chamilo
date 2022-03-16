@@ -2,6 +2,9 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+## Added
+- Turkish and Galician empty file templates
+
 ## Changed
 - document server v6.0 and earlier is no longer supported
 
