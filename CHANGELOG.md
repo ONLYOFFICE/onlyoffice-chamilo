@@ -3,7 +3,7 @@
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
 ## Added
-- Chinese (Traditional, Taiwan), Basque (Spain), Armenian, Malay (Malaysia), Turkish and Galician empty file templates
+- Chinese (Taiwan), Basque (Spain), Malay (Malaysia), and Galician empty file templates
 
 ## Changed
 - document server v6.0 and earlier is no longer supported
