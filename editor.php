@@ -162,7 +162,7 @@ if ($canEdit && $accessRights && !$isReadonly) {
 $config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
 
 if (!empty($plugin->get("jwt_secret"))) {
-    $token = \Firebase\JWT\JWT::encode($config, $plugin->get("jwt_secret"));
+    $token = \Firebase\JWT\JWT::encode($config, $plugin->get("jwt_secret"), "HS256");
     $config["token"] = $token;
 }
 
