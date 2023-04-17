@@ -7,6 +7,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 
 ## Changed
 - document server v6.0 and earlier is no longer supported
+- php jwt updated
 
 ## 1.2.0
 ## Added
