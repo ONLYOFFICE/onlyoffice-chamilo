@@ -121,7 +121,7 @@ function track(): array
 
         if (!empty($data["token"])) {
             try {
-                $payload = \Firebase\JWT\JWT::decode($data["token"], $plugin->get("jwt_secret"), array("HS256"));
+                $payload = \Firebase\JWT\JWT::decode($data["token"], new \Firebase\JWT\Key($plugin->get("jwt_secret"), "HS256"));
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
                 $result["error"] = "403 Access denied";
@@ -130,7 +130,7 @@ function track(): array
         } else {
             $token = substr(getallheaders()[AppConfig::JwtHeader()], strlen("Bearer "));
             try {
-                $decodeToken = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
+                $decodeToken = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->get("jwt_secret"), "HS256"));
                 $payload = $decodeToken->payload;
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
@@ -228,7 +228,7 @@ function download()
     if (!empty($plugin->get("jwt_secret"))) {
         $token = substr(getallheaders()[AppConfig::JwtHeader()], strlen("Bearer "));
         try {
-            $payload = \Firebase\JWT\JWT::decode($token, $plugin->get("jwt_secret"), array("HS256"));
+            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->get("jwt_secret"), "HS256"));
 
         } catch (\UnexpectedValueException $e) {
             $result["status"] = "error";
