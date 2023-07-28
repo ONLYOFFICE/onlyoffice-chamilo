@@ -29,6 +29,13 @@ class AppConfig {
     private const jwtHeader = "onlyoffice_jwt_header";
 
     /**
+    * Link to Docs Cloud
+    *
+    * @var string
+    */
+    private const linkToDocs = "https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo";
+
+    /**
      * Get the jwt header setting
      *
      * @return string
@@ -41,5 +48,14 @@ class AppConfig {
         }
 
         return $header;
+    }
+
+    /**
+    * Get link to Docs Cloud
+    *
+    * @return string
+    */
+    public function GetLinkToDocs() {
+        return self::linkToDocs;
     }
 }
