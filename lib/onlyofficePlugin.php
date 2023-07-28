@@ -29,13 +29,20 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
      */
     protected function __construct()
     {
+        $bannerTemplate = new Template('ONLYOFFICE Docs Cloud');
+        $bannerTemplate->assign('docs_cloud_link', AppConfig::GetLinkToDocs());
+        $bannerTemplate->assign('banner_main_text', $this->get_lang('DocsCloudBannerMain'));
+        $bannerTemplate->assign('banner_button_text', $this->get_lang('DocsCloudBannerButton'));
+        $docsCloudBanner = $bannerTemplate->fetch('/onlyoffice/layout/get_docs_cloud_banner.tpl');
+
         parent::__construct(
             "1.2.0",
             "Asensio System SIA",
             [
                 "enable_onlyoffice_plugin" => "boolean",
                 "document_server_url" => "text",
-                "jwt_secret" => "text"
+                "jwt_secret" => "text",
+                $docsCloudBanner => "html",
             ]
         );
     }
