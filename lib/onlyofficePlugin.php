@@ -31,6 +31,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     {
         $bannerTemplate = new Template('ONLYOFFICE Docs Cloud');
         $bannerTemplate->assign('docs_cloud_link', AppConfig::GetLinkToDocs());
+        $bannerTemplate->assign('banner_title', $this->get_lang('DocsCloudBannerTitle'));
         $bannerTemplate->assign('banner_main_text', $this->get_lang('DocsCloudBannerMain'));
         $bannerTemplate->assign('banner_button_text', $this->get_lang('DocsCloudBannerButton'));
         $docsCloudBanner = $bannerTemplate->fetch('/onlyoffice/layout/get_docs_cloud_banner.tpl');

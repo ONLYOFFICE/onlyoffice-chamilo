@@ -7,7 +7,7 @@
     </div>
     <div id="onlyofficeDocsCloudBannerContent">
         <div id="onlyofficeDocsCloudBannerContentText">
-            <p><h4>ONLYOFFICE Docs Cloud</h4></p>
+            <p><h4>{{banner_title}}</h4></p>
             <p>{{banner_main_text}}</p>
         </div>
         <div id="onlyofficeDocsCloudBannerContentButtonWrapper">

@@ -23,3 +23,6 @@ $strings["formTemplate"] = "Modello di modulo";
 $strings["fillInFormInOnlyoffice"] = "Compilare il modulo in ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Si prega di aggiornare ONLYOFFICE Docs alla versione 7.0 per lavorare su moduli compilabili online";
 $strings["NotSupportedVersion"] = "Versione non supportata";
+$strings["DocsCloudBannerTitle"] = "ONLYOFFICE Docs Cloud";
+$strings["DocsCloudBannerMain"] = "Avvia facilmente gli editor nel cloud senza scaricarli e installarli";
+$strings["DocsCloudBannerButton"] = "Ottieni ora";
