@@ -42,4 +42,23 @@ class AppConfig {
 
         return $header;
     }
+
+    /**
+     * DEMO DATA
+     */
+    private const DEMO_PARAM = [
+        "ADDR" => "https://onlinedocs.onlyoffice.com/",
+        "HEADER" => "AuthorizationJWT",
+        "SECRET" => "sn2puSUF7muF5Jas"
+    ];
+
+    /**
+     * Get demo params
+     *
+     * @return array
+     */
+    public static function GetDemoParams()
+    {
+        return self::DEMO_PARAM;
+    }
 }

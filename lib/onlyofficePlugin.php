@@ -35,7 +35,8 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             [
                 "enable_onlyoffice_plugin" => "boolean",
                 "document_server_url" => "text",
-                "jwt_secret" => "text"
+                "jwt_secret" => "text",
+                "connect_demo" => "checkbox"
             ]
         );
     }
@@ -94,5 +95,68 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
 
         $viewObserver = OnlyofficeItemViewObserver::create();
         HookDocumentItemView::create()->detach($viewObserver);
+    }
+
+    /**
+     * Get the connect demo setting
+     *
+     * @param bool $origin - take origin
+     *
+     * @return string
+     */
+    public function useDemo()
+    {
+        return (bool)$this->get("connect_demo");
+    }
+
+    /**
+     * Get the document server url
+     *
+     * @param bool $origin - take origin
+     *
+     * @return string
+     */
+    public function getDocumentServerUrl($origin = false) 
+    {
+        if (!$origin && $this->useDemo()) {
+            return AppConfig::GetDemoParams()["ADDR"];
+        }
+
+        $url = $this->get("document_server_url");
+        if ($url !== null && $url !== "/") {
+            $url = rtrim($url, "/");
+            if (strlen($url) > 0) {
+                $url = $url . "/";
+            }
+        }
+        return $url;
+    }
+
+    /**
+     * Get the document service secret key from the application configuration
+     *
+     * @param bool $origin - take origin
+     *
+     * @return string
+     */
+    public function getDocumentServerSecret($origin = false) {
+        if (!$origin && $this->useDemo()) {
+            return AppConfig::GetDemoParams()["SECRET"];
+        }
+        return $this->get("jwt_secret");
+    }
+
+    /**
+     * Get the jwt header setting
+     *
+     * @param bool $origin - take origin
+     *
+     * @return string
+     */
+    public function getJwtHeader($origin = false) {
+        if (!$origin && $this->useDemo()) {
+            return AppConfig::GetDemoParams()["HEADER"];
+        }
+        return AppConfig::JwtHeader();
     }
 }
