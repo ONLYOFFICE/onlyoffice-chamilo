@@ -49,7 +49,8 @@ class AppConfig {
     private const DEMO_PARAM = [
         "ADDR" => "https://onlinedocs.onlyoffice.com/",
         "HEADER" => "AuthorizationJWT",
-        "SECRET" => "sn2puSUF7muF5Jas"
+        "SECRET" => "sn2puSUF7muF5Jas",
+        "TRIAL" => 30
     ];
 
     /**

@@ -98,15 +98,64 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Get the connect demo setting
+     * Get status of demo server
      *
-     * @param bool $origin - take origin
-     *
-     * @return string
+     * @return bool
      */
-    public function useDemo()
-    {
-        return (bool)$this->get("connect_demo");
+    public function useDemo() {
+        return $this->getDemoData()["enabled"] === true;
+    }
+
+    /**
+     * Get demo data
+     *
+     * @return array
+     */
+    public function getDemoData() {
+        $data = api_get_setting('onlyoffice_connect_demo_data')[0];
+
+        if (empty($data)) {
+            $data = [
+                "available" => true,
+                "enabled" => false
+            ];
+            api_add_setting(json_encode($data), 'onlyoffice_connect_demo_data', null, 'setting', 'Plugins');
+            return $data;
+        }
+        $data = json_decode($data, true);
+        $overdue = isset($data["start"]) ? $data["start"]: 0;
+        $overdue += 24*60*60*AppConfig::GetDemoParams()["TRIAL"];
+        if ($overdue > time()) {
+            $data["available"] = true;
+            $data["enabled"] = $data["enabled"] === true;
+        } else {
+            $data["available"] = false;
+            $data["enabled"] = false;
+        }
+        return $data;
+    }
+
+    /**
+     * Switch on demo server
+     *
+     * @param bool $value - select demo
+     *
+     * @return bool
+     */
+    public function selectDemo($value) {
+        $data = $this->getDemoData();
+
+        if ($value === true && !$data["available"]) {
+            return false;
+        }
+
+        $data["enabled"] = $value === true;
+
+        if (!isset($data["start"])) {
+            $data["start"] = time();
+        }
+        api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
+        return true;
     }
 
     /**

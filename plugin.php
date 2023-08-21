@@ -23,4 +23,21 @@ require_once __DIR__.'/../../main/inc/global.inc.php';
  * @author Asensio System SIA
  */
 
-$plugin_info = OnlyofficePlugin::create()->get_info();
+$plugin = OnlyofficePlugin::create();
+$plugin_info = $plugin->get_info();
+if ($plugin_info['settings_form']->validate()) {
+    $result = $plugin_info['settings_form']->getSubmitValues();
+    if (!$plugin->selectDemo((bool)$result['connect_demo'] === true)) {
+            $error = $plugin->get_lang('DemoPeriodIsOver');
+            Display::addFlash(
+                Display::return_message(
+                    $error,
+                    'error'
+                )
+            );
+            $url = api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=onlyoffice";
+            header('Location: '.$url);
+            exit;
+        
+    }
+}
