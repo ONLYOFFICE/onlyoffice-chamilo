@@ -39,6 +39,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
                 "connect_demo" => "checkbox"
             ]
         );
+        $this->checkDemo();
     }
 
     /**
@@ -156,6 +157,19 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         }
         api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
         return true;
+    }
+
+    /**
+     * Check availability of demo trial
+     *
+     * @return void
+     */
+    public function checkDemo() {
+        if ((bool)$this->get("connect_demo") && $this->getDemoData()["available"] === false) {
+            api_set_setting('onlyoffice_connect_demo', null);
+            $url = api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=onlyoffice";
+            header('Location: '.$url);
+        }
     }
 
     /**
