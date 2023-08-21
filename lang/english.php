@@ -23,3 +23,5 @@ $strings["formTemplate"] = "Form template";
 $strings["fillInFormInOnlyoffice"] = "Fill in form in ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online";
 $strings["NotSupportedVersion"] = "Not supported version";
+$strings["connect_demo"] = "Connect to demo ONLYOFFICE Docs server";
+$strings["demoPeriodIsOver"] = "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Docs server.";

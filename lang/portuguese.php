@@ -23,3 +23,5 @@ $strings["formTemplate"] = "Modelo de formulário";
 $strings["fillInFormInOnlyoffice"] = "Preencher formulário no ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online";
 $strings["NotSupportedVersion"] = "Versão não suportada";
+$strings["connect_demo"] = "Conectar ao Servidor de demonstração do ONLYOFFICE Docs";
+$strings["demoPeriodIsOver"] = "O período de teste de 30 dias acabou, você não pode mais se conectar ao Servidor de demonstração do ONLYOFFICE Docs";

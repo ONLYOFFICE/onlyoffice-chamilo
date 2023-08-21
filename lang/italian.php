@@ -23,3 +23,5 @@ $strings["formTemplate"] = "Modello di modulo";
 $strings["fillInFormInOnlyoffice"] = "Compilare il modulo in ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Si prega di aggiornare ONLYOFFICE Docs alla versione 7.0 per lavorare su moduli compilabili online";
 $strings["NotSupportedVersion"] = "Versione non supportata";
+$strings["connect_demo"] = "Collegati alla versione demo di ONLYOFFICE Docs";
+$strings["demoPeriodIsOver"] = "Il periodo di prova di 30 giorni è terminato; non è più possibile connettersi alla versione demo di ONLYOFFICE Docs.";

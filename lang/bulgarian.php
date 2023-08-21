@@ -23,3 +23,5 @@ $strings["formTemplate"] = "Шаблон на формуляр";
 $strings["fillInFormInOnlyoffice"] = "Попълнете формуляр в ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Молим да актуализирате ONLYOFFICE Docs към версия 7.0, за да работи с онлайн формуляри за попълване";
 $strings["NotSupportedVersion"] = "Неподдържана версия";
+$strings["connect_demo"] = "Свързване с демо ONLYOFFICE Docs сървър";
+$strings["demoPeriodIsOver"] = "30-дневният тестов период приключи, вече не можете да се свържете с демо ONLYOFFICE Docs сървър.";
