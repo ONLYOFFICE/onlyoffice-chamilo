@@ -24,6 +24,12 @@
  */
 class OnlyofficePlugin extends Plugin implements HookPluginInterface
 {
+
+    /**
+     * OnlyofficePlugin name.
+     */
+    private $pluginName = "onlyoffice";
+
     /**
      * OnlyofficePlugin constructor.
      */
@@ -167,8 +173,9 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     public function checkDemo() {
         if ((bool)$this->get("connect_demo") && $this->getDemoData()["available"] === false) {
             api_set_setting('onlyoffice_connect_demo', null);
-            $url = api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=onlyoffice";
-            header('Location: '.$url);
+            if ($_SERVER['HTTP_REFERER'] === $this->getConfigLink()) {
+                header('Location: '.$this->getConfigLink());
+            }
         }
     }
 
@@ -221,5 +228,14 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             return AppConfig::GetDemoParams()["HEADER"];
         }
         return AppConfig::JwtHeader();
+    }
+
+    /**
+     * Get link to plugin settings
+     *
+     * @return string
+     */
+    public function getConfigLink() {
+        return api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=".$this->pluginName;
     }
 }

@@ -35,8 +35,7 @@ if ($plugin_info['settings_form']->validate()) {
                     'error'
                 )
             );
-            $url = api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=onlyoffice";
-            header('Location: '.$url);
+            header('Location: '.$plugin->getConfigLink());
             exit;
     }
 }
