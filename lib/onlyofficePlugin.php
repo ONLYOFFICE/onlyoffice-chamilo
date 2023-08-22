@@ -130,7 +130,11 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             return $data;
         }
         $data = json_decode($data, true);
-        $overdue = isset($data["start"]) ? $data["start"]: 0;
+
+        if (!isset($data["start"])) {
+            $data["start"] = time();
+        }
+        $overdue = $data["start"];
         $overdue += 24*60*60*AppConfig::GetDemoParams()["TRIAL"];
         if ($overdue > time()) {
             $data["available"] = true;
@@ -172,6 +176,11 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
      */
     public function checkDemo() {
         if ((bool)$this->get("connect_demo") && $this->getDemoData()["available"] === false) {
+            $data = api_get_setting('onlyoffice_connect_demo_data')[0];
+            $data = json_decode($data, true);
+            $data["available"] = false;
+            $data["enabled"] = false;
+            api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
             api_set_setting('onlyoffice_connect_demo', null);
             if ($_SERVER['HTTP_REFERER'] === $this->getConfigLink()) {
                 header('Location: '.$this->getConfigLink());
