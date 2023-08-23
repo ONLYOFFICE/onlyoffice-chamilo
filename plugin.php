@@ -18,6 +18,7 @@
  */
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
+require_once __DIR__.'/lib/onlyofficeSettingsFormBuilder.php';
 
 /**
  * @author Asensio System SIA
@@ -25,17 +26,7 @@ require_once __DIR__.'/../../main/inc/global.inc.php';
 
 $plugin = OnlyofficePlugin::create();
 $plugin_info = $plugin->get_info();
+$plugin_info['settings_form'] = OnlyofficeSettingsFormBuilder::buildSettingsForm($plugin);
 if ($plugin_info['settings_form']->validate()) {
-    $result = $plugin_info['settings_form']->getSubmitValues();
-    if (!$plugin->selectDemo((bool)$result['connect_demo'] === true)) {
-            $error = $plugin->get_lang('demoPeriodIsOver');
-            Display::addFlash(
-                Display::return_message(
-                    $error,
-                    'error'
-                )
-            );
-            header('Location: '.$plugin->getConfigLink());
-            exit;
-    }
+    $plugin = OnlyofficeSettingsFormBuilder::validateSettingsForm($plugin);
 }
