@@ -25,3 +25,5 @@ $strings["UpdateOnlyoffice"] = "Молим да актуализирате ONLYO
 $strings["NotSupportedVersion"] = "Неподдържана версия";
 $strings["connect_demo"] = "Свързване с демо ONLYOFFICE Docs сървър";
 $strings["demoPeriodIsOver"] = "30-дневният тестов период приключи, вече не можете да се свържете с демо ONLYOFFICE Docs сървър.";
+$strings["demoPrevMessage"] = "Това е обществен тестов сървър, моля, не използвайте за чувствителни частни данни. Сървърът ще е на разположение по време на 30-дневния период.";
+$strings["demoUsingMessage"] = "Използвате обществения демо ONLYOFFICE Docs сървър. Моля, не съхранявайте чувствителни частни данни на него.";
