@@ -65,11 +65,10 @@ class OnlyofficeSettingsFormBuilder {
                 $message = $plugin->get_lang('demoPrevMessage');
             }
         }
-        $demoServerMessageHtml = self::buildTemplate('alert',
-        [
-            'alert_type' => 'info',
-            'alert_message' => $message,
-        ]);
+        $demoServerMessageHtml = Display::return_message(
+            $message,
+            'info'
+        );
         $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
         $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
         return $plugin_info['settings_form'];
