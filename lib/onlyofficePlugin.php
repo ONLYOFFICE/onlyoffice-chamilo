@@ -169,24 +169,6 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Check availability of demo trial
-     *
-     * @return void
-     */
-    public function checkDemo() {
-        if ($this->useDemo() && $this->getDemoData()["available"] === false) {
-            $data = api_get_setting('onlyoffice_connect_demo_data')[0];
-            $data = json_decode($data, true);
-            $data["available"] = false;
-            $data["enabled"] = false;
-            api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
-            if ($_SERVER['HTTP_REFERER'] === $this->getConfigLink()) {
-                header('Location: '.$this->getConfigLink());
-            }
-        }
-    }
-
-    /**
      * Get the document server url
      *
      * @param bool $origin - take origin
