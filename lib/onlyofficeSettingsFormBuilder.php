@@ -56,19 +56,32 @@ class OnlyofficeSettingsFormBuilder {
         $demoData = $plugin->getDemoData();
         $plugin_info = $plugin->get_info();
         $message = '';
+        $demoCheckboxChecked = '';
+        $demoCheckboxDisabled = '';
         if (!$demoData['available'] === true) {
             $message = $plugin->get_lang('demoPeriodIsOver');
+            $demoCheckboxDisabled = 'disabled';
         } else {
             if ($plugin->useDemo()) {
                 $message = $plugin->get_lang('demoUsingMessage');
+                $demoCheckboxChecked = 'checked';
             } else {
                 $message = $plugin->get_lang('demoPrevMessage');
             }
         }
+        $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
+            'checkbox',
+            'connect_demo', 
+            '',
+            $plugin->get_lang('connect_demo'),
+            $demoCheckboxChecked
+        );
         $demoServerMessageHtml = Display::return_message(
             $message,
             'info'
         );
+        $connectDemoCheckbox->setAttribute($demoCheckboxDisabled);
+        $plugin_info['settings_form']->insertElementBefore($connectDemoCheckbox, 'submit_button');
         $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
         $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
         return $plugin_info['settings_form'];

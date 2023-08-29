@@ -41,11 +41,9 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             [
                 "enable_onlyoffice_plugin" => "boolean",
                 "document_server_url" => "text",
-                "jwt_secret" => "text",
-                "connect_demo" => "checkbox"
+                "jwt_secret" => "text"
             ]
         );
-        $this->checkDemo();
     }
 
     /**
@@ -143,6 +141,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             $data["available"] = false;
             $data["enabled"] = false;
         }
+        api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
         return $data;
     }
 
@@ -175,13 +174,12 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
      * @return void
      */
     public function checkDemo() {
-        if ((bool)$this->get("connect_demo") && $this->getDemoData()["available"] === false) {
+        if ($this->useDemo() && $this->getDemoData()["available"] === false) {
             $data = api_get_setting('onlyoffice_connect_demo_data')[0];
             $data = json_decode($data, true);
             $data["available"] = false;
             $data["enabled"] = false;
             api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
-            api_set_setting('onlyoffice_connect_demo', null);
             if ($_SERVER['HTTP_REFERER'] === $this->getConfigLink()) {
                 header('Location: '.$this->getConfigLink());
             }
