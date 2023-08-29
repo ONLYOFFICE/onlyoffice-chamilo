@@ -56,31 +56,27 @@ class OnlyofficeSettingsFormBuilder {
         $demoData = $plugin->getDemoData();
         $plugin_info = $plugin->get_info();
         $message = '';
-        $demoCheckboxChecked = '';
-        $demoCheckboxDisabled = '';
-        if (!$demoData['available'] === true) {
-            $message = $plugin->get_lang('demoPeriodIsOver');
-            $demoCheckboxDisabled = 'disabled';
-        } else {
-            if ($plugin->useDemo()) {
-                $message = $plugin->get_lang('demoUsingMessage');
-                $demoCheckboxChecked = 'checked';
-            } else {
-                $message = $plugin->get_lang('demoPrevMessage');
-            }
-        }
         $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
             'checkbox',
             'connect_demo', 
             '',
-            $plugin->get_lang('connect_demo'),
-            $demoCheckboxChecked
+            $plugin->get_lang('connect_demo')
         );
+        if (!$demoData['available'] === true) {
+            $message = $plugin->get_lang('demoPeriodIsOver');
+            $connectDemoCheckbox->setAttribute('disabled');
+        } else {
+            if ($plugin->useDemo()) {
+                $message = $plugin->get_lang('demoUsingMessage');
+                $connectDemoCheckbox->setChecked(true);
+            } else {
+                $message = $plugin->get_lang('demoPrevMessage');
+            }
+        }
         $demoServerMessageHtml = Display::return_message(
             $message,
             'info'
         );
-        $connectDemoCheckbox->setAttribute($demoCheckboxDisabled);
         $plugin_info['settings_form']->insertElementBefore($connectDemoCheckbox, 'submit_button');
         $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
         $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
@@ -98,15 +94,15 @@ class OnlyofficeSettingsFormBuilder {
         $plugin_info = $plugin->get_info();
         $result = $plugin_info['settings_form']->getSubmitValues();
         if (!$plugin->selectDemo((bool)$result['connect_demo'] === true)) {
-                $error = $plugin->get_lang('demoPeriodIsOver');
-                Display::addFlash(
-                    Display::return_message(
-                        $error,
-                        'error'
-                    )
-                );
-                header('Location: '.$plugin->getConfigLink());
-                exit;
+            $error = $plugin->get_lang('demoPeriodIsOver');
+            Display::addFlash(
+                Display::return_message(
+                    $error,
+                    'error'
+                )
+            );
+            header('Location: '.$plugin->getConfigLink());
+            exit;
         }
         return $plugin;
     }
