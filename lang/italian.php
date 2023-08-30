@@ -23,6 +23,7 @@ $strings["formTemplate"] = "Modello di modulo";
 $strings["fillInFormInOnlyoffice"] = "Compilare il modulo in ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Si prega di aggiornare ONLYOFFICE Docs alla versione 7.0 per lavorare su moduli compilabili online";
 $strings["NotSupportedVersion"] = "Versione non supportata";
+$strings["jwt_header"] = "Intestazione di autorizzazione (lascia vuoto per utilizzare l'intestazione predefinita)";
 $strings["connect_demo"] = "Collegati alla versione demo di ONLYOFFICE Docs";
 $strings["demoPeriodIsOver"] = "Il periodo di prova di 30 giorni è terminato; non è più possibile connettersi alla versione demo di ONLYOFFICE Docs.";
 $strings["demoPrevMessage"] = "Questo è un server di prova pubblico, non utilizzarlo per dati sensibili privati. Il server sarà disponibile per un periodo di 30 giorni.";
