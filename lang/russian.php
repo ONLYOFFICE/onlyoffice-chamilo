@@ -23,3 +23,4 @@ $strings["formTemplate"] = "Шаблон формы";
 $strings["fillInFormInOnlyoffice"] = "Заполнить форму в ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Обновите сервер ONLYOFFICE Docs до версии 7.0 для работы с формами онлайн";
 $strings["NotSupportedVersion"] = "Неподдерживаемая версия";
+$strings["jwt_header"] = "Заголовок авторизации (оставьте пустым, чтобы использовать заголовок по умолчанию)";

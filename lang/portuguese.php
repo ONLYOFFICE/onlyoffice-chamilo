@@ -23,3 +23,4 @@ $strings["formTemplate"] = "Modelo de formulário";
 $strings["fillInFormInOnlyoffice"] = "Preencher formulário no ONLYOFFICE";
 $strings["UpdateOnlyoffice"] = "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online";
 $strings["NotSupportedVersion"] = "Versão não suportada";
+$strings["jwt_header"] = "Cabeçalho de autorização (Deixe em branco para usar o cabeçalho padrão)";

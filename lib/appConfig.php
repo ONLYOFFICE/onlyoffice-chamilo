@@ -35,9 +35,9 @@ class AppConfig {
      */
     public static function JwtHeader()
     {
-        $header = api_get_configuration_value(self::jwtHeader);
+        $header = api_get_setting(self::jwtHeader)["onlyoffice"];
         if (empty($header)) {
-            $header = "Authorization";
+            $header = api_get_configuration_value(self::jwtHeader) ? api_get_configuration_value(self::jwtHeader) : "Authorization";
         }
 
         return $header;
