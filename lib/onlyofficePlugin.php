@@ -129,19 +129,18 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         }
         $data = json_decode($data, true);
 
-        if (!isset($data["start"])) {
-            $data["start"] = time();
+        if (isset($data['start'])) {
+            $overdue = $data["start"];
+            $overdue += 24*60*60*AppConfig::GetDemoParams()["TRIAL"];
+            if ($overdue > time()) {
+                $data["available"] = true;
+                $data["enabled"] = $data["enabled"] === true;
+            } else {
+                $data["available"] = false;
+                $data["enabled"] = false;
+            }
+            api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
         }
-        $overdue = $data["start"];
-        $overdue += 24*60*60*AppConfig::GetDemoParams()["TRIAL"];
-        if ($overdue > time()) {
-            $data["available"] = true;
-            $data["enabled"] = $data["enabled"] === true;
-        } else {
-            $data["available"] = false;
-            $data["enabled"] = false;
-        }
-        api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
         return $data;
     }
 
