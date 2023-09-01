@@ -24,3 +24,7 @@ $strings["fillInFormInOnlyoffice"] = "Formular in ONLYOFFICE ausfüllen";
 $strings["UpdateOnlyoffice"] = "Für Online-Arbeit mit Formularen ist Version 7.0 von ONLYOFFICE Docs erforderlich";
 $strings["NotSupportedVersion"] = "Nicht unterstützte Version";
 $strings["jwt_header"] = "Authorization-Header (leer lassen, um die standardmäßige Kopfzeile zu verwenden)";
+$strings["connect_demo"] = "Verbindung zu Demo ONLYOFFICE Docs Server herstellen";
+$strings["demoPeriodIsOver"] = "Der 30-tägige Testzeitraum ist abgelaufen. Du kannst keine Verbindung mehr zu Demo ONLYOFFICE Docs Server herstellen.";
+$strings["demoPrevMessage"] = "Dies ist ein öffentlicher Testserver. Bitte verwende beim Testen keine privaten sensiblen Daten. Der Server ist 30 Tage lang verfügbar.";
+$strings["demoUsingMessage"] = "Du verwendest den öffentlichen Demo ONLYOFFICE Docs Server. Bitte benutze ihn nicht zum Speichern von Deinen privaten sensiblen Daten.";
