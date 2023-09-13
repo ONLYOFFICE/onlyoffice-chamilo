@@ -29,6 +29,13 @@ class AppConfig {
     private const jwtHeader = "onlyoffice_jwt_header";
 
     /**
+     * The config key for the storage url
+     *
+     * @var string
+     */
+    private const storageUrl = "onlyoffice_storage_url";
+
+    /**
      * Get the jwt header setting
      *
      * @return string
@@ -41,6 +48,17 @@ class AppConfig {
         }
 
         return $header;
+    }
+
+    /**
+     * Get the storage url setting
+     *
+     * @return string
+     */
+    public static function StorageUrl()
+    {
+        $storageUrl = api_get_configuration_value(self::storageUrl);
+        return $storageUrl;
     }
 
     /**
