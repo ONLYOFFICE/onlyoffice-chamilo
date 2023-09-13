@@ -18,6 +18,7 @@
  */
 
 require_once __DIR__ . "/../../../main/inc/global.inc.php";
+require_once __DIR__ . "/documentService.php";
 
 class OnlyofficeSettingsFormBuilder {
 
@@ -43,6 +44,27 @@ class OnlyofficeSettingsFormBuilder {
         }
         $parsedTemplate = $tpl->fetch(self::ONLYOFFICE_LAYOUT_DIR.$templateName.'.tpl');
         return $parsedTemplate;
+    }
+
+    /**
+     * Display error messahe
+     *
+     * @param string $errorMessage - error message
+     * @param string $location - header location
+     *
+     * @return void
+     */
+    private function displayError($errorMessage, $location = null) {
+        Display::addFlash(
+            Display::return_message(
+                $errorMessage,
+                'error'
+            )
+        );
+        if ($location !== null) {
+            header('Location: '.$location);
+            exit;
+        }
     }
 
     /**
@@ -91,18 +113,22 @@ class OnlyofficeSettingsFormBuilder {
      * @return OnlyofficePlugin
      */
     public function validateSettingsForm($plugin) {
+        $errorMsg = null;
         $plugin_info = $plugin->get_info();
         $result = $plugin_info['settings_form']->getSubmitValues();
         if (!$plugin->selectDemo((bool)$result['connect_demo'] === true)) {
-            $error = $plugin->get_lang('demoPeriodIsOver');
-            Display::addFlash(
-                Display::return_message(
-                    $error,
-                    'error'
-                )
-            );
-            header('Location: '.$plugin->getConfigLink());
-            exit;
+            $errorMsg = $plugin->get_lang('demoPeriodIsOver');
+            self::displayError($errorMsg, $plugin->getConfigLink());
+        }
+        $documentserver = $plugin->getDocumentServerUrl();
+        if (!empty($documentserver)) {
+            $documentService = new DocumentService($plugin, $result);
+            list ($error, $version) = $documentService->checkDocServiceUrl();
+
+            if (!empty($error)) {
+                $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
+            self::displayError($errorMsg); 
+            }
         }
         return $plugin;
     }
