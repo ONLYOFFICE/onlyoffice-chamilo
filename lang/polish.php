@@ -26,3 +26,4 @@ $strings["connect_demo"] = "Połącz się z serwerem demo ONLYOFFICE Docs";
 $strings["demoPeriodIsOver"] = "Upłyneło 30 dni, nie możesz się już łączyć z serwerem demo.";
 $strings["demoPrevMessage"] = "To jest publiczny testowy serwer, proszę nie używać go do prywatnych danych. Serwer będzie dostępny przez 30 dni.";
 $strings["demoUsingMessage"] = "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.";
+$strings["storage_url"] = "Adres serwera dla zapytań wewnętrznych z ONLYOFFICE Docs";
