@@ -29,6 +29,13 @@ class AppConfig {
     private const jwtHeader = "onlyoffice_jwt_header";
 
     /**
+     * The config key for the internal url
+     *
+     * @var string
+     */
+    private const internalUrl = "onlyoffice_internal_url";
+
+    /**
      * Get the jwt header setting
      *
      * @return string
@@ -41,6 +48,17 @@ class AppConfig {
         }
 
         return $header;
+    }
+
+    /**
+     * Get the internal url setting
+     *
+     * @return string
+     */
+    public static function InternalUrl()
+    {
+        $internalUrl = api_get_configuration_value(self::internalUrl);
+        return $internalUrl;
     }
 
     /**
