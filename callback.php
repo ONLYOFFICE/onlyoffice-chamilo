@@ -151,6 +151,7 @@ function track(): array
         case TrackerStatus_Corrupted:
 
             $downloadUri = $data["url"];
+            $downloadUri = $plugin->replaceDocumentServerUrlToInternal($downloadUri);
 
             if (!empty($docId) && !empty($courseCode)) {
                 $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
