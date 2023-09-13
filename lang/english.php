@@ -28,3 +28,4 @@ $strings["connect_demo"] = "Connect to demo ONLYOFFICE Docs server";
 $strings["demoPeriodIsOver"] = "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Docs server.";
 $strings["demoPrevMessage"] = "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period.";
 $strings["demoUsingMessage"] = "You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data.";
+$strings["document_server_internal"] = "ONLYOFFICE Docs address for internal requests from the server";

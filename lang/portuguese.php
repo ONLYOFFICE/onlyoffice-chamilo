@@ -28,3 +28,4 @@ $strings["connect_demo"] = "Conectar ao Servidor de demonstração do ONLYOFFICE
 $strings["demoPeriodIsOver"] = "O período de teste de 30 dias acabou, você não pode mais se conectar ao Servidor de demonstração do ONLYOFFICE Docs";
 $strings["demoPrevMessage"] = "Este é um servidor de teste público, não o use para dados confidenciais. O servidor estará disponível por um período de 30 dias.";
 $strings["demoUsingMessage"] = "Você está usando o Servidor de demonstração pública. Não armazene dados confidenciais.";
+$strings["document_server_internal"] = "Endereço do ONLYOFFICE Docs para pedidos internos do servidor";
