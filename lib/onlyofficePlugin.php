@@ -216,7 +216,12 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         if (!$origin && $this->useDemo()) {
             return AppConfig::GetDemoParams()["HEADER"];
         }
-        return AppConfig::JwtHeader();
+
+        $header = api_get_setting('onlyoffice_jwt_header')["onlyoffice"];
+        if (empty($header)) {
+            $header = AppConfig::JwtHeader() ? AppConfig::JwtHeader() : "Authorization";
+        }
+        return $header;
     }
 
     /**
