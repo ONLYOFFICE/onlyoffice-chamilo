@@ -28,4 +28,7 @@ $strings["connect_demo"] = "Collegati alla versione demo di ONLYOFFICE Docs";
 $strings["demoPeriodIsOver"] = "Il periodo di prova di 30 giorni è terminato; non è più possibile connettersi alla versione demo di ONLYOFFICE Docs.";
 $strings["demoPrevMessage"] = "Questo è un server di prova pubblico, non utilizzarlo per dati sensibili privati. Il server sarà disponibile per un periodo di 30 giorni.";
 $strings["demoUsingMessage"] = "Stai utilizzando la versione demo pubblica di ONLYOFFICE Docs. Non memorizzare dati sensibili privati.";
-$strings["document_server_internal"] = "Indirizzo di ONLYOFFICE Docs per le richieste interne del server";
+$strings["document_server_internal"] = "Indirizzo di ONLYOFFICE Docs per le richieste interne del server";$strings["NotSupportedVersion"] = "Versione non supportata";
+$strings["DocsCloudBannerTitle"] = "ONLYOFFICE Docs Cloud";
+$strings["DocsCloudBannerMain"] = "Avvia facilmente gli editor nel cloud senza scaricarli e installarli";
+$strings["DocsCloudBannerButton"] = "Ottieni ora";
