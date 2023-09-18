@@ -36,6 +36,13 @@ class AppConfig {
     private const internalUrl = "onlyoffice_internal_url";
 
     /**
+    * Link to Docs Cloud
+    *
+    * @var string
+    */
+    private const linkToDocs = "https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo";
+
+    /**
      * Get the jwt header setting
      *
      * @return string
@@ -75,5 +82,14 @@ class AppConfig {
     public static function GetDemoParams()
     {
         return self::DEMO_PARAM;
+    }
+
+    /**
+    * Get link to Docs Cloud
+    *
+    * @return string
+    */
+    public function GetLinkToDocs() {
+        return self::linkToDocs;
     }
 }
