@@ -29,11 +29,11 @@ class AppConfig {
     private const jwtHeader = "onlyoffice_jwt_header";
 
     /**
-    * Link to Docs Cloud
-    *
-    * @var string
-    */
-    private const linkToDocs = "https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo";
+     * The config key for the internal url
+     *
+     * @var string
+     */
+    private const internalUrl = "onlyoffice_internal_url";
 
     /**
      * Get the jwt header setting
@@ -43,19 +43,37 @@ class AppConfig {
     public static function JwtHeader()
     {
         $header = api_get_configuration_value(self::jwtHeader);
-        if (empty($header)) {
-            $header = "Authorization";
-        }
-
         return $header;
     }
 
     /**
-    * Get link to Docs Cloud
-    *
-    * @return string
-    */
-    public function GetLinkToDocs() {
-        return self::linkToDocs;
+     * Get the internal url setting
+     *
+     * @return string
+     */
+    public static function InternalUrl()
+    {
+        $internalUrl = api_get_configuration_value(self::internalUrl);
+        return $internalUrl;
+    }
+
+    /**
+     * DEMO DATA
+     */
+    private const DEMO_PARAM = [
+        "ADDR" => "https://onlinedocs.onlyoffice.com/",
+        "HEADER" => "AuthorizationJWT",
+        "SECRET" => "sn2puSUF7muF5Jas",
+        "TRIAL" => 30
+    ];
+
+    /**
+     * Get demo params
+     *
+     * @return array
+     */
+    public static function GetDemoParams()
+    {
+        return self::DEMO_PARAM;
     }
 }

@@ -4,6 +4,9 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 
 ## Added
 - Turkish and Galician empty file templates
+- jwt header setting
+- connection to the demo server
+- setting address for internal requests from the server
 - Link to docs cloud
 
 ## Changed

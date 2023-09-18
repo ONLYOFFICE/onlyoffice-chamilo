@@ -29,7 +29,7 @@ if (!$isEnable) {
     return;
 }
 
-$documentServerUrl = $plugin->get("document_server_url");
+$documentServerUrl = $plugin->getDocumentServerUrl();
 if (empty($documentServerUrl)) {
     die ("Document server isn't configured");
     return;
@@ -161,8 +161,8 @@ if ($canEdit && $accessRights && !$isReadonly) {
 }
 $config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
 
-if (!empty($plugin->get("jwt_secret"))) {
-    $token = \Firebase\JWT\JWT::encode($config, $plugin->get("jwt_secret"), "HS256");
+if (!empty($plugin->getDocumentServerSecret())) {
+    $token = \Firebase\JWT\JWT::encode($config, $plugin->getDocumentServerSecret(), "HS256");
     $config["token"] = $token;
 }
 

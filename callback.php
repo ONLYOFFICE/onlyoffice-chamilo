@@ -117,20 +117,20 @@ function track(): array
         return $result;
     }
 
-    if (!empty($plugin->get("jwt_secret"))) {
+    if (!empty($plugin->getDocumentServerSecret())) {
 
         if (!empty($data["token"])) {
             try {
-                $payload = \Firebase\JWT\JWT::decode($data["token"], new \Firebase\JWT\Key($plugin->get("jwt_secret"), "HS256"));
+                $payload = \Firebase\JWT\JWT::decode($data["token"], new \Firebase\JWT\Key($plugin->getDocumentServerSecret(), "HS256"));
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
                 $result["error"] = "403 Access denied";
                 return $result;
             }
         } else {
-            $token = substr(getallheaders()[AppConfig::JwtHeader()], strlen("Bearer "));
+            $token = substr(getallheaders()[$plugin->getJwtHeader()], strlen("Bearer "));
             try {
-                $decodeToken = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->get("jwt_secret"), "HS256"));
+                $decodeToken = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->getDocumentServerSecret(), "HS256"));
                 $payload = $decodeToken->payload;
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
@@ -151,6 +151,7 @@ function track(): array
         case TrackerStatus_Corrupted:
 
             $downloadUri = $data["url"];
+            $downloadUri = $plugin->replaceDocumentServerUrlToInternal($downloadUri);
 
             if (!empty($docId) && !empty($courseCode)) {
                 $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
@@ -225,10 +226,10 @@ function download()
     global $sessionId;
     global $courseInfo;
 
-    if (!empty($plugin->get("jwt_secret"))) {
-        $token = substr(getallheaders()[AppConfig::JwtHeader()], strlen("Bearer "));
+    if (!empty($plugin->getDocumentServerSecret())) {
+        $token = substr(getallheaders()[$plugin->getJwtHeader()], strlen("Bearer "));
         try {
-            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->get("jwt_secret"), "HS256"));
+            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->getDocumentServerSecret(), "HS256"));
 
         } catch (\UnexpectedValueException $e) {
             $result["status"] = "error";
