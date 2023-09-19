@@ -43,6 +43,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
                 "document_server_url" => "text",
                 "jwt_secret" => "text",
                 "jwt_header" => "text",
+                "document_server_internal" => "text",
                 "storage_url" => "text"
             ]
         );
@@ -193,6 +194,54 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
+     * Get the document service address available from Chamilo from the application configuration
+     *
+     * @param bool $origin - take origin
+     *
+     * @return string
+     */
+    public function getDocumentServerInternalUrl($origin = false) {
+        if (!$origin && $this->useDemo()) {
+            return $this->getDocumentServerUrl();
+        }
+
+        $url = api_get_setting('onlyoffice_document_server_internal')[$this->pluginName];
+        if (empty($url)) {
+            $url = AppConfig::InternalUrl();
+        }
+        if (!$origin && empty($url)) {
+            $url = $this->getDocumentServerUrl();
+        }
+        return $url;
+    }
+
+    /**
+     * Replace domain in document server url with internal address from configuration
+     *
+     * @param string $url - document server url
+     *
+     * @return string
+     */
+    public function replaceDocumentServerUrlToInternal($url) {
+        $documentServerUrl = $this->getDocumentServerInternalUrl();
+        if (!empty($documentServerUrl)) {
+            $from = $this->getDocumentServerUrl();
+
+            if (!preg_match("/^https?:\/\//i", $from)) {
+                $parsedUrl = parse_url($url);
+                $from = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . (array_key_exists("port", $parsedUrl) ? (":" . $parsedUrl["port"]) : "") . $from;
+            }
+
+            if ($from !== $documentServerUrl)
+            {
+                $url = str_replace($from, $documentServerUrl, $url);
+            }
+        }
+
+        return $url;
+    }
+
+    /**
      * Get the Chamilo address available from document server from the application configuration
      *
      * @return string
@@ -230,7 +279,12 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         if (!$origin && $this->useDemo()) {
             return AppConfig::GetDemoParams()["HEADER"];
         }
-        return AppConfig::JwtHeader();
+
+        $header = api_get_setting('onlyoffice_jwt_header')["onlyoffice"];
+        if (empty($header)) {
+            $header = AppConfig::JwtHeader() ? AppConfig::JwtHeader() : "Authorization";
+        }
+        return $header;
     }
 
     /**
