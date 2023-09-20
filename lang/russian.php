@@ -28,7 +28,9 @@ $strings["connect_demo"] = "Подключиться к демонстрацио
 $strings["demoPeriodIsOver"] = "30-дневный тестовый период закончен, вы больше не можете подключаться к демонстрационному серверу ONLYOFFICE Docs.";
 $strings["demoPrevMessage"] = "Это публичный тестовый сервер, пожалуйста, не используйте его для личных конфиденциальных данных. Сервер будет доступен в течение 30 дней.";
 $strings["demoUsingMessage"] = "Вы используете публичный демонстрационный сервер ONLYOFFICE Docs. Пожалуйста, не храните конфиденциальные данные.";
-$strings["document_server_internal"] = "Адрес ONLYOFFICE Docs для внутренних запросов сервера";$strings["NotSupportedVersion"] = "Неподдерживаемая версия";
+$strings["document_server_internal"] = "Адрес ONLYOFFICE Docs для внутренних запросов сервера";
+$strings["NotSupportedVersion"] = "Неподдерживаемая версия";
+$strings["storage_url"] = "Адрес сервера для внутренних запросов ONLYOFFICE Docs";
 $strings["DocsCloudBannerTitle"] = "ONLYOFFICE Docs Cloud";
 $strings["DocsCloudBannerMain"] = "Легко запускайте редакторы в облаке без скачивания и установки";
 $strings["DocsCloudBannerButton"] = "Получить сейчас";

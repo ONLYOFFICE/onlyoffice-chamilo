@@ -28,7 +28,9 @@ $strings["connect_demo"] = "Se connecter à la version démo de ONLYOFFICE Docs"
 $strings["demoPeriodIsOver"] = "La période d'essai de 30 jours est expirée, vous n'êtes plus en mesure de vous connecter à la version démo de ONLYOFFICE Docs.";
 $strings["demoPrevMessage"] = "C'est un serveur public proposé à des fins de tests, veuillez ne pas l'utiliser pour vos données personnelles sensibles. Le serveur est disponible pendant 30 jours.";
 $strings["demoUsingMessage"] = "Vous utilisez la version démo de ONLYOFFICE Docs, proposée à des fins de tests. Veuillez ne pas stocker vos données confidentielles.";
-$strings["document_server_internal"] = "Adresse du ONLYOFFICE Docs pour les demandes internes du serveur";$strings["NotSupportedVersion"] = "Version non supportée";
+$strings["document_server_internal"] = "Adresse du ONLYOFFICE Docs pour les demandes internes du serveur";
+$strings["NotSupportedVersion"] = "Version non supportée";
+$strings["storage_url"] = "Adresse du serveur pour les demandes internes du ONLYOFFICE Docs";
 $strings["DocsCloudBannerTitle"] = "ONLYOFFICE Docs Cloud";
 $strings["DocsCloudBannerMain"] = "Lancez facilement les éditeurs dans le cloud sans téléchargement ni installation";
 $strings["DocsCloudBannerButton"] = "Obtenir maintenant";

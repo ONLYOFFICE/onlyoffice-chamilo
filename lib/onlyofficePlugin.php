@@ -44,6 +44,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
                 "jwt_secret" => "text",
                 "jwt_header" => "text",
                 "document_server_internal" => "text",
+                "storage_url" => "text"
             ]
         );
     }
@@ -238,6 +239,19 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         }
 
         return $url;
+    }
+
+    /**
+     * Get the Chamilo address available from document server from the application configuration
+     *
+     * @return string
+     */
+    public function getStorageUrl() {
+        $storageUrl = api_get_setting('onlyoffice_storage_url')[$this->pluginName];
+        if (empty($storageUrl)) {
+            $storageUrl = AppConfig::StorageUrl();
+        }
+        return $storageUrl;
     }
 
     /**

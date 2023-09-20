@@ -28,3 +28,4 @@ $strings["demoPeriodIsOver"] = "30-дневният тестов период п
 $strings["demoPrevMessage"] = "Това е обществен тестов сървър, моля, не използвайте за чувствителни частни данни. Сървърът ще е на разположение по време на 30-дневния период.";
 $strings["demoUsingMessage"] = "Използвате обществения демо ONLYOFFICE Docs сървър. Моля, не съхранявайте чувствителни частни данни на него.";
 $strings["document_server_internal"] = "Адрес на ONLYOFFICE Docs за вътрешни заявки към сървъра";
+$strings["storage_url"] = "Адрес на сървъра за вътрешни заявки на ONLYOFFICE Docs";
