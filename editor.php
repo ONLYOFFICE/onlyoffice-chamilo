@@ -61,6 +61,10 @@ $docType = FileUtility::getDocType($extension);
 $key = FileUtility::getKey($courseCode, $docId);
 $fileUrl = FileUtility::getFileUrl($courseId, $userId, $docId, $sessionId, $groupId);
 
+if (!empty($plugin->getStorageUrl())) {
+    $fileUrl = str_replace(api_get_path(WEB_PLUGIN_PATH), $plugin->getStorageUrl(), $fileUrl);
+}
+
 $config = [
     "type" => "desktop",
     "documentType" => $docType,
@@ -144,13 +148,19 @@ if (!$isVisible) {
 
 if ($canEdit && $accessRights && !$isReadonly) {
     $config["editorConfig"]["mode"] = "edit";
-    $config["editorConfig"]["callbackUrl"] = getCallbackUrl(
+
+    $callback = getCallbackUrl(
         $docId,
         $userId,
         $courseId,
         $sessionId,
         $groupId
     );
+
+    if (!empty($plugin->getStorageUrl())) {
+        $callback = str_replace(api_get_path(WEB_PLUGIN_PATH), $plugin->getStorageUrl(), $callback);
+    }
+    $config["editorConfig"]["callbackUrl"] = $callback;
 } else {
     $canView = in_array($extension, FileUtility::$can_view_types);
     if ($canView) {
