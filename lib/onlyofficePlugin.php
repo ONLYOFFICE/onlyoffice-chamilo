@@ -205,7 +205,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             return $this->getDocumentServerUrl();
         }
 
-        $url = api_get_setting('onlyoffice_document_server_internal')[$this->pluginName];
+        $url = $this->get('document_server_internal');
         if (empty($url)) {
             $url = AppConfig::InternalUrl();
         }
@@ -247,7 +247,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
      * @return string
      */
     public function getStorageUrl() {
-        $storageUrl = api_get_setting('onlyoffice_storage_url')[$this->pluginName];
+        $storageUrl = $this->get('storage_url');
         if (empty($storageUrl)) {
             $storageUrl = AppConfig::StorageUrl();
         }
@@ -280,7 +280,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             return AppConfig::GetDemoParams()["HEADER"];
         }
 
-        $header = api_get_setting('onlyoffice_jwt_header')["onlyoffice"];
+        $header = $this->get('jwt_header');
         if (empty($header)) {
             $header = AppConfig::JwtHeader() ? AppConfig::JwtHeader() : "Authorization";
         }
