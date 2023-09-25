@@ -35,7 +35,7 @@ class OnlyofficeSettingsFormBuilder {
      * @return string
      */
     private function buildTemplate($templateName, $params = []) {
-        $tpl = new Template();
+        $tpl = new Template('', false, false, false, false, false, false);
         if (!empty($params)) {
             foreach ($params as $key => $param) {
                 $tpl->assign($key, $param); 
