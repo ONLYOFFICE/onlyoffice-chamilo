@@ -8,6 +8,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 - connection to the demo server
 - setting address for internal requests from the server
 - Link to docs cloud
+- connection settings validation
 
 ## Changed
 - document server v6.0 and earlier is no longer supported
