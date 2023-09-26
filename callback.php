@@ -20,6 +20,8 @@
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
 use ChamiloSession as Session;
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
 
 /**
  * Status of the document
@@ -121,7 +123,7 @@ function track(): array
 
         if (!empty($data["token"])) {
             try {
-                $payload = \Firebase\JWT\JWT::decode($data["token"], new \Firebase\JWT\Key($plugin->getDocumentServerSecret(), "HS256"));
+                $payload = JWT::decode($data["token"], new Key($plugin->getDocumentServerSecret(), "HS256"));
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
                 $result["error"] = "403 Access denied";
@@ -130,7 +132,7 @@ function track(): array
         } else {
             $token = substr(getallheaders()[$plugin->getJwtHeader()], strlen("Bearer "));
             try {
-                $decodeToken = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->getDocumentServerSecret(), "HS256"));
+                $decodeToken = JWT::decode($token, new Key($plugin->getDocumentServerSecret(), "HS256"));
                 $payload = $decodeToken->payload;
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
@@ -229,7 +231,7 @@ function download()
     if (!empty($plugin->getDocumentServerSecret())) {
         $token = substr(getallheaders()[$plugin->getJwtHeader()], strlen("Bearer "));
         try {
-            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($plugin->getDocumentServerSecret(), "HS256"));
+            $payload = JWT::decode($token, new Key($plugin->getDocumentServerSecret(), "HS256"));
 
         } catch (\UnexpectedValueException $e) {
             $result["status"] = "error";

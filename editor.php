@@ -19,6 +19,8 @@
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
+use \Firebase\JWT\JWT;
+
 const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
 
 $plugin = OnlyofficePlugin::create();
@@ -172,7 +174,7 @@ if ($canEdit && $accessRights && !$isReadonly) {
 $config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
 
 if (!empty($plugin->getDocumentServerSecret())) {
-    $token = \Firebase\JWT\JWT::encode($config, $plugin->getDocumentServerSecret(), "HS256");
+    $token = JWT::encode($config, $plugin->getDocumentServerSecret(), "HS256");
     $config["token"] = $token;
 }
 
