@@ -295,4 +295,13 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     public function getConfigLink() {
         return api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=".$this->pluginName;
     }
+
+    /**
+     * Get plugin name
+     *
+     * @return string
+     */
+    public function getPluginName() {
+        return $this->pluginName;
+    }
 }
