@@ -40,4 +40,5 @@ $strings["pluginIsNotConfigured"] = "ONLYOFFICE App ist nicht konfiguriert. Bitt
 $strings["cantReadXml"] = "Server kann eine xml-Datei nicht einlesen";
 $strings["badResponseErrors"] = "Bad Response. Fehler: ";
 $strings["mixedContent"] = "Mixed Active Content ist nicht möglich. HTTPS-Adresse für ONLYOFFICE Docs ist erforderlich.";
+$strings["badHealthcheckStatus"] = "Ungültiger healthcheck-Status";
 $strings["notSupportedVersion"] = "Nicht unterstützte Version";

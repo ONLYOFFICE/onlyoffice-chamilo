@@ -40,4 +40,5 @@ $strings["pluginIsNotConfigured"] = "L'applicazione ONLYOFFICE non è configurat
 $strings["cantReadXml"] = "Il server non può leggere xml";
 $strings["badResponseErrors"] = "Risposta non corretta. Errori: ";
 $strings["mixedContent"] = "Il contenuto attivo misto non è consentito. È richiesto l'indirizzo HTTPS per ONLYOFFICE Docs.";
+$strings["badHealthcheckStatus"] = "Stato del healthcheck non valido";
 $strings["notSupportedVersion"] = "Versione non supportata";
