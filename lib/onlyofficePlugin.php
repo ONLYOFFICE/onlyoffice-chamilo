@@ -141,8 +141,8 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
             } else {
                 $data["available"] = false;
                 $data["enabled"] = false;
+                api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
             }
-            api_set_setting('onlyoffice_connect_demo_data', json_encode($data));
         }
         return $data;
     }
