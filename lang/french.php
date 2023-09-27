@@ -4,7 +4,7 @@
  *
  */
 $strings["plugin_title"] = "ONLYOFFICE";
-$strings['plugin_comment'] = "Connecteur ONLYOFFICE vous permet d’afficher, éditer et coéditer les documents texte, les feuilles de calcul et les présentations au sein de Chamilo en utilisant ONLYOFFICE Docs.";
+$strings['plugin_comment'] = "Connecteur ONLYOFFICE vous permet d'afficher, éditer et coéditer les documents texte, les feuilles de calcul et les présentations au sein de Chamilo en utilisant ONLYOFFICE Docs.";
 $strings["enable_onlyoffice_plugin"] = "Activer";
 $strings["document_server_url"] = "L'URL du serveur ONLYOFFICE Docs";
 $strings["jwt_secret"] = "Clé secrète (laisser vide pour désactiver)";
@@ -13,7 +13,7 @@ $strings["createNew"] = "Créer nouveau";
 $strings["title"] = "Titre";
 $strings["chooseFileFormat"] = "Sélectionner le format du fichier";
 $strings["document"] = "Document";
-$strings["spreadsheet"] = "Classeur";
+$strings["spreadsheet"] = "Feuille de calcul";
 $strings["presentation"] = "Présentation";
 $strings["create"] = "Créer";
 $strings["fileIsExist"] = "Le fichier existe déjà";
@@ -40,4 +40,5 @@ $strings["pluginIsNotConfigured"] = "L'application ONLYOFFICE n'est pas configur
 $strings["cantReadXml"] = "Le serveur ne peut pas lire le XML";
 $strings["badResponseErrors"] = "Mauvaise réponse. Erreurs: ";
 $strings["mixedContent"] = "Le contenu mixte actif n'est pas autorisé. Une adresse HTTPS pour le ONLYOFFICE Docs est requise";
+$strings["badHealthcheckStatus"] = "Le statut de healthcheck n'est pas valide";
 $strings["notSupportedVersion"] = "Version non supportée";
