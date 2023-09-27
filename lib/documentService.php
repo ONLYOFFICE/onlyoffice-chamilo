@@ -19,6 +19,8 @@
 
 require_once __DIR__ . '/../../../main/inc/global.inc.php';
 
+use \Firebase\JWT\JWT;
+
 class DocumentService {
 
     /**
@@ -264,9 +266,9 @@ class DocumentService {
             $params = [
                 'payload' => $data
             ];
-            $token = \Firebase\JWT\JWT::encode($params, $this->getValue('jwt_secret'), 'HS256');
+            $token = JWT::encode($params, $this->getValue('jwt_secret'), 'HS256');
             $opts['headers'][$this->getValue('jwt_header')] = 'Bearer ' . $token;
-            $token = \Firebase\JWT\JWT::encode($data, $this->getValue('jwt_secret'), 'HS256');
+            $token = JWT::encode($data, $this->getValue('jwt_secret'), 'HS256');
             $data['token'] = $token;
             $opts['body'] = json_encode($data);
         }
@@ -376,10 +378,10 @@ class DocumentService {
             $params = [
                 'payload' => $data
             ];
-            $token = \Firebase\JWT\JWT::encode($params, $this->getValue('jwt_secret'), 'HS256');
+            $token = JWT::encode($params, $this->getValue('jwt_secret'), 'HS256');
             $opts['headers'][$this->getValue('jwt_header')] = 'Bearer ' . $token;
 
-            $token = \Firebase\JWT\JWT::encode($data, $this->getValue('jwt_secret'), 'HS256');
+            $token = JWT::encode($data, $this->getValue('jwt_secret'), 'HS256');
             $data['token'] = $token;
             $opts['body'] = json_encode($data);
         }
