@@ -33,13 +33,15 @@ class TemplateManager {
         "el" => "el-GR",
         "en" => "en-US",
         "es" => "es-ES",
+        "eu" => "eu-ES",
         "fr" => "fr-FR",
-        "gl" => "ge-ES",
+        "gl" => "gl-ES",
         "it" => "it-IT",
         "ja" => "ja-JP",
         "ko" => "ko-KR",
         "lv" => "lv-LV",
         "nl" => "nl-NL",
+        "ms" => "ms-MY",
         "pl" => "pl-PL",
         "pt" => "pt-PT",
         "pt-BR" => "pt-BR",
@@ -49,7 +51,8 @@ class TemplateManager {
         "tr" => "tr-TR",
         "uk" => "uk-UA",
         "vi" => "vi-VN",
-        "zh" => "zh-CN"
+        "zh" => "zh-CN",
+        "zh-TW" => "zh-TW"
     ];
 
     /**

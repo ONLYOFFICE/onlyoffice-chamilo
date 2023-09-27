@@ -3,7 +3,7 @@
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
 ## Added
-- Turkish and Galician empty file templates
+- Chinese (Taiwan), Basque (Spain), Malay (Malaysia), and Galician empty file templates
 - jwt header setting
 - connection to the demo server
 - setting address for internal requests from the server
