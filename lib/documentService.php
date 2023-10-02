@@ -492,10 +492,18 @@ class DocumentService {
                     break;
                 default:
             }
-            return $result;
         } else {
-            return isset($this->newSettings[$value]) ? $this->newSettings[$value] : null;
+            $result = isset($this->newSettings[$value]) ? $this->newSettings[$value] : null;
+            if ($value === 'document_server_url') {
+                if ($result !== null && $result !== "/") {
+                    $result = rtrim($result, "/");
+                    if (strlen($result) > 0) {
+                        $result = $result . "/";
+                    }
+                }
+            }
         }
+        return $result;
     }
 
 }
