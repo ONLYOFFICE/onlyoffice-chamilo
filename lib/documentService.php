@@ -494,7 +494,7 @@ class DocumentService {
             }
         } else {
             $result = isset($this->newSettings[$value]) ? $this->newSettings[$value] : null;
-            if ($value === 'document_server_url') {
+            if ($value !== 'jwt_secret' && $value !== 'jwt_header') {
                 if ($result !== null && $result !== "/") {
                     $result = rtrim($result, "/");
                     if (strlen($result) > 0) {
