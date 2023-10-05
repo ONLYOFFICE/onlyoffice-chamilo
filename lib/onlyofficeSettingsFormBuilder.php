@@ -130,12 +130,14 @@ class OnlyofficeSettingsFormBuilder {
         }
         $documentserver = $plugin->getDocumentServerUrl();
         if (!empty($documentserver)) {
-            $documentService = new DocumentService($plugin, $result);
-            list ($error, $version) = $documentService->checkDocServiceUrl();
+            if ((bool)$result['connect_demo'] === false) {
+                $documentService = new DocumentService($plugin, $result);
+                list ($error, $version) = $documentService->checkDocServiceUrl();
 
-            if (!empty($error)) {
-                $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
-            self::displayError($errorMsg); 
+                if (!empty($error)) {
+                    $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
+                self::displayError($errorMsg); 
+                }
             }
         }
         return $plugin;
