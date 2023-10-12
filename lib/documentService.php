@@ -493,7 +493,7 @@ class DocumentService {
                 default:
             }
         } else {
-            $result = isset($this->newSettings[$value]) ? $this->newSettings[$value] : null;
+            $result = isset($this->newSettings[$value]) ? (string)$this->newSettings[$value] : null;
             if ($value !== 'jwt_secret' && $value !== 'jwt_header') {
                 if ($result !== null && $result !== "/") {
                     $result = rtrim($result, "/");
@@ -501,6 +501,8 @@ class DocumentService {
                         $result = $result . "/";
                     }
                 }
+            } else if ($value === 'jwt_header' && empty($this->newSettings[$value])) {
+                $result = 'Authorization';
             }
         }
         return $result;
