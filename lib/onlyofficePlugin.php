@@ -184,13 +184,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         }
 
         $url = $this->get("document_server_url");
-        if ($url !== null && $url !== "/") {
-            $url = rtrim($url, "/");
-            if (strlen($url) > 0) {
-                $url = $url . "/";
-            }
-        }
-        return $url;
+        return self::processUrl($url);
     }
 
     /**
@@ -212,7 +206,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         if (!$origin && empty($url)) {
             $url = $this->getDocumentServerUrl();
         }
-        return $url;
+        return self::processUrl($url);
     }
 
     /**
@@ -237,7 +231,6 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
                 $url = str_replace($from, $documentServerUrl, $url);
             }
         }
-
         return $url;
     }
 
@@ -251,7 +244,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         if (empty($storageUrl)) {
             $storageUrl = AppConfig::StorageUrl();
         }
-        return $storageUrl;
+        return self::processUrl($storageUrl);
     }
 
     /**
@@ -303,5 +296,20 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
      */
     public function getPluginName() {
         return $this->pluginName;
+    }
+
+    /**
+     * Add backslash to url if it's needed
+     *
+     * @return string
+     */
+    public function processUrl($url) {
+        if ($url !== null && $url !== "/") {
+            $url = rtrim($url, "/");
+            if (strlen($url) > 0) {
+                $url = $url . "/";
+            }
+        }
+        return $url;
     }
 }
