@@ -64,7 +64,7 @@ $key = FileUtility::getKey($courseCode, $docId);
 $fileUrl = FileUtility::getFileUrl($courseId, $userId, $docId, $sessionId, $groupId);
 
 if (!empty($plugin->getStorageUrl())) {
-    $fileUrl = str_replace(api_get_path(WEB_PLUGIN_PATH), $plugin->getStorageUrl(), $fileUrl);
+    $fileUrl = str_replace(api_get_path(WEB_PATH), $plugin->getStorageUrl(), $fileUrl);
 }
 
 $config = [
@@ -160,7 +160,7 @@ if ($canEdit && $accessRights && !$isReadonly) {
     );
 
     if (!empty($plugin->getStorageUrl())) {
-        $callback = str_replace(api_get_path(WEB_PLUGIN_PATH), $plugin->getStorageUrl(), $callback);
+        $callback = str_replace(api_get_path(WEB_PATH), $plugin->getStorageUrl(), $callback);
     }
     $config["editorConfig"]["callbackUrl"] = $callback;
 } else {
