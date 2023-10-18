@@ -51,6 +51,9 @@ $userInfo = api_get_user_info($userId);
 $sessionId = api_get_session_id();
 $courseId = api_get_course_int_id();
 $courseInfo = api_get_course_info();
+if (empty($courseInfo)) {
+    api_not_allowed(true);
+}
 $courseCode = $courseInfo["code"];
 
 $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
