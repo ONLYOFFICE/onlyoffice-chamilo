@@ -258,6 +258,7 @@ function download()
     @header("Content-Disposition: attachment; filename=" . $docInfo["title"]);
 
     readfile($filePath);
+    exit();
 }
 
 /**
