@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,27 @@
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
-/**
- * @package chamilo.plugin.onlyoffice
- */
-OnlyofficePlugin::create()->install();
+const ErrorStatus_UpdateOnlyoffice = 1;
+const ErrorStatus_NotSupportedVersion = 2;
+
+$plugin = OnlyofficePlugin::create();
+
+$message = "";
+$status = $_GET["status"];
+switch ($status) {
+    case ErrorStatus_UpdateOnlyoffice:
+        $message = "UpdateOnlyoffice";
+        break;
+    case ErrorStatus_NotSupportedVersion:
+        $message = "NotSupportedVersion";
+        break;
+}
+
+Display::addFlash(
+    Display::return_message(
+        $plugin->get_lang($message),
+        "error"
+    )
+);
+
+Display::display_header();
