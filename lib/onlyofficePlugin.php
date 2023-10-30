@@ -36,7 +36,7 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     protected function __construct()
     {
         parent::__construct(
-            "1.2.0",
+            "1.3.0",
             "Asensio System SIA",
             [
                 "enable_onlyoffice_plugin" => "boolean",
