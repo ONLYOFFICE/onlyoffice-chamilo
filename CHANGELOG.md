@@ -2,6 +2,10 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+##
+## Added
+- Arabic and Serbian empty file templates
+
 ## 1.3.0
 ## Added
 - Chinese (Taiwan), Basque (Spain), Malay (Malaysia), and Galician empty file templates

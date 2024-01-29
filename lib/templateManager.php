@@ -27,6 +27,7 @@ class TemplateManager {
      * @var Array
      */
     private static $localPath = [
+        "ar" => "ar-SA",
         "bg" => "bg-BG",
         "cs" => "cs-CS",
         "de" => "de-DE",
@@ -47,6 +48,7 @@ class TemplateManager {
         "pt-BR" => "pt-BR",
         "ru" => "ru-RU",
         "sk" => "sk-SK",
+        "sr" => "sr-Latn-RS",
         "sv" => "sv-SE",
         "tr" => "tr-TR",
         "uk" => "uk-UA",
