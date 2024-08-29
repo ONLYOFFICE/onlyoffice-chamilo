@@ -19,14 +19,16 @@
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 require_once __DIR__.'/lib/onlyofficeSettingsFormBuilder.php';
+require_once __DIR__.'/lib/OnlyofficeAppsettings.php';
 
 /**
  * @author Asensio System SIA
  */
 
 $plugin = OnlyofficePlugin::create();
+$appSettings = new OnlyofficeAppsettings($plugin);
 $plugin_info = $plugin->get_info();
-$plugin_info['settings_form'] = OnlyofficeSettingsFormBuilder::buildSettingsForm($plugin);
+$plugin_info['settings_form'] = OnlyofficeSettingsFormBuilder::buildSettingsForm($appSettings);
 if ($plugin_info['settings_form']->validate()) {
-    $plugin = OnlyofficeSettingsFormBuilder::validateSettingsForm($plugin);
+    $plugin = OnlyofficeSettingsFormBuilder::validateSettingsForm($appSettings);
 }

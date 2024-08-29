@@ -18,7 +18,6 @@
  */
 
 require_once __DIR__ . "/../../../main/inc/global.inc.php";
-require_once __DIR__ . "/documentService.php";
 
 class OnlyofficeSettingsFormBuilder {
 
@@ -70,12 +69,13 @@ class OnlyofficeSettingsFormBuilder {
     /**
      * Build OnlyofficePlugin settings form
      *
-     * @param OnlyofficePlugin $plugin - OnlyofficePlugin
+     * @param OnlyofficeAppsettings $settings - Onlyoffice SettingsManager
      *
      * @return FormValidator
      */
-    public function buildSettingsForm($plugin) {
-        $demoData = $plugin->getDemoData();
+    public function buildSettingsForm(OnlyofficeAppsettings $settingsManager) {
+        $plugin = $settingsManager->plugin;
+        $demoData = $settingsManager->getDemoData();
         $plugin_info = $plugin->get_info();
         $message = '';
         $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
@@ -88,7 +88,7 @@ class OnlyofficeSettingsFormBuilder {
             $message = $plugin->get_lang('demoPeriodIsOver');
             $connectDemoCheckbox->setAttribute('disabled');
         } else {
-            if ($plugin->useDemo()) {
+            if ($settingsManager->useDemo()) {
                 $message = $plugin->get_lang('demoUsingMessage');
                 $connectDemoCheckbox->setChecked(true);
             } else {
@@ -100,7 +100,7 @@ class OnlyofficeSettingsFormBuilder {
             'info'
         );
         $bannerTemplate = self::buildTemplate('get_docs_cloud_banner', [
-            'docs_cloud_link' => AppConfig::GetLinkToDocs(),
+            'docs_cloud_link' => $settingsManager->getLinkToDocs(),
             'banner_title' => $plugin->get_lang('DocsCloudBannerTitle'),
             'banner_main_text' => $plugin->get_lang('DocsCloudBannerMain'),
             'banner_button_text' => $plugin->get_lang('DocsCloudBannerButton'),
@@ -116,24 +116,27 @@ class OnlyofficeSettingsFormBuilder {
     /**
      * Validate OnlyofficePlugin settings form
      *
-     * @param OnlyofficePlugin $plugin - OnlyofficePlugin
+     * @param OnlyofficeAppsettings $settingsManager - Onlyoffice SettingsManager
      *
      * @return OnlyofficePlugin
      */
-    public function validateSettingsForm($plugin) {
+    public function validateSettingsForm(OnlyofficeAppsettings $settingsManager) {
+        $plugin = $settingsManager->plugin;
         $errorMsg = null;
         $plugin_info = $plugin->get_info();
         $result = $plugin_info['settings_form']->getSubmitValues();
-        if (!$plugin->selectDemo((bool)$result['connect_demo'] === true)) {
+        unset($result["submit_button"]);
+        $settingsManager->newSettings = $result;
+        if (!$settingsManager->selectDemo((bool)$result['connect_demo'] === true)) {
             $errorMsg = $plugin->get_lang('demoPeriodIsOver');
             self::displayError($errorMsg, $plugin->getConfigLink());
         }
-        $documentserver = $plugin->getDocumentServerUrl();
-        if (!empty($documentserver)) {
+        if (!empty($settingsManager->getDocumentServerUrl())) {
             if ((bool)$result['connect_demo'] === false) {
-                $documentService = new DocumentService($plugin, $result);
-                list ($error, $version) = $documentService->checkDocServiceUrl();
-
+                $httpClient = new OnlyofficeHttpClient();
+                $jwtManager = new OnlyofficeJwtManager($settingsManager);
+                $requestService = new OnlyofficeAppRequests($settingsManager, $httpClient, $jwtManager);
+                list ($error, $version) = $requestService->checkDocServiceUrl();
                 if (!empty($error)) {
                     $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
                 self::displayError($errorMsg); 
