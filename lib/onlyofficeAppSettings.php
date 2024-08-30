@@ -87,9 +87,23 @@ class OnlyofficeAppsettings extends SettingsManager
 
     public function getSetting($settingName) {
         $value = null;
-        if (($this->newSettings !== null) && (isset($this->newSettings[$settingName])))
+        if ($this->newSettings !== null)
         {
-            $value = isset($this->newSettings[$settingName]) ? (string)$this->newSettings[$settingName] : null;
+            if (isset($this->newSettings[$settingName])) {
+                $value = $this->newSettings[$settingName];
+            }
+            
+            if (empty($value)) {
+                $prefix = $this->plugin->getPluginName();
+
+                if (substr($settingName, 0, strlen($prefix)) == $prefix) {
+                    $settingNameWithoutPrefix = substr($settingName, strlen($prefix) + 1);
+                }
+
+                if (isset($this->newSettings[$settingNameWithoutPrefix])) {
+                    $value = $this->newSettings[$settingNameWithoutPrefix];
+                }
+            }
             if ($this->isSettingUrl($value)) {
                 $value = $this->processUrl($value);
             }
@@ -99,15 +113,15 @@ class OnlyofficeAppsettings extends SettingsManager
         }
         switch ($settingName) {
             case $this->jwtHeader:
-                $value = api_get_configuration_value($settingName);
+                $value = api_get_setting($settingName)[$this->plugin->getPluginName()];
                 if (empty($value)) {
                     $value = "Authorization";
                 }
             break;
             case $this->documentServerInternalUrl:
-                $value = api_get_configuration_value($settingName);
+                $value = api_get_setting($settingName)[$this->plugin->getPluginName()];
             break;
-            case $this->$useDemoName:
+            case $this->useDemoName:
                 $value = api_get_setting($settingName)[0];
             break;
             case $this->jwtPrefix:
@@ -117,9 +131,9 @@ class OnlyofficeAppsettings extends SettingsManager
             if (!empty($this->plugin) && method_exists($this->plugin, "get")) {
                 $value = $this->plugin->get($settingName);
             }
-            if (empty($value)) {
-                $value = api_get_configuration_value($settingName);
-            }
+        }
+        if (empty($value)) {
+            $value = api_get_configuration_value($settingName);
         }
         return $value;
     }
