@@ -22,16 +22,8 @@ require_once __DIR__.'/../../main/inc/global.inc.php';
 use ChamiloSession as Session;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
-
-/**
- * Status of the document
- */
-const TrackerStatus_Editing = 1;
-const TrackerStatus_MustSave = 2;
-const TrackerStatus_Corrupted = 3;
-const TrackerStatus_Closed = 4;
-const TrackerStatus_ForceSave = 6;
-const TrackerStatus_CorruptedForceSave = 7;
+use Onlyoffice\DocsIntegrationSdk\Models\Callback as OnlyofficeCallback;
+use Onlyoffice\DocsIntegrationSdk\Models\CallbackDocStatus;
 
 $plugin = OnlyofficePlugin::create();
 
@@ -41,7 +33,9 @@ if (isset($_GET["hash"]) && !empty($_GET["hash"])) {
     @header( 'X-Robots-Tag: noindex' );
     @header( 'X-Content-Type-Options: nosniff' );
 
-    list ($hashData, $error) = Crypt::ReadHash($_GET["hash"]);
+    $appSettings = new OnlyofficeAppsettings($plugin);
+    $jwtManager = new OnlyofficeJwtManager($appSettings);
+    list ($hashData, $error) = $jwtManager->readHash($_GET["hash"], api_get_security_key());
     if ($hashData === null) {
         $callbackResponseArray["status"] = "error";
         $callbackResponseArray["error"] = $error;
@@ -106,6 +100,8 @@ function track(): array
     global $groupId;
     global $sessionId;
     global $courseInfo;
+    global $appSettings;
+    global $jwtManager;
 
     if (($body_stream = file_get_contents("php://input")) === false) {
         $result["error"] = "Bad Request";
@@ -119,20 +115,20 @@ function track(): array
         return $result;
     }
 
-    if (!empty($plugin->getDocumentServerSecret())) {
+    if ($jwtManager->isJwtEnabled()) {
 
         if (!empty($data["token"])) {
             try {
-                $payload = JWT::decode($data["token"], new Key($plugin->getDocumentServerSecret(), "HS256"));
+                $payload = $jwtManager->decode($data["token"], $appSettings->getJwtKey());
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
                 $result["error"] = "403 Access denied";
                 return $result;
             }
         } else {
-            $token = substr(getallheaders()[$plugin->getJwtHeader()], strlen("Bearer "));
+            $token = substr(getallheaders()[$appSettings->getJwtHeader()], strlen("Bearer "));
             try {
-                $decodeToken = JWT::decode($token, new Key($plugin->getDocumentServerSecret(), "HS256"));
+                $decodeToken = $jwtManager->decode($token, $appSettings->getJwtKey());
                 $payload = $decodeToken->payload;
             } catch (\UnexpectedValueException $e) {
                 $result["status"] = "error";
@@ -145,73 +141,24 @@ function track(): array
         $data["status"] = $payload->status;
     }
 
-    $status = $data["status"];
+    $docStatus = new CallbackDocStatus($data["status"]);
+    $callback = new OnlyofficeCallback;
+    $callback->setStatus($docStatus);
+    $callback->setKey($docId);
+    $callback->setUrl($data["url"]);
+    $callbackService = new OnlyofficeCallbackService(
+        $appSettings,
+        $jwtManager,
+        [
+            "courseCode" => $courseCode,
+            "userId" => $userId,
+            "docId" => $docId,
+            "groupId" => $groupId,
+            "sessionId" => $sessionId,
+            "courseInfo" => $courseInfo
+        ]);
+    $result = $callbackService->processCallback($callback, $docId);
 
-    $track_result = 1;
-    switch ($status) {
-        case TrackerStatus_MustSave:
-        case TrackerStatus_Corrupted:
-
-            $downloadUri = $data["url"];
-            $downloadUri = $plugin->replaceDocumentServerUrlToInternal($downloadUri);
-
-            if (!empty($docId) && !empty($courseCode)) {
-                $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
-
-                if ($docInfo === false) {
-                    $result["error"] = "File not found";
-                    return $result;
-                }
-
-                $filePath = $docInfo["absolute_path"];
-            } else {
-                $result["error"] = "Bad Request";
-                return $result;
-            }
-
-            list ($isAllowToEdit, $isMyDir, $isGroupAccess, $isReadonly) = getPermissions($docInfo, $userId, $courseCode, $groupId, $sessionId);
-
-            if ($isReadonly) {
-                break;
-            }
-
-            if (($new_data = file_get_contents($downloadUri)) === false) {
-                break;
-            }
-
-            if ($isAllowToEdit || $isMyDir || $isGroupAccess) {
-                $groupInfo = GroupManager::get_group_properties($groupId);
-
-                if ($fp = @fopen($filePath, "w")) {
-                    fputs($fp, $new_data);
-                    fclose($fp);
-                    api_item_property_update($courseInfo,
-                                                TOOL_DOCUMENT,
-                                                $docId,
-                                                "DocumentUpdated",
-                                                $userId,
-                                                $groupInfo,
-                                                null,
-                                                null,
-                                                null,
-                                                $sessionId);
-                    update_existing_document($courseInfo,
-                                                $docId,
-                                                filesize($filePath),
-                                                false);
-                    $track_result = 0;
-                    break;
-                }
-            }
-
-        case TrackerStatus_Editing:
-        case TrackerStatus_Closed:
-
-            $track_result = 0;
-            break;
-    }
-
-    $result["error"] = $track_result;
     return $result;
 }
 
@@ -227,11 +174,13 @@ function download()
     global $groupId;
     global $sessionId;
     global $courseInfo;
+    global $appSettings;
+    global $jwtManager;
 
-    if (!empty($plugin->getDocumentServerSecret())) {
-        $token = substr(getallheaders()[$plugin->getJwtHeader()], strlen("Bearer "));
+    if ($jwtManager->isJwtEnabled()) {
+        $token = substr(getallheaders()[$appSettings->getJwtHeader()], strlen("Bearer "));
         try {
-            $payload = JWT::decode($token, new Key($plugin->getDocumentServerSecret(), "HS256"));
+            $payload = $jwtManager->decode($token, $appSettings->getJwtKey());
 
         } catch (\UnexpectedValueException $e) {
             $result["status"] = "error";
@@ -259,26 +208,4 @@ function download()
 
     readfile($filePath);
     exit();
-}
-
-/**
- * Method checks access rights to document and returns permissions
- */
-function getPermissions(array $docInfo, int $userId, string $courseCode, int $groupId = null, int $sessionId = null): array
-{
-    $isAllowToEdit = api_is_allowed_to_edit(true, true);
-    $isMyDir = DocumentManager::is_my_shared_folder($userId, $docInfo["absolute_parent_path"], $sessionId);
-
-    $isGroupAccess = false;
-    if (!empty($groupId)) {
-        $courseInfo = api_get_course_info($courseCode);
-        Session::write("_real_cid", $courseInfo["real_id"]);
-        $groupProperties = GroupManager::get_group_properties($groupId);
-        $docInfoGroup = api_get_item_property_info($courseInfo["real_id"], "document", $docInfo["id"], $sessionId);
-        $isGroupAccess = GroupManager::allowUploadEditDocument($userId, $courseCode, $groupProperties, $docInfoGroup);
-    }
-
-    $isReadonly = $docInfo["readonly"];
-
-    return [$isAllowToEdit, $isMyDir, $isGroupAccess, $isReadonly];
 }

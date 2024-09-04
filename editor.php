@@ -21,8 +21,6 @@ require_once __DIR__.'/../../main/inc/global.inc.php';
 
 use \Firebase\JWT\JWT;
 
-const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
-
 $plugin = OnlyofficePlugin::create();
 
 $isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
@@ -39,16 +37,11 @@ if (empty($documentServerUrl)) {
 }
 
 $config = [];
-
 $docApiUrl = $appSettings->getDocumentServerApiUrl();
-
 $docId = $_GET["docId"];
 $groupId = isset($_GET["groupId"]) && !empty($_GET["groupId"]) ? $_GET["groupId"] : null;
-
 $userId = api_get_user_id();
-
 $userInfo = api_get_user_info($userId);
-
 $sessionId = api_get_session_id();
 $courseId = api_get_course_int_id();
 $courseInfo = api_get_course_info();
@@ -60,8 +53,6 @@ $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, 
 $langInfo = LangManager::getLangUser();
 $jwtManager = new OnlyofficeJwtManager($appSettings);
 $documentManager = new OnlyofficeDocumentManager($appSettings, $docInfo);
-
-
 $extension = $documentManager->getExt($documentManager->getDocInfo("title"));
 $docType = $documentManager->getDocType($extension);
 $key = $documentManager->getDocumentKey($docId, $courseCode);
@@ -73,29 +64,12 @@ if (!empty($appSettings->getStorageUrl())) {
 
 
 $configService = new OnlyofficeConfigService($appSettings, $jwtManager, $documentManager);
-
 $editorsMode = $configService->getEditorsMode();
-
 $config = $configService->createConfig($docId, $editorsMode, $_SERVER["HTTP_USER_AGENT"]);
 $config = json_decode(json_encode($config), true);
 
-$userAgent = $_SERVER["HTTP_USER_AGENT"];
-
-$isMobileAgent = preg_match(USER_AGENT_MOBILE, $userAgent);
-
-$isAllowToEdit = api_is_allowed_to_edit(true, true);
-$isMyDir = DocumentManager::is_my_shared_folder(
-    $userId,
-    $docInfo["absolute_parent_path"],
-    $sessionId
-);
-
-$accessRights = $isAllowToEdit || $isMyDir || $isGroupAccess;
-$canEdit = in_array($extension, FileUtility::$can_edit_types);
-$isReadonly = $docInfo["readonly"];
-
-$config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
-
+$config["document"]["permissions"]["edit"] = $configService->getAccessRights() && !$configService->isReadOnly();
+$isMobileAgent = $configService->isMobileAgent($_SERVER["HTTP_USER_AGENT"]);
 
 ?>
 <title>ONLYOFFICE</title>
@@ -112,7 +86,7 @@ $config["document"]["permissions"]["edit"] = $accessRights && !$isReadonly;
         display: none;
     }
 </style>
-<script type="text/javascript" src=<?php echo $docApiUrl?>></script>
+<script type="text/javascript" src="<?php echo $docApiUrl?>"></script>
 <script type="text/javascript">
     var onAppReady = function () {
         innerAlert("Document editor ready");
