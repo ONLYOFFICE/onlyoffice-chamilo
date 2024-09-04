@@ -92,7 +92,7 @@ class OnlyofficeAppsettings extends SettingsManager
             if (isset($this->newSettings[$settingName])) {
                 $value = $this->newSettings[$settingName];
             }
-            
+
             if (empty($value)) {
                 $prefix = $this->plugin->getPluginName();
 

@@ -36,4 +36,9 @@ class OnlyofficeJwtManager extends JwtManager
         $payload = JWT::decode($token, new Key($key, $algorithm));
         return $payload;
     }
+
+    public function getHash($object)
+    {
+        return $this->encode($object, api_get_security_key());
+    }
 }
