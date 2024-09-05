@@ -16,7 +16,8 @@
  * limitations under the License.
  *
  */
-use Onlyoffice\DocsIntegrationSdk\Manager\Document\DocumentManager;
+use DocumentManager as ChamiloDocumentManager;
+use Onlyoffice\DocsIntegrationSdk\Manager\Document\DocumentManager as DocumentManager;
 
 class OnlyofficeDocumentManager extends DocumentManager
 {
@@ -91,12 +92,27 @@ class OnlyofficeDocumentManager extends DocumentManager
     }
     public function getGobackUrl(string $fileId)
     {
-        return api_get_path(WEB_CODE_PATH)."document/document.php"
-                                            . "?cidReq=" . Security::remove_XSS(api_get_course_int_id())
-                                            . "&id_session=" . Security::remove_XSS(api_get_session_id())
-                                            . "&gidReq=" . Security::remove_XSS($this->getGroupId())
-                                            . "&id=" . Security::remove_XSS($this->docInfo["parent_id"]);
+        if (!empty($this->docInfo)) {
+            return api_get_path(WEB_CODE_PATH)."document/document.php"
+                                                        . "?cidReq=" . Security::remove_XSS(api_get_course_id())
+                                                        . "&id_session=" . Security::remove_XSS(api_get_session_id())
+                                                        . "&gidReq=" . Security::remove_XSS($this->getGroupId())
+                                                        . "&id=" . Security::remove_XSS($this->docInfo["parent_id"]);
+        }
+        return "";
     }
+
+    /**
+     * Return location file in chamilo documents
+     */
+    public static function getUrlToLocation($courseCode, $sessionId, $groupId, $folderId) {
+        return api_get_path(WEB_CODE_PATH)."document/document.php"
+                                            . "?cidReq=" . Security::remove_XSS($courseCode)
+                                            . "&id_session=" . Security::remove_XSS($sessionId)
+                                            . "&gidReq=" . Security::remove_XSS($groupId)
+                                            . "&id=" . Security::remove_XSS($folderId);
+    }
+    
     public function getCreateUrl(string $fileId)
     {
 
@@ -124,5 +140,114 @@ class OnlyofficeDocumentManager extends DocumentManager
     public function setDocInfo($docInfo)
     {
         $this->docInfo = $docInfo;
+    }
+
+    /**
+     * Return file extension by file type
+     */
+    public static function getDocExtByType(string $type): string
+    {
+        if ($type === "text") {
+            return "docx";
+        }
+        if ($type === "spreadsheet") {
+            return "xlsx";
+        }
+        if ($type === "presentation") {
+            return "pptx";
+        }
+        if ($type === "formTemplate") {
+            return "docxf";
+        }
+
+        return "";
+    }
+
+    /**
+     * Create new file
+     */
+    public static function createFile(
+        string $basename,
+        string $fileExt,
+        int $folderId,
+        int $userId,
+        int $sessionId,
+        int $courseId,
+        int $groupId,
+        string $templatePath = ""): array
+    {
+        $courseInfo = api_get_course_info_by_id($courseId);
+        $courseCode = $courseInfo["code"];
+        $groupInfo = GroupManager::get_group_properties($groupId);
+
+        $fileTitle = Security::remove_XSS($basename). "." .$fileExt;
+
+        $fileNamePrefix = ChamiloDocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
+        $fileName = preg_replace('/\.\./', '', $basename) . $fileNamePrefix . "." . $fileExt;
+
+        if (empty($templatePath)) {
+            $templatePath = TemplateManager::getEmptyTemplate($fileExt);
+        }
+
+        $folderPath = '';
+        $fileRelatedPath = "/";
+        if (!empty($folderId)) {
+            $document_data = ChamiloDocumentManager::get_document_data_by_id(
+                $folderId,
+                $courseCode,
+                true,
+                $sessionId
+            );
+            $folderPath = $document_data["absolute_path"];
+            $fileRelatedPath = $fileRelatedPath . substr($document_data["absolute_path_from_document"], 10) . "/" . $fileName;
+        } else {
+            $folderPath = api_get_path(SYS_COURSE_PATH) . api_get_course_path($courseCode) . "/document";
+            if (!empty($groupId)) {
+                $folderPath = $folderPath . "/" . $groupInfo["directory"];
+                $fileRelatedPath = $groupInfo["directory"] . "/";
+            }
+            $fileRelatedPath = $fileRelatedPath . $fileName;
+        }
+        $filePath = $folderPath . "/" . $fileName;
+
+        if (file_exists($filePath)) {
+            return ["error" => "fileIsExist"];
+        }
+    
+        if ($fp = @fopen($filePath, "w")) {
+            $content = file_get_contents($templatePath);
+            fputs($fp, $content);
+            fclose($fp);
+    
+            chmod($filePath, api_get_permissions_for_new_files());
+    
+            $documentId = add_document(
+                $courseInfo,
+                $fileRelatedPath,
+                "file",
+                filesize($filePath),
+                $fileTitle,
+                null,
+                false
+            );
+            if ($documentId) {
+                api_item_property_update(
+                    $courseInfo,
+                   TOOL_DOCUMENT,
+                    $documentId,
+                    "DocumentAdded",
+                    $userId,
+                    $groupInfo,
+                    null,
+                    null,
+                    null,
+                    $sessionId
+                );
+            } else {
+                return ["error" => "impossibleCreateFile"];
+            }
+        }
+
+        return ["documentId" => $documentId];
     }
 }

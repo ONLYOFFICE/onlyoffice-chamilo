@@ -20,6 +20,7 @@ use Onlyoffice\DocsIntegrationSdk\Service\DocEditorConfig\DocEditorConfigService
 use Onlyoffice\DocsIntegrationSdk\Models\Customization;
 use Onlyoffice\DocsIntegrationSdk\Models\GoBack;
 use Onlyoffice\DocsIntegrationSdk\Models\EditorsMode;
+use Onlyoffice\DocsIntegrationSdk\Models\Permissions;
 use Onlyoffice\DocsIntegrationSdk\Models\User;
 
 class OnlyofficeConfigService extends DocEditorConfigService
@@ -113,6 +114,8 @@ class OnlyofficeConfigService extends DocEditorConfigService
         $goback->setBlank(false);
         $customization = new Customization;
         $customization->setGoback($goback);
+        $customization->setCompactHeader(true);
+        $customization->setToolbarNoTabs(true);
   
         return $customization;
      }
@@ -128,5 +131,32 @@ class OnlyofficeConfigService extends DocEditorConfigService
      public function getLangInfo() {
         $langInfo = LangManager::getLangUser();
         return $langInfo["isocode"];
+     }
+
+     public function getPermissions(string $fileId = "") {
+        $permsEdit = $this->getAccessRights() && !$this->isReadOnly();
+        $permissions = new Permissions(null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       $permsEdit,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       null
+        );
+        return $permissions;
+     }
+
+     public function getCoEditing(string $fileId = "", $mode = null, $type) {
+        return null;
      }
 }

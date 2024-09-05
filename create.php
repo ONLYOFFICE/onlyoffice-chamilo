@@ -22,6 +22,8 @@ require_once __DIR__.'/../../main/inc/global.inc.php';
 use ChamiloSession as Session;
 
 $plugin = OnlyofficePlugin::create();
+$appSettings = new OnlyofficeAppsettings($plugin);
+$documentManager = new OnlyofficeDocumentManager($appSettings, []);
 
 $mapFileFormat = [
     "text" => $plugin->get_lang("document"),
@@ -77,9 +79,10 @@ if ($form->validate()) {
     $values = $form->exportValues();
 
     $fileType = $values["fileFormat"];
-    $fileExt = FileUtility::getDocExt($fileType);
+    var_dump($fileType);
+    $fileExt = $documentManager->getDocExtByType($fileType);
 
-    $result = FileUtility::createFile(
+    $result = OnlyofficeDocumentManager::createFile(
         $values["fileName"],
         $fileExt,
         $folderId,
@@ -97,12 +100,12 @@ if ($form->validate()) {
             )
         );
     } else {
-        header("Location: " . FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId));
+        header("Location: " . OnlyofficeDocumentManager::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId));
         exit();
     }
 }
 
-    $goBackUrl = FileUtility::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId);
+    $goBackUrl = OnlyofficeDocumentManager::getUrlToLocation($courseCode, $sessionId, $groupId, $folderId);
     $actionsLeft = '<a href="'. $goBackUrl . '">' . Display::return_icon("back.png", get_lang("Back") . " " . get_lang("To") . " " . get_lang("DocumentsOverview"), "", ICON_SIZE_MEDIUM) . "</a>";
 
     Display::display_header($plugin->get_lang("createNewDocument"));

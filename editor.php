@@ -67,8 +67,6 @@ $configService = new OnlyofficeConfigService($appSettings, $jwtManager, $documen
 $editorsMode = $configService->getEditorsMode();
 $config = $configService->createConfig($docId, $editorsMode, $_SERVER["HTTP_USER_AGENT"]);
 $config = json_decode(json_encode($config), true);
-
-$config["document"]["permissions"]["edit"] = $configService->getAccessRights() && !$configService->isReadOnly();
 $isMobileAgent = $configService->isMobileAgent($_SERVER["HTTP_USER_AGENT"]);
 
 ?>

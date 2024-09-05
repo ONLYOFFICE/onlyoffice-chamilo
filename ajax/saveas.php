@@ -60,7 +60,7 @@ if (!($isAllowToEdit || $isMyDir || $groupRights)) {
 $fileExt = strtolower(pathinfo($title, PATHINFO_EXTENSION));
 $baseName = strtolower(pathinfo($title, PATHINFO_FILENAME));
 
-$result = FileUtility::createFile(
+$result = OnlyofficeDocumentManager::createFile(
     $baseName,
     $fileExt,
     $folderId,
