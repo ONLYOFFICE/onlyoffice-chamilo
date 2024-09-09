@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2023.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,66 +13,63 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 use Onlyoffice\DocsIntegrationSdk\Manager\Settings\SettingsManager;
 
 class OnlyofficeAppsettings extends SettingsManager
 {
-        /**
-     * The settings key for the document server address
+    /**
+     * The settings key for the document server address.
      *
      * @var string
      */
-    public $documentServerUrl = "document_server_url";
+    public $documentServerUrl = 'document_server_url';
 
     /**
-     * The config key for the jwt header
+     * The config key for the jwt header.
      *
      * @var string
      */
-    public $jwtHeader = "onlyoffice_jwt_header"; 
+    public $jwtHeader = 'onlyoffice_jwt_header';
 
     /**
-     * The config key for JWT secret key
+     * The config key for JWT secret key.
      *
      * @var string
      */
-    protected $jwtKey = "jwt_secret";
+    protected $jwtKey = 'jwt_secret';
 
     /**
-     * The config key for the internal url
+     * The config key for the internal url.
      *
      * @var string
      */
-    public $documentServerInternalUrl = "onlyoffice_internal_url";
+    public $documentServerInternalUrl = 'onlyoffice_internal_url';
 
     /**
-    * Link to Docs Cloud
-    *
-    * @var string
-    */
-    public const LINK_TO_DOCS = "https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo";
-
-    /**
-     * The config key for the storage url
+     * Link to Docs Cloud.
      *
      * @var string
      */
-    public $storageUrl = "onlyoffice_storage_url";
+    public const LINK_TO_DOCS = 'https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo';
 
     /**
-     * The config key for the demo data
+     * The config key for the storage url.
      *
      * @var string
      */
-    public $useDemoName = "onlyoffice_connect_demo_data";
-
+    public $storageUrl = 'onlyoffice_storage_url';
 
     /**
-    * Chamilo plugin
-    *
-    */
+     * The config key for the demo data.
+     *
+     * @var string
+     */
+    public $useDemoName = 'onlyoffice_connect_demo_data';
+
+    /**
+     * Chamilo plugin.
+     */
     public $plugin;
 
     public $newSettings;
@@ -85,10 +81,10 @@ class OnlyofficeAppsettings extends SettingsManager
         $this->newSettings = $newSettings;
     }
 
-    public function getSetting($settingName) {
+    public function getSetting($settingName)
+    {
         $value = null;
-        if ($this->newSettings !== null)
-        {
+        if (null !== $this->newSettings) {
             if (isset($this->newSettings[$settingName])) {
                 $value = $this->newSettings[$settingName];
             }
@@ -115,53 +111,57 @@ class OnlyofficeAppsettings extends SettingsManager
             case $this->jwtHeader:
                 $value = api_get_setting($settingName)[$this->plugin->getPluginName()];
                 if (empty($value)) {
-                    $value = "Authorization";
+                    $value = 'Authorization';
                 }
-            break;
+                break;
             case $this->documentServerInternalUrl:
                 $value = api_get_setting($settingName)[$this->plugin->getPluginName()];
-            break;
+                break;
             case $this->useDemoName:
                 $value = api_get_setting($settingName)[0];
-            break;
+                break;
             case $this->jwtPrefix:
-                $value = "Bearer ";
-            break;
+                $value = 'Bearer ';
+                break;
             default:
-            if (!empty($this->plugin) && method_exists($this->plugin, "get")) {
-                $value = $this->plugin->get($settingName);
-            }
+                if (!empty($this->plugin) && method_exists($this->plugin, 'get')) {
+                    $value = $this->plugin->get($settingName);
+                }
         }
         if (empty($value)) {
             $value = api_get_configuration_value($settingName);
         }
+
         return $value;
     }
 
-    public function setSetting($settingName, $value, $createSetting = false) {
+    public function setSetting($settingName, $value, $createSetting = false)
+    {
         if (($settingName === $this->useDemoName) && $createSetting) {
             api_add_setting(json_encode($value), $settingName, null, 'setting', 'Plugins');
+
             return;
         }
-        
+
         $prefix = $this->plugin->getPluginName();
-        if (!(substr($settingName, 0, strlen($prefix)) == $prefix))
-        {
-            $settingName = $prefix . "_" . $settingName;
+        if (!(substr($settingName, 0, strlen($prefix)) == $prefix)) {
+            $settingName = $prefix.'_'.$settingName;
         }
         api_set_setting($settingName, $value);
     }
 
-    public function getServerUrl() {
+    public function getServerUrl()
+    {
         return api_get_path(WEB_PATH);
     }
 
     /**
-    * Get link to Docs Cloud
-    *
-    * @return string
-    */
-    public function getLinkToDocs() {
+     * Get link to Docs Cloud.
+     *
+     * @return string
+     */
+    public function getLinkToDocs()
+    {
         return self::LINK_TO_DOCS;
     }
 

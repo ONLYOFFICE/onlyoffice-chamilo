@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2023.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +13,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 use Onlyoffice\DocsIntegrationSdk\Service\Request\RequestService;
 
 class OnlyofficeAppRequests extends RequestService
 {
     /**
-     * File url to test convert service
+     * File url to test convert service.
      *
      * @var string
-     * 
      */
     private $convertFileUrl;
     private $convertFilePath;
@@ -33,8 +30,8 @@ class OnlyofficeAppRequests extends RequestService
     {
         parent::__construct($settingsManager, $httpClient, $jwtManager);
         $tempFile = self::createTempFile();
-        $this->convertFileUrl = $tempFile["fileUrl"];
-        $this->convertFilePath = $tempFile["filePath"];
+        $this->convertFileUrl = $tempFile['fileUrl'];
+        $this->convertFilePath = $tempFile['filePath'];
     }
 
     public function __destruct()
@@ -43,18 +40,19 @@ class OnlyofficeAppRequests extends RequestService
     }
 
     /**
-     * Create temporary file for convert service testing
+     * Create temporary file for convert service testing.
      *
      * @return array
      */
-    private function createTempFile() {
+    private function createTempFile()
+    {
         $fileUrl = null;
         $fileName = 'convert.docx';
         $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $baseName = strtolower(pathinfo($fileName, PATHINFO_FILENAME));
         $templatePath = TemplateManager::getEmptyTemplate($fileExt);
         $folderPath = api_get_path(SYS_PLUGIN_PATH).$this->settingsManager->plugin->getPluginName();
-        $filePath = $folderPath . '/' . $fileName;
+        $filePath = $folderPath.'/'.$fileName;
 
         if ($fp = @fopen($filePath, 'w')) {
             $content = file_get_contents($templatePath);
@@ -66,7 +64,7 @@ class OnlyofficeAppRequests extends RequestService
 
         return [
             'fileUrl' => $fileUrl,
-            'filePath' => $filePath
+            'filePath' => $filePath,
         ];
     }
 
@@ -74,5 +72,4 @@ class OnlyofficeAppRequests extends RequestService
     {
         return $this->convertFileUrl;
     }
-
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2023.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 /**
@@ -24,11 +22,10 @@
  */
 class OnlyofficePlugin extends Plugin implements HookPluginInterface
 {
-
     /**
      * OnlyofficePlugin name.
      */
-    private $pluginName = "onlyoffice";
+    private $pluginName = 'onlyoffice';
 
     /**
      * OnlyofficePlugin constructor.
@@ -36,21 +33,21 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     protected function __construct()
     {
         parent::__construct(
-            "1.3.0",
-            "Asensio System SIA",
+            '1.3.0',
+            'Asensio System SIA',
             [
-                "enable_onlyoffice_plugin" => "boolean",
-                "document_server_url" => "text",
-                "jwt_secret" => "text",
-                "jwt_header" => "text",
-                "document_server_internal" => "text",
-                "storage_url" => "text"
+                'enable_onlyoffice_plugin' => 'boolean',
+                'document_server_url' => 'text',
+                'jwt_secret' => 'text',
+                'jwt_header' => 'text',
+                'document_server_internal' => 'text',
+                'storage_url' => 'text',
             ]
         );
     }
 
     /**
-     * Create OnlyofficePlugin object
+     * Create OnlyofficePlugin object.
      */
     public static function create(): OnlyofficePlugin
     {
@@ -106,20 +103,22 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     }
 
     /**
-     * Get link to plugin settings
+     * Get link to plugin settings.
      *
      * @return string
      */
-    public function getConfigLink() {
-        return api_get_path(WEB_PATH)."main/admin/configure_plugin.php?name=".$this->pluginName;
+    public function getConfigLink()
+    {
+        return api_get_path(WEB_PATH).'main/admin/configure_plugin.php?name='.$this->pluginName;
     }
 
     /**
-     * Get plugin name
+     * Get plugin name.
      *
      * @return string
      */
-    public function getPluginName() {
+    public function getPluginName()
+    {
         return $this->pluginName;
     }
 }
