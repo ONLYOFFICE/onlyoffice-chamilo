@@ -19,6 +19,12 @@ use Onlyoffice\DocsIntegrationSdk\Manager\Settings\SettingsManager;
 class OnlyofficeAppsettings extends SettingsManager
 {
     /**
+     * Link to Docs Cloud.
+     *
+     * @var string
+     */
+    public const LINK_TO_DOCS = 'https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo';
+    /**
      * The settings key for the document server address.
      *
      * @var string
@@ -33,25 +39,11 @@ class OnlyofficeAppsettings extends SettingsManager
     public $jwtHeader = 'onlyoffice_jwt_header';
 
     /**
-     * The config key for JWT secret key.
-     *
-     * @var string
-     */
-    protected $jwtKey = 'jwt_secret';
-
-    /**
      * The config key for the internal url.
      *
      * @var string
      */
     public $documentServerInternalUrl = 'onlyoffice_internal_url';
-
-    /**
-     * Link to Docs Cloud.
-     *
-     * @var string
-     */
-    public const LINK_TO_DOCS = 'https://www.onlyoffice.com/docs-registration.aspx?referer=chamilo';
 
     /**
      * The config key for the storage url.
@@ -73,6 +65,13 @@ class OnlyofficeAppsettings extends SettingsManager
     public $plugin;
 
     public $newSettings;
+
+    /**
+     * The config key for JWT secret key.
+     *
+     * @var string
+     */
+    protected $jwtKey = 'jwt_secret';
 
     public function __construct(Plugin $plugin, ?array $newSettings = null)
     {

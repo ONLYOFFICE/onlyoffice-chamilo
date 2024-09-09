@@ -25,49 +25,6 @@ class OnlyofficeSettingsFormBuilder
     private const ONLYOFFICE_LAYOUT_DIR = '/onlyoffice/layout/';
 
     /**
-     * Build HTML-template.
-     *
-     * @param string $templateName - template name (*.tpl)
-     * @param array  $params       - parameters to assign
-     *
-     * @return string
-     */
-    private function buildTemplate($templateName, $params = [])
-    {
-        $tpl = new Template('', false, false, false, false, false, false);
-        if (!empty($params)) {
-            foreach ($params as $key => $param) {
-                $tpl->assign($key, $param);
-            }
-        }
-        $parsedTemplate = $tpl->fetch(self::ONLYOFFICE_LAYOUT_DIR.$templateName.'.tpl');
-
-        return $parsedTemplate;
-    }
-
-    /**
-     * Display error messahe.
-     *
-     * @param string $errorMessage - error message
-     * @param string $location     - header location
-     *
-     * @return void
-     */
-    private function displayError($errorMessage, $location = null)
-    {
-        Display::addFlash(
-            Display::return_message(
-                $errorMessage,
-                'error'
-            )
-        );
-        if (null !== $location) {
-            header('Location: '.$location);
-            exit;
-        }
-    }
-
-    /**
      * Build OnlyofficePlugin settings form.
      *
      * @return FormValidator
@@ -147,5 +104,48 @@ class OnlyofficeSettingsFormBuilder
         }
 
         return $plugin;
+    }
+
+    /**
+     * Build HTML-template.
+     *
+     * @param string $templateName - template name (*.tpl)
+     * @param array  $params       - parameters to assign
+     *
+     * @return string
+     */
+    private function buildTemplate($templateName, $params = [])
+    {
+        $tpl = new Template('', false, false, false, false, false, false);
+        if (!empty($params)) {
+            foreach ($params as $key => $param) {
+                $tpl->assign($key, $param);
+            }
+        }
+        $parsedTemplate = $tpl->fetch(self::ONLYOFFICE_LAYOUT_DIR.$templateName.'.tpl');
+
+        return $parsedTemplate;
+    }
+
+    /**
+     * Display error messahe.
+     *
+     * @param string $errorMessage - error message
+     * @param string $location     - header location
+     *
+     * @return void
+     */
+    private function displayError($errorMessage, $location = null)
+    {
+        Display::addFlash(
+            Display::return_message(
+                $errorMessage,
+                'error'
+            )
+        );
+        if (null !== $location) {
+            header('Location: '.$location);
+            exit;
+        }
     }
 }

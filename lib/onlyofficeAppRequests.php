@@ -39,6 +39,11 @@ class OnlyofficeAppRequests extends RequestService
         unlink($this->convertFilePath);
     }
 
+    public function getFileUrlForConvert()
+    {
+        return $this->convertFileUrl;
+    }
+
     /**
      * Create temporary file for convert service testing.
      *
@@ -66,10 +71,5 @@ class OnlyofficeAppRequests extends RequestService
             'fileUrl' => $fileUrl,
             'filePath' => $filePath,
         ];
-    }
-
-    public function getFileUrlForConvert()
-    {
-        return $this->convertFileUrl;
     }
 }
