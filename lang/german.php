@@ -1,6 +1,6 @@
 <?php
 /**
- * @author ASENSIO SYSTEM SIA
+ * @author Ascensio System SIA
  */
 $strings['plugin_title'] = 'ONLYOFFICE';
 $strings['plugin_comment'] = 'Mit dem ONLYOFFICE-Konnektor können Sie in Chamilo Textdokumente, Tabellenkalkulationen und Präsentationen mit ONLYOFFICE Docs öffnen und bearbeiten';

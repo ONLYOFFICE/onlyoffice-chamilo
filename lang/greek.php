@@ -1,6 +1,6 @@
 <?php
 /**
- * @author ASENSIO SYSTEM SIA
+ * @author Ascensio System SIA
  */
 $strings['plugin_title'] = 'ONLYOFFICE';
 $strings['plugin_comment'] = 'Ο συνδετήρας ONLYOFFICE σάς επιτρέπει να προβάλετε, να επεξεργαστείτε και να συνεργαστείτε σε έγγραφα κειμένου, υπολογιστικά φύλλα και παρουσιάσεις στο Chamilo χρησιμοποιώντας έγγραφα ONLYOFFICE.';
