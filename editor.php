@@ -121,8 +121,8 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
         var errorPage = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH).'onlyoffice/error.php'); ?>;
 
         var docsVersion = DocsAPI.DocEditor.version().split(".");
-        if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
-            && docsVersion[0] < 7) {
+        if ((config.document.fileType === "pdf")
+            && docsVersion[0] < 8) {
             window.location.href = errorPage + "?status=" + 1;
             return;
         }
