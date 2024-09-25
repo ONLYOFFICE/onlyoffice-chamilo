@@ -24,10 +24,12 @@ jobs:
           mkdir -p ./onlyoffice
           rsync -av --exclude='onlyoffice' ./ ./onlyoffice
           cd ./onlyoffice
+          composer install
           rm -rf .github/
           rm -rf .git/
           rm .gitignore
           rm .gitmodules
+          rm -rf ./vendor/onlyoffice/docs-integration-sdk/resources/assets/document-templates
           cd ./assets
           rm .git
           cd $cwd
