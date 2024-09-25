@@ -143,13 +143,6 @@ class OnlyofficeConfigService extends DocEditorConfigService
     {
         $permsEdit = $this->getAccessRights() && !$this->isReadOnly();
         $isFillable = $this->documentManager->isDocumentFillable($this->documentManager->getDocInfo('title'));
-        if ($isFillable) {
-            $forceEdit = $this->documentManager->getDocInfo('forceEdit');
-            if (empty($forceEdit)) {
-                $forceEdit = false;
-            }
-            $permsEdit = $permsEdit && (bool)$forceEdit;
-        }
         
         $permissions = new Permissions(null,
             null,
