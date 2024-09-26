@@ -50,6 +50,9 @@ $courseCode = $courseInfo['code'];
 $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
 $langInfo = LangManager::getLangUser();
 $jwtManager = new OnlyofficeJwtManager($appSettings);
+if (isset($_GET['forceEdit']) && (bool)$_GET['forceEdit'] === true) {
+    $docInfo['forceEdit'] = $_GET['forceEdit'];
+}
 $documentManager = new OnlyofficeDocumentManager($appSettings, $docInfo);
 $extension = $documentManager->getExt($documentManager->getDocInfo('title'));
 $docType = $documentManager->getDocType($extension);
@@ -116,13 +119,17 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
         });
     };
 
+    var onRequestEditRights = function () {
+        location.href += "&forceEdit=true";
+    }
+
     var connectEditor = function () {
         var config = <?php echo json_encode($config); ?>;
         var errorPage = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH).'onlyoffice/error.php'); ?>;
 
         var docsVersion = DocsAPI.DocEditor.version().split(".");
-        if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
-            && docsVersion[0] < 7) {
+        if ((config.document.fileType === "pdf")
+            && docsVersion[0] < 8) {
             window.location.href = errorPage + "?status=" + 1;
             return;
         }
@@ -144,7 +151,8 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
 
         config.events = {
             "onAppReady": onAppReady,
-            "onRequestSaveAs": onRequestSaveAs
+            "onRequestSaveAs": onRequestSaveAs,
+            "onRequestEditRights": onRequestEditRights
         };
 
         docEditor = new DocsAPI.DocEditor("iframeEditor", config);

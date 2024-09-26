@@ -49,7 +49,7 @@ class OnlyofficeTools
 
         if ($canEdit || $canView) {
             $tooltip = $plugin->get_lang('openByOnlyoffice');
-            if ('oform' === $extension) {
+            if ('pdf' === $extension) {
                 $tooltip = $plugin->get_lang('fillInFormInOnlyoffice');
             }
 

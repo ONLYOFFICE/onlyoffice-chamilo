@@ -142,6 +142,8 @@ class OnlyofficeConfigService extends DocEditorConfigService
     public function getPermissions(string $fileId = '')
     {
         $permsEdit = $this->getAccessRights() && !$this->isReadOnly();
+        $isFillable = $this->documentManager->isDocumentFillable($this->documentManager->getDocInfo('title'));
+        
         $permissions = new Permissions(null,
             null,
             null,
@@ -150,7 +152,7 @@ class OnlyofficeConfigService extends DocEditorConfigService
             null,
             $permsEdit,
             null,
-            null,
+            $isFillable,
             null,
             null,
             null,

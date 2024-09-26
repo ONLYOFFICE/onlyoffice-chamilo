@@ -163,7 +163,7 @@ class OnlyofficeDocumentManager extends DocumentManager
             return 'pptx';
         }
         if ('formTemplate' === $type) {
-            return 'docxf';
+            return 'pdf';
         }
 
         return '';
