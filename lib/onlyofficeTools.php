@@ -27,6 +27,8 @@ class OnlyofficeTools {
 
         $plugin = OnlyofficePlugin::create();
 
+        $appSettings = new OnlyofficeAppsettings($plugin);
+        $documentManager = new OnlyofficeDocumentManager($appSettings, []);
         $isEnable = $plugin->get("enable_onlyoffice_plugin") === "true";
         if (!$isEnable) {
             return '';
@@ -36,8 +38,8 @@ class OnlyofficeTools {
 
         $extension = strtolower(pathinfo($document_data["title"], PATHINFO_EXTENSION));
 
-        $canEdit = in_array($extension, FileUtility::$can_edit_types);
-        $canView = in_array($extension, FileUtility::$can_view_types);
+        $canEdit = $documentManager->getFormatInfo($extension) !==null ? $documentManager->getFormatInfo($extension)->isEditable() : false;
+        $canView = $documentManager->getFormatInfo($extension) !==null ? $documentManager->getFormatInfo($extension)->isViewable() : false;
 
         $groupId = api_get_group_id();
         if (!empty($groupId)) {
@@ -74,6 +76,8 @@ class OnlyofficeTools {
     {
 
         $plugin = OnlyofficePlugin::create();
+        $appSettings = new OnlyofficeAppsettings($plugin);
+        $documentManager = new OnlyofficeDocumentManager($appSettings, []);
 
         $isEnable = $plugin->get("enable_onlyoffice_plugin") === "true";
         if (!$isEnable) {
@@ -90,7 +94,7 @@ class OnlyofficeTools {
         $docInfo = DocumentManager::get_document_data_by_id($documentId, $courseInfo["code"], false, $sessionId);
 
         $extension = strtolower(pathinfo($document_data["title"], PATHINFO_EXTENSION));
-        $canView = in_array($extension, FileUtility::$can_view_types);
+        $canView = $documentManager->getFormatInfo($extension) !==null ? $documentManager->getFormatInfo($extension)->isViewable() : false;
 
         $isGroupAccess = false;
         $groupId = api_get_group_id();
