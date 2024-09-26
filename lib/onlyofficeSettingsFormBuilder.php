@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,77 +13,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-require_once __DIR__ . "/../../../main/inc/global.inc.php";
+require_once __DIR__.'/../../../main/inc/global.inc.php';
 
-class OnlyofficeSettingsFormBuilder {
-
+class OnlyofficeSettingsFormBuilder
+{
     /**
-     * Directory with layouts
+     * Directory with layouts.
      */
     private const ONLYOFFICE_LAYOUT_DIR = '/onlyoffice/layout/';
 
     /**
-     * Build HTML-template
-     *
-     * @param string $templateName - template name (*.tpl)
-     * @param array $params - parameters to assign
-     *
-     * @return string
-     */
-    private function buildTemplate($templateName, $params = []) {
-        $tpl = new Template('', false, false, false, false, false, false);
-        if (!empty($params)) {
-            foreach ($params as $key => $param) {
-                $tpl->assign($key, $param); 
-            }
-        }
-        $parsedTemplate = $tpl->fetch(self::ONLYOFFICE_LAYOUT_DIR.$templateName.'.tpl');
-        return $parsedTemplate;
-    }
-
-    /**
-     * Display error messahe
-     *
-     * @param string $errorMessage - error message
-     * @param string $location - header location
-     *
-     * @return void
-     */
-    private function displayError($errorMessage, $location = null) {
-        Display::addFlash(
-            Display::return_message(
-                $errorMessage,
-                'error'
-            )
-        );
-        if ($location !== null) {
-            header('Location: '.$location);
-            exit;
-        }
-    }
-
-    /**
-     * Build OnlyofficePlugin settings form
-     *
-     * @param OnlyofficeAppsettings $settings - Onlyoffice SettingsManager
+     * Build OnlyofficePlugin settings form.
      *
      * @return FormValidator
      */
-    public function buildSettingsForm(OnlyofficeAppsettings $settingsManager) {
+    public function buildSettingsForm(OnlyofficeAppsettings $settingsManager)
+    {
         $plugin = $settingsManager->plugin;
         $demoData = $settingsManager->getDemoData();
         $plugin_info = $plugin->get_info();
         $message = '';
         $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
             'checkbox',
-            'connect_demo', 
+            'connect_demo',
             '',
             $plugin->get_lang('connect_demo')
         );
-        if (!$demoData['available'] === true) {
+        if (true === !$demoData['available']) {
             $message = $plugin->get_lang('demoPeriodIsOver');
             $connectDemoCheckbox->setAttribute('disabled');
         } else {
@@ -110,39 +67,85 @@ class OnlyofficeSettingsFormBuilder {
         $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
         $banner = $plugin_info['settings_form']->createElement('html', $bannerTemplate);
         $plugin_info['settings_form']->insertElementBefore($banner, 'submit_button');
+
         return $plugin_info['settings_form'];
     }
-    
+
     /**
-     * Validate OnlyofficePlugin settings form
+     * Validate OnlyofficePlugin settings form.
      *
      * @param OnlyofficeAppsettings $settingsManager - Onlyoffice SettingsManager
      *
      * @return OnlyofficePlugin
      */
-    public function validateSettingsForm(OnlyofficeAppsettings $settingsManager) {
+    public function validateSettingsForm(OnlyofficeAppsettings $settingsManager)
+    {
         $plugin = $settingsManager->plugin;
         $errorMsg = null;
         $plugin_info = $plugin->get_info();
         $result = $plugin_info['settings_form']->getSubmitValues();
-        unset($result["submit_button"]);
+        unset($result['submit_button']);
         $settingsManager->newSettings = $result;
-        if (!$settingsManager->selectDemo((bool)$result['connect_demo'] === true)) {
+        if (!$settingsManager->selectDemo(true === (bool) $result['connect_demo'])) {
             $errorMsg = $plugin->get_lang('demoPeriodIsOver');
             self::displayError($errorMsg, $plugin->getConfigLink());
         }
         if (!empty($settingsManager->getDocumentServerUrl())) {
-            if ((bool)$result['connect_demo'] === false) {
+            if (false === (bool) $result['connect_demo']) {
                 $httpClient = new OnlyofficeHttpClient();
                 $jwtManager = new OnlyofficeJwtManager($settingsManager);
                 $requestService = new OnlyofficeAppRequests($settingsManager, $httpClient, $jwtManager);
-                list ($error, $version) = $requestService->checkDocServiceUrl();
+                list($error, $version) = $requestService->checkDocServiceUrl();
                 if (!empty($error)) {
                     $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
-                self::displayError($errorMsg); 
+                    self::displayError($errorMsg);
                 }
             }
         }
+
         return $plugin;
+    }
+
+    /**
+     * Build HTML-template.
+     *
+     * @param string $templateName - template name (*.tpl)
+     * @param array  $params       - parameters to assign
+     *
+     * @return string
+     */
+    private function buildTemplate($templateName, $params = [])
+    {
+        $tpl = new Template('', false, false, false, false, false, false);
+        if (!empty($params)) {
+            foreach ($params as $key => $param) {
+                $tpl->assign($key, $param);
+            }
+        }
+        $parsedTemplate = $tpl->fetch(self::ONLYOFFICE_LAYOUT_DIR.$templateName.'.tpl');
+
+        return $parsedTemplate;
+    }
+
+    /**
+     * Display error messahe.
+     *
+     * @param string $errorMessage - error message
+     * @param string $location     - header location
+     *
+     * @return void
+     */
+    private function displayError($errorMessage, $location = null)
+    {
+        Display::addFlash(
+            Display::return_message(
+                $errorMessage,
+                'error'
+            )
+        );
+        if (null !== $location) {
+            header('Location: '.$location);
+            exit;
+        }
     }
 }

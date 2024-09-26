@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +13,31 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
-use \Firebase\JWT\JWT;
-
 $plugin = OnlyofficePlugin::create();
 
-$isEnable = $plugin->get("enable_onlyoffice_plugin") === 'true';
+$isEnable = 'true' === $plugin->get('enable_onlyoffice_plugin');
 if (!$isEnable) {
-    die ("Document server isn't enabled");
+    exit("Document server isn't enabled");
+
     return;
 }
 
 $appSettings = new OnlyofficeAppsettings($plugin);
 $documentServerUrl = $appSettings->getDocumentServerUrl();
 if (empty($documentServerUrl)) {
-    die ("Document server isn't configured");
+    exit("Document server isn't configured");
+
     return;
 }
 
 $config = [];
 $docApiUrl = $appSettings->getDocumentServerApiUrl();
-$docId = $_GET["docId"];
-$groupId = isset($_GET["groupId"]) && !empty($_GET["groupId"]) ? $_GET["groupId"] : null;
+$docId = $_GET['docId'];
+$groupId = isset($_GET['groupId']) && !empty($_GET['groupId']) ? $_GET['groupId'] : null;
 $userId = api_get_user_id();
 $userInfo = api_get_user_info($userId);
 $sessionId = api_get_session_id();
@@ -48,12 +46,12 @@ $courseInfo = api_get_course_info();
 if (empty($courseInfo)) {
     api_not_allowed(true);
 }
-$courseCode = $courseInfo["code"];
+$courseCode = $courseInfo['code'];
 $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
 $langInfo = LangManager::getLangUser();
 $jwtManager = new OnlyofficeJwtManager($appSettings);
 $documentManager = new OnlyofficeDocumentManager($appSettings, $docInfo);
-$extension = $documentManager->getExt($documentManager->getDocInfo("title"));
+$extension = $documentManager->getExt($documentManager->getDocInfo('title'));
 $docType = $documentManager->getDocType($extension);
 $key = $documentManager->getDocumentKey($docId, $courseCode);
 $fileUrl = $documentManager->getFileUrl($docId);
@@ -62,12 +60,11 @@ if (!empty($appSettings->getStorageUrl())) {
     $fileUrl = str_replace(api_get_path(WEB_PATH), $appSettings->getStorageUrl(), $fileUrl);
 }
 
-
 $configService = new OnlyofficeConfigService($appSettings, $jwtManager, $documentManager);
 $editorsMode = $configService->getEditorsMode();
-$config = $configService->createConfig($docId, $editorsMode, $_SERVER["HTTP_USER_AGENT"]);
+$config = $configService->createConfig($docId, $editorsMode, $_SERVER['HTTP_USER_AGENT']);
 $config = json_decode(json_encode($config), true);
-$isMobileAgent = $configService->isMobileAgent($_SERVER["HTTP_USER_AGENT"]);
+$isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
 
 ?>
 <title>ONLYOFFICE</title>
@@ -84,22 +81,22 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER["HTTP_USER_AGENT"]);
         display: none;
     }
 </style>
-<script type="text/javascript" src="<?php echo $docApiUrl?>"></script>
+<script type="text/javascript" src="<?php echo $docApiUrl; ?>"></script>
 <script type="text/javascript">
     var onAppReady = function () {
         innerAlert("Document editor ready");
     };
 
     var onRequestSaveAs = function (event) {
-        var url = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH))?> + "onlyoffice/ajax/saveas.php";
-        var folderId = <?php echo json_encode($docInfo["parent_id"])?>;
+        var url = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH)); ?> + "onlyoffice/ajax/saveas.php";
+        var folderId = <?php echo json_encode($docInfo['parent_id']); ?>;
         var saveData = {
             title: event.data.title,
             url: event.data.url,
             folderId: folderId ? folderId : 0,
-            sessionId: <?php echo json_encode($sessionId)?>,
-            courseId: <?php echo json_encode($courseId)?>,
-            groupId: <?php echo json_encode($groupId)?>
+            sessionId: <?php echo json_encode($sessionId); ?>,
+            courseId: <?php echo json_encode($courseId); ?>,
+            groupId: <?php echo json_encode($groupId); ?>
         };
 
         $.ajax(url, {
@@ -120,8 +117,8 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER["HTTP_USER_AGENT"]);
     };
 
     var connectEditor = function () {
-        var config = <?php echo json_encode($config)?>;
-        var errorPage = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/error.php")?>;
+        var config = <?php echo json_encode($config); ?>;
+        var errorPage = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH).'onlyoffice/error.php'); ?>;
 
         var docsVersion = DocsAPI.DocEditor.version().split(".");
         if ((config.document.fileType === "docxf" || config.document.fileType === "oform")
@@ -143,7 +140,7 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER["HTTP_USER_AGENT"]);
                             '</div>' +
                           '</div>');
 
-        var isMobileAgent = <?php echo json_encode($isMobileAgent)?>;
+        var isMobileAgent = <?php echo json_encode($isMobileAgent); ?>;
 
         config.events = {
             "onAppReady": onAppReady,

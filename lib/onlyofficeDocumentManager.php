@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,157 +13,164 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 use DocumentManager as ChamiloDocumentManager;
-use Onlyoffice\DocsIntegrationSdk\Manager\Document\DocumentManager as DocumentManager;
+use Onlyoffice\DocsIntegrationSdk\Manager\Document\DocumentManager;
 
 class OnlyofficeDocumentManager extends DocumentManager
 {
     private $docInfo;
 
-    public function __construct($settingsManager, array $docInfo, $formats = null, $systemLangCode = "en")
+    public function __construct($settingsManager, array $docInfo, $formats = null, $systemLangCode = 'en')
     {
         parent::__construct($settingsManager, $formats, $systemLangCode);
         $this->docInfo = $docInfo;
     }
+
     public function getDocumentKey(string $fileId, $courseCode, bool $embedded = false)
     {
-        if (!isset($this->docInfo["absolute_path"])) {
+        if (!isset($this->docInfo['absolute_path'])) {
             return null;
         }
-        $mtime = filemtime($this->docInfo["absolute_path"]);
-        $key = $mtime . $courseCode . $fileId;
+        $mtime = filemtime($this->docInfo['absolute_path']);
+        $key = $mtime.$courseCode.$fileId;
+
         return self::generateRevisionId($key);
     }
-    public function getDocumentName(string $fileId = "")
+
+    public function getDocumentName(string $fileId = '')
     {
-        return $this->docInfo["title"];
+        return $this->docInfo['title'];
     }
+
     public static function getLangMapping()
     {
-
     }
+
     public function getFileUrl(string $fileId)
     {
-
         $data = [
-            "type" => "download",
-            "courseId" => api_get_course_int_id(),
-            "userId" => api_get_user_id(),
-            "docId" => $fileId,
-            "sessionId" => api_get_session_id()
+            'type' => 'download',
+            'courseId' => api_get_course_int_id(),
+            'userId' => api_get_user_id(),
+            'docId' => $fileId,
+            'sessionId' => api_get_session_id(),
         ];
 
         if (!empty($this->getGroupId())) {
-            $data["groupId"] = $groupId;
+            $data['groupId'] = $groupId;
         }
         $jwtManager = new OnlyofficeJwtManager($this->settingsManager);
         $hashUrl = $jwtManager->getHash($data);
-        return api_get_path(WEB_PLUGIN_PATH) . $this->settingsManager->plugin->getPluginName() . "/" . "callback.php?hash=" . $hashUrl;
+
+        return api_get_path(WEB_PLUGIN_PATH).$this->settingsManager->plugin->getPluginName().'/callback.php?hash='.$hashUrl;
     }
 
     public function getGroupId()
     {
-        $groupId = isset($_GET["groupId"]) && !empty($_GET["groupId"]) ? $_GET["groupId"] : null;
+        $groupId = isset($_GET['groupId']) && !empty($_GET['groupId']) ? $_GET['groupId'] : null;
+
         return $groupId;
     }
 
     public function getCallbackUrl(string $fileId)
     {
-        $url = "";
+        $url = '';
 
         $data = [
-            "type" => "track",
-            "courseId" => api_get_course_int_id(),
-            "userId" => api_get_user_id(),
-            "docId" => $fileId,
-            "sessionId" => api_get_session_id()
+            'type' => 'track',
+            'courseId' => api_get_course_int_id(),
+            'userId' => api_get_user_id(),
+            'docId' => $fileId,
+            'sessionId' => api_get_session_id(),
         ];
-    
+
         if (!empty($this->getGroupId())) {
-            $data["groupId"] = $groupId;
+            $data['groupId'] = $groupId;
         }
-    
+
         $jwtManager = new OnlyofficeJwtManager($this->settingsManager);
         $hashUrl = $jwtManager->getHash($data);
-        return $url . api_get_path(WEB_PLUGIN_PATH) . "onlyoffice/callback.php?hash=" . $hashUrl;
+
+        return $url.api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl;
     }
+
     public function getGobackUrl(string $fileId)
     {
         if (!empty($this->docInfo)) {
-            return api_get_path(WEB_CODE_PATH)."document/document.php"
-                                                        . "?cidReq=" . Security::remove_XSS(api_get_course_id())
-                                                        . "&id_session=" . Security::remove_XSS(api_get_session_id())
-                                                        . "&gidReq=" . Security::remove_XSS($this->getGroupId())
-                                                        . "&id=" . Security::remove_XSS($this->docInfo["parent_id"]);
+            return api_get_path(WEB_CODE_PATH).'document/document.php'
+                                                        .'?cidReq='.Security::remove_XSS(api_get_course_id())
+                                                        .'&id_session='.Security::remove_XSS(api_get_session_id())
+                                                        .'&gidReq='.Security::remove_XSS($this->getGroupId())
+                                                        .'&id='.Security::remove_XSS($this->docInfo['parent_id']);
         }
-        return "";
+
+        return '';
     }
 
     /**
-     * Return location file in chamilo documents
+     * Return location file in chamilo documents.
      */
-    public static function getUrlToLocation($courseCode, $sessionId, $groupId, $folderId) {
-        return api_get_path(WEB_CODE_PATH)."document/document.php"
-                                            . "?cidReq=" . Security::remove_XSS($courseCode)
-                                            . "&id_session=" . Security::remove_XSS($sessionId)
-                                            . "&gidReq=" . Security::remove_XSS($groupId)
-                                            . "&id=" . Security::remove_XSS($folderId);
+    public static function getUrlToLocation($courseCode, $sessionId, $groupId, $folderId)
+    {
+        return api_get_path(WEB_CODE_PATH).'document/document.php'
+                                            .'?cidReq='.Security::remove_XSS($courseCode)
+                                            .'&id_session='.Security::remove_XSS($sessionId)
+                                            .'&gidReq='.Security::remove_XSS($groupId)
+                                            .'&id='.Security::remove_XSS($folderId);
     }
-    
+
     public function getCreateUrl(string $fileId)
     {
-
     }
 
     /**
-     * Get the value of docInfo
-     */ 
+     * Get the value of docInfo.
+     */
     public function getDocInfo($elem = null)
     {
         if (empty($elem)) {
             return $this->docInfo;
         } else {
-            if (isset($this->docInfo[$elem]))
-            {
+            if (isset($this->docInfo[$elem])) {
                 return $this->docInfo[$elem];
             }
+
             return [];
         }
     }
 
     /**
-     * Set the value of docInfo
-     */ 
+     * Set the value of docInfo.
+     */
     public function setDocInfo($docInfo)
     {
         $this->docInfo = $docInfo;
     }
 
     /**
-     * Return file extension by file type
+     * Return file extension by file type.
      */
     public static function getDocExtByType(string $type): string
     {
-        if ($type === "text") {
-            return "docx";
+        if ('text' === $type) {
+            return 'docx';
         }
-        if ($type === "spreadsheet") {
-            return "xlsx";
+        if ('spreadsheet' === $type) {
+            return 'xlsx';
         }
-        if ($type === "presentation") {
-            return "pptx";
+        if ('presentation' === $type) {
+            return 'pptx';
         }
-        if ($type === "formTemplate") {
-            return "docxf";
+        if ('formTemplate' === $type) {
+            return 'docxf';
         }
 
-        return "";
+        return '';
     }
 
     /**
-     * Create new file
+     * Create new file.
      */
     public static function createFile(
         string $basename,
@@ -174,23 +180,23 @@ class OnlyofficeDocumentManager extends DocumentManager
         int $sessionId,
         int $courseId,
         int $groupId,
-        string $templatePath = ""): array
+        string $templatePath = ''): array
     {
         $courseInfo = api_get_course_info_by_id($courseId);
-        $courseCode = $courseInfo["code"];
+        $courseCode = $courseInfo['code'];
         $groupInfo = GroupManager::get_group_properties($groupId);
 
-        $fileTitle = Security::remove_XSS($basename). "." .$fileExt;
+        $fileTitle = Security::remove_XSS($basename).'.'.$fileExt;
 
         $fileNamePrefix = ChamiloDocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
-        $fileName = preg_replace('/\.\./', '', $basename) . $fileNamePrefix . "." . $fileExt;
+        $fileName = preg_replace('/\.\./', '', $basename).$fileNamePrefix.'.'.$fileExt;
 
         if (empty($templatePath)) {
             $templatePath = TemplateManager::getEmptyTemplate($fileExt);
         }
 
         $folderPath = '';
-        $fileRelatedPath = "/";
+        $fileRelatedPath = '/';
         if (!empty($folderId)) {
             $document_data = ChamiloDocumentManager::get_document_data_by_id(
                 $folderId,
@@ -198,33 +204,33 @@ class OnlyofficeDocumentManager extends DocumentManager
                 true,
                 $sessionId
             );
-            $folderPath = $document_data["absolute_path"];
-            $fileRelatedPath = $fileRelatedPath . substr($document_data["absolute_path_from_document"], 10) . "/" . $fileName;
+            $folderPath = $document_data['absolute_path'];
+            $fileRelatedPath = $fileRelatedPath.substr($document_data['absolute_path_from_document'], 10).'/'.$fileName;
         } else {
-            $folderPath = api_get_path(SYS_COURSE_PATH) . api_get_course_path($courseCode) . "/document";
+            $folderPath = api_get_path(SYS_COURSE_PATH).api_get_course_path($courseCode).'/document';
             if (!empty($groupId)) {
-                $folderPath = $folderPath . "/" . $groupInfo["directory"];
-                $fileRelatedPath = $groupInfo["directory"] . "/";
+                $folderPath = $folderPath.'/'.$groupInfo['directory'];
+                $fileRelatedPath = $groupInfo['directory'].'/';
             }
-            $fileRelatedPath = $fileRelatedPath . $fileName;
+            $fileRelatedPath = $fileRelatedPath.$fileName;
         }
-        $filePath = $folderPath . "/" . $fileName;
+        $filePath = $folderPath.'/'.$fileName;
 
         if (file_exists($filePath)) {
-            return ["error" => "fileIsExist"];
+            return ['error' => 'fileIsExist'];
         }
-    
-        if ($fp = @fopen($filePath, "w")) {
+
+        if ($fp = @fopen($filePath, 'w')) {
             $content = file_get_contents($templatePath);
             fputs($fp, $content);
             fclose($fp);
-    
+
             chmod($filePath, api_get_permissions_for_new_files());
-    
+
             $documentId = add_document(
                 $courseInfo,
                 $fileRelatedPath,
-                "file",
+                'file',
                 filesize($filePath),
                 $fileTitle,
                 null,
@@ -233,9 +239,9 @@ class OnlyofficeDocumentManager extends DocumentManager
             if ($documentId) {
                 api_item_property_update(
                     $courseInfo,
-                   TOOL_DOCUMENT,
+                    TOOL_DOCUMENT,
                     $documentId,
-                    "DocumentAdded",
+                    'DocumentAdded',
                     $userId,
                     $groupInfo,
                     null,
@@ -244,10 +250,10 @@ class OnlyofficeDocumentManager extends DocumentManager
                     $sessionId
                 );
             } else {
-                return ["error" => "impossibleCreateFile"];
+                return ['error' => 'impossibleCreateFile'];
             }
         }
 
-        return ["documentId" => $documentId];
+        return ['documentId' => $documentId];
     }
 }
