@@ -29,6 +29,7 @@ class TemplateManager
         'bg' => 'bg-BG',
         'cs' => 'cs-CS',
         'de' => 'de-DE',
+        'default' => 'default',
         'el' => 'el-GR',
         'en' => 'en-US',
         'es' => 'es-ES',
@@ -63,7 +64,7 @@ class TemplateManager
         $langInfo = LangManager::getLangUser();
         $lang = $langInfo['isocode'];
         if (!array_key_exists($lang, self::$localPath)) {
-            $lang = 'en';
+            $lang = 'default';
         }
         $templateFolder = api_get_path(SYS_PLUGIN_PATH).'onlyoffice/assets/'.self::$localPath[$lang];
 
