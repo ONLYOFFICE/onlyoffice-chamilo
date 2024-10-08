@@ -137,7 +137,7 @@ class OnlyofficeAppsettings extends SettingsManager
     public function setSetting($settingName, $value, $createSetting = false)
     {
         if (($settingName === $this->useDemoName) && $createSetting) {
-            api_add_setting(json_encode($value), $settingName, null, 'setting', 'Plugins');
+            api_add_setting($value, $settingName, null, 'setting', 'Plugins');
 
             return;
         }
