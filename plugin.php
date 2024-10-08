@@ -17,7 +17,7 @@
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 require_once __DIR__.'/lib/onlyofficeSettingsFormBuilder.php';
-require_once __DIR__.'/lib/OnlyofficeAppsettings.php';
+require_once __DIR__.'/lib/onlyofficeAppSettings.php';
 
 /**
  * @author Asensio System SIA
