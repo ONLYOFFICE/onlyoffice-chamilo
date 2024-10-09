@@ -26,6 +26,12 @@ jobs:
           rm ./.gitignore
           rm ./.gitmodules
           rm -rf ./vendor/onlyoffice/docs-integration-sdk/resources/assets/document-templates
+          mv ./vendor/onlyoffice/docs-integration-sdk/resources/assets/document-formats/onlyoffice-docs-formats.json ./vendor/onlyoffice/docs-integration-sdk/resources/assets/document-formats/onlyoffice-docs-formats.txt
+          rm ./composer.json
+          rm ./composer.lock
+          find ./vendor -type f -iname '*.json' -delete
+          find ./vendor -type f -iname '*.lock' -delete
+          find ./vendor -type f -iname 'LICENSE' -delete
           cd ./assets
           rm .git
           cd $cwd
