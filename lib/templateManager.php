@@ -20,55 +20,17 @@ require_once __DIR__.'/../../../main/inc/global.inc.php';
 class TemplateManager
 {
     /**
-     * Mapping local path to templates.
-     *
-     * @var array
-     */
-    private static $localPath = [
-        'ar' => 'ar',
-        'bg' => 'bg',
-        'cs' => 'cs',
-        'de' => 'de',
-        'default' => 'default',
-        'el' => 'el',
-        'en' => 'en',
-        'en-GB' => 'en-GB',
-        'es' => 'es',
-        'eu' => 'eu',
-        'fr' => 'fr',
-        'gl' => 'gl',
-        'it' => 'it',
-        'ja' => 'ja',
-        'ko' => 'ko',
-        'lv' => 'lv',
-        'nl' => 'nl',
-        'ms' => 'ms',
-        'pl' => 'pl',
-        'pt' => 'pt',
-        'pt-BR' => 'pt-BR',
-        'ru' => 'ru',
-        'sk' => 'sk',
-        'sr' => 'sr',
-        'sr-Cyrl-RS' => 'sr-Cyrl-RS',
-        'sv' => 'sv',
-        'tr' => 'tr',
-        'uk' => 'uk',
-        'vi' => 'vi',
-        'zh' => 'zh',
-        'zh-TW' => 'zh-TW',
-    ];
-
-    /**
      * Return path to template new file.
      */
     public static function getEmptyTemplate($fileExtension): string
     {
         $langInfo = LangManager::getLangUser();
         $lang = $langInfo['isocode'];
-        if (!array_key_exists($lang, self::$localPath)) {
+        $templateFolder = api_get_path(SYS_PLUGIN_PATH).'onlyoffice/assets/';
+        if (!is_dir($templateFolder.$lang)) {
             $lang = 'default';
         }
-        $templateFolder = api_get_path(SYS_PLUGIN_PATH).'onlyoffice/assets/'.self::$localPath[$lang];
+        $templateFolder = $templateFolder.$lang;
 
         return $templateFolder.'/'.ltrim($fileExtension, '.').'.zip';
     }
