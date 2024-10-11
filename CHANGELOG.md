@@ -6,7 +6,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 ## Added
 - Arabic and Serbian empty file templates
 - default empty file templates
-- fi-FI, Hebrew (Israel), nb-NO, sl-SI empty file templates
+- Finnish, Hebrew, Norwegian, Slovenian empty file templates
 
 ## 1.3.0
 ## Added
