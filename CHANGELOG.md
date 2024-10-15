@@ -4,6 +4,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 
 ##
 ## Added
+- using onlyoffice/docs-integration-sdk
 - Arabic and Serbian empty file templates
 - default empty file templates
 - Finnish, Hebrew, Norwegian, Slovenian empty file templates
