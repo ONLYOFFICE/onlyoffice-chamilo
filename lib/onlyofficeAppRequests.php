@@ -49,7 +49,7 @@ class OnlyofficeAppRequests extends RequestService
      *
      * @return array
      */
-    private static function createTempFile()
+    private function createTempFile()
     {
         $fileUrl = null;
         $fileName = 'convert.docx';
