@@ -25,7 +25,7 @@ class OnlyofficeFormatsManager extends FormatsManager
         $this->formatsList = self::buildNamedFormatsArray($formats);
     }
 
-    private function getFormats()
+    private static function getFormats()
     {
         $formats = file_get_contents(dirname(__DIR__).
         DIRECTORY_SEPARATOR.
