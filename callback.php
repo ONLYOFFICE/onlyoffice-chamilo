@@ -75,6 +75,9 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
         case 'download':
             $callbackResponseArray = download();
             exit(json_encode($callbackResponseArray));
+        case 'empty':
+            $callbackResponseArray = emptyFile();
+            exit(json_encode($callbackResponseArray));    
         default:
             $callbackResponseArray['status'] = 'error';
             $callbackResponseArray['error'] = '404 Method not found';
@@ -208,5 +211,53 @@ function download()
     @header('Content-Disposition: attachment; filename='.$docInfo['title']);
 
     readfile($filePath);
+    exit;
+}
+
+/**
+ * Downloading empty file by the document service.
+ */
+function emptyFile()
+{
+    global $plugin;
+    global $type;
+    global $courseCode;
+    global $userId;
+    global $docId;
+    global $groupId;
+    global $sessionId;
+    global $courseInfo;
+    global $appSettings;
+    global $jwtManager;
+
+
+    if ($type !== 'empty') {
+        $result['status'] = 'error';
+        $result['error'] = 'Download empty with other action';
+        return $result;
+    }
+
+    if ($jwtManager->isJwtEnabled()) {
+        $token = substr(getallheaders()[$appSettings->getJwtHeader()], strlen('Bearer '));
+        try {
+            $payload = $jwtManager->decode($token, $appSettings->getJwtKey());
+        } catch (UnexpectedValueException $e) {
+            $result['status'] = 'error';
+            $result['error'] = '403 Access denied';
+            return $result;
+        }
+    }
+
+    $template = TemplateManager::getEmptyTemplate('docx');
+
+    if (!$template) {
+        $result['status'] = 'error';
+        $result['error'] = 'File not found';
+        return $result;
+    }
+
+    @header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    @header('Content-Disposition: attachment; filename='.'docx.docx');
+    readfile($template);
     exit;
 }
