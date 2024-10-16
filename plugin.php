@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +13,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 require_once __DIR__.'/../../main/inc/global.inc.php';
 require_once __DIR__.'/lib/onlyofficeSettingsFormBuilder.php';
+require_once __DIR__.'/lib/onlyofficeAppSettings.php';
 
 /**
  * @author Asensio System SIA
  */
-
 $plugin = OnlyofficePlugin::create();
+$appSettings = new OnlyofficeAppsettings($plugin);
 $plugin_info = $plugin->get_info();
-$plugin_info['settings_form'] = OnlyofficeSettingsFormBuilder::buildSettingsForm($plugin);
+$plugin_info['settings_form'] = OnlyofficeSettingsFormBuilder::buildSettingsForm($appSettings);
 if ($plugin_info['settings_form']->validate()) {
-    $plugin = OnlyofficeSettingsFormBuilder::validateSettingsForm($plugin);
+    $plugin = OnlyofficeSettingsFormBuilder::validateSettingsForm($appSettings);
 }
