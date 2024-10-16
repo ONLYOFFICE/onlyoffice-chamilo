@@ -2,12 +2,15 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+##
+## Changed
+- minor fixes
+
 ## 1.4.0
 ## Added
 - using onlyoffice/docs-integration-sdk
-- Arabic and Serbian empty file templates
 - default empty file templates
-- Finnish, Hebrew, Norwegian, Slovenian empty file templates
+- Arabic, Serbian, Finnish, Hebrew, Norwegian, Slovenian empty file templates
 
 ## 1.3.0
 ## Added
