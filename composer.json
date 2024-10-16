@@ -1,6 +1,6 @@
 {
     "require": {
-        "onlyoffice/docs-integration-sdk": "^1.0.0"
+        "onlyoffice/docs-integration-sdk": "^1.0.1"
     },
     "repositories": [
         {
