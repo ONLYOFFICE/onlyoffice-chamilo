@@ -77,7 +77,7 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
             exit(json_encode($callbackResponseArray));
         case 'empty':
             $callbackResponseArray = emptyFile();
-            exit(json_encode($callbackResponseArray));    
+            exit(json_encode($callbackResponseArray));
         default:
             $callbackResponseArray['status'] = 'error';
             $callbackResponseArray['error'] = '404 Method not found';
