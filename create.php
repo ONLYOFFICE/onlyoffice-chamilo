@@ -77,7 +77,6 @@ if ($form->validate()) {
     $values = $form->exportValues();
 
     $fileType = $values['fileFormat'];
-    var_dump($fileType);
     $fileExt = $documentManager->getDocExtByType($fileType);
 
     $result = OnlyofficeDocumentManager::createFile(

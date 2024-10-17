@@ -29,47 +29,18 @@ class OnlyofficeAppRequests extends RequestService
     public function __construct($settingsManager, $httpClient, $jwtManager)
     {
         parent::__construct($settingsManager, $httpClient, $jwtManager);
-        $tempFile = self::createTempFile();
-        $this->convertFileUrl = $tempFile['fileUrl'];
-        $this->convertFilePath = $tempFile['filePath'];
-    }
-
-    public function __destruct()
-    {
-        unlink($this->convertFilePath);
     }
 
     public function getFileUrlForConvert()
     {
-        return $this->convertFileUrl;
-    }
-
-    /**
-     * Create temporary file for convert service testing.
-     *
-     * @return array
-     */
-    private function createTempFile()
-    {
-        $fileUrl = null;
-        $fileName = 'convert.docx';
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $baseName = strtolower(pathinfo($fileName, PATHINFO_FILENAME));
-        $templatePath = TemplateManager::getEmptyTemplate($fileExt);
-        $folderPath = api_get_path(SYS_PLUGIN_PATH).$this->settingsManager->plugin->getPluginName();
-        $filePath = $folderPath.'/'.$fileName;
-
-        if ($fp = @fopen($filePath, 'w')) {
-            $content = file_get_contents($templatePath);
-            fputs($fp, $content);
-            fclose($fp);
-            chmod($filePath, api_get_permissions_for_new_files());
-            $fileUrl = api_get_path(WEB_PLUGIN_PATH).$this->settingsManager->plugin->getPluginName().'/'.$fileName;
-        }
-
-        return [
-            'fileUrl' => $fileUrl,
-            'filePath' => $filePath,
+        $data = [
+            'type' => 'empty',
+            'courseId' => api_get_course_int_id(),
+            'userId' => api_get_user_id(),
+            'sessionId' => api_get_session_id(),
         ];
+        $hashUrl = $this->jwtManager->getHash($data);
+        return api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl;
     }
+
 }
