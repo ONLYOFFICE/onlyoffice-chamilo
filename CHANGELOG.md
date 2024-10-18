@@ -2,7 +2,7 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
-##
+## 1.4.1
 ## Changed
 - minor fixes
 
