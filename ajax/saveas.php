@@ -72,7 +72,7 @@ $result = OnlyofficeDocumentManager::createFile(
 
 if (isset($result['error'])) {
     if ('fileIsExist' === $result['error']) {
-        $result['error'] = 'File is exist';
+        $result['error'] = 'File already exists';
     }
     if ('impossibleCreateFile' === $result['error']) {
         $result['error'] = 'Impossible to create file';

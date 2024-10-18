@@ -29,7 +29,7 @@ class OnlyofficeSettingsFormBuilder
      *
      * @return FormValidator
      */
-    public function buildSettingsForm(OnlyofficeAppsettings $settingsManager)
+    public static function buildSettingsForm(OnlyofficeAppsettings $settingsManager)
     {
         $plugin = $settingsManager->plugin;
         $demoData = $settingsManager->getDemoData();
@@ -78,7 +78,7 @@ class OnlyofficeSettingsFormBuilder
      *
      * @return OnlyofficePlugin
      */
-    public function validateSettingsForm(OnlyofficeAppsettings $settingsManager)
+    public static function validateSettingsForm(OnlyofficeAppsettings $settingsManager)
     {
         $plugin = $settingsManager->plugin;
         $errorMsg = null;
@@ -114,7 +114,7 @@ class OnlyofficeSettingsFormBuilder
      *
      * @return string
      */
-    private function buildTemplate($templateName, $params = [])
+    private static function buildTemplate($templateName, $params = [])
     {
         $tpl = new Template('', false, false, false, false, false, false);
         if (!empty($params)) {
@@ -135,7 +135,7 @@ class OnlyofficeSettingsFormBuilder
      *
      * @return void
      */
-    private function displayError($errorMessage, $location = null)
+    private static function displayError($errorMessage, $location = null)
     {
         Display::addFlash(
             Display::return_message(
