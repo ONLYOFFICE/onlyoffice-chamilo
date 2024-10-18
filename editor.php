@@ -69,11 +69,18 @@ $config = $configService->createConfig($docId, $editorsMode, $_SERVER['HTTP_USER
 $config = json_decode(json_encode($config), true);
 $isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
 
+$showHeaders = true;
+$headerHeight = 'calc(100% - 140px)';
+if (!empty($_GET['nh'])) {
+    $showHeaders = false;
+    $headerHeight = '100%';
+}
+
 ?>
 <title>ONLYOFFICE</title>
 <style>
     #app > iframe {
-        height: calc(100% - 140px);
+        height: <?php echo $headerHeight; ?>;
     }
     body {
         height: 100%;
@@ -172,4 +179,10 @@ $isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
     }
 
 </script>
-<?php echo Display::display_header(); ?>
+<?php
+if ($showHeaders) {
+    echo Display::display_header();
+} else {
+    echo Display::display_reduced_header();
+}
+?>
