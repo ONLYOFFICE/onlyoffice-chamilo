@@ -2,6 +2,10 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+##
+## Added
+- support learning path
+
 ## 1.4.1
 ## Changed
 - minor fixes
