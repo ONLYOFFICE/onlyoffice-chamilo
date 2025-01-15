@@ -44,7 +44,12 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
     git submodule update --init --recursive
     ```
 
-3. Collect all files
+3. Get plugin dependencies:
+    ```
+    composer install
+    ```
+
+4. Collect all files
     ```
     mkdir /tmp/onlyoffice-deploy
     mkdir /tmp/onlyoffice-deploy/onlyoffice
@@ -54,7 +59,7 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
     rm -rf */.git*
     ```
 
-4. Archive
+5. Archive
     ```
     cd ../
     zip onlyoffice.zip -r onlyoffice
