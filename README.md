@@ -1,8 +1,8 @@
-﻿# Chamilo ONLYOFFICE integration plugin
+﻿# ONLYOFFICE plugin for Chamilo
 
-This app enables users to edit office documents from [Chamilo](https://chamilo.org) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
+This plugin enables users to edit office documents from [Chamilo](https://chamilo.org) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
-The app is compatible with Chamilo v1.11.16 or newer. 
+The plugin is compatible with Chamilo v1.11.16 or newer. 
 
 ## Features
 
@@ -31,7 +31,7 @@ The Community Edition vs Enterprise Edition comparison can be found [here](#only
 
 To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/installation/docs-community-proxy.aspx).
 
-## Collect Chamilo ONLYOFFICE integration plugin
+## Collect ONLYOFFICE plugin for Chamilo
 
 1. Get the latest version of this repository running the command:
     ```
@@ -65,7 +65,7 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
     zip onlyoffice.zip -r onlyoffice
     ```
 
-## Installing Chamilo ONLYOFFICE integration plugin
+## Installing ONLYOFFICE plugin for Chamilo
 
 The plugin has been integrated into Chamilo since version 1.11.16.
 
@@ -85,7 +85,7 @@ Then launch `composer install` from the Chamilo root folder.
 
 Return to the plugin list, select the ONLYOFFICE plugin, and click Enable the selected plugins.
 
-## Configuring Chamilo ONLYOFFICE integration plugin
+## Configuring ONLYOFFICE plugin for Chamilo
 
 On the Plugins page, find ONLYOFFICE and click _Configure_. You'll see the _Settings_ page. Enable the plugin and specify the _Document Server address_. 
 
