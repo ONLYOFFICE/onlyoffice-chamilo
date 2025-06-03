@@ -91,7 +91,7 @@ On the Plugins page, find ONLYOFFICE and click _Configure_. You'll see the _Sett
 
 Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. 
 Specify your own **Secret key** on the Chamilo **Settings** page. 
-In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/editors/signature/), specify the same secret key and enable the validation.
+In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/), specify the same secret key and enable the validation.
 
 ## How it works
 
@@ -114,7 +114,7 @@ In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/editors/signatur
 * After 10 seconds, Document Server makes a POST request to **callbackUrl** with the information that editing has ended and sends a link to the new document version.
 * Chamilo loads a new version of the document and overwrites the file.
 
-More information on integration ONLYOFFICE Docs can be found in the [API documentation](https://api.onlyoffice.com/editors/basic). 
+More information on integration ONLYOFFICE Docs can be found in the [API documentation](https://api.onlyoffice.com/docs/docs-api/get-started/basic-concepts/). 
 
 ## ONLYOFFICE Docs editions
 
