@@ -42,6 +42,8 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
     $groupId = $hashData->groupId;
     $sessionId = $hashData->sessionId;
     $docPath = isset($_GET['docPath']) ? urldecode($_GET['docPath']) : ($hashData->docPath ?? null);
+    // Load courseCode for various uses from global scope in other functions
+    $courseCode = api_get_course_info_by_id($courseId)['code'];
 
     if (!empty($userId)) {
         $userInfo = api_get_user_info($userId);
@@ -196,7 +198,6 @@ function download()
     global $docId;
     global $groupId;
     global $docPath;
-    global $courseCode;
     global $sessionId;
     global $courseInfo;
     global $appSettings;
