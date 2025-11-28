@@ -24,7 +24,7 @@ use Onlyoffice\DocsIntegrationSdk\Models\CallbackDocStatus;
 $plugin = OnlyofficePlugin::create();
 
 if (isset($_GET['hash']) && !empty($_GET['hash'])) {
-    @header('Content-Type: application/json; charset==utf-8');
+    @header('Content-Type: application/json; charset=utf-8');
     @header('X-Robots-Tag: noindex');
     @header('X-Content-Type-Options: nosniff');
 
