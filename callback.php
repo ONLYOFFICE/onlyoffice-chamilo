@@ -24,7 +24,6 @@ use Onlyoffice\DocsIntegrationSdk\Models\CallbackDocStatus;
 $plugin = OnlyofficePlugin::create();
 
 if (isset($_GET['hash']) && !empty($_GET['hash'])) {
-    $callbackResponseArray = [];
     @header('Content-Type: application/json; charset==utf-8');
     @header('X-Robots-Tag: noindex');
     @header('X-Content-Type-Options: nosniff');
@@ -33,9 +32,7 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
     $jwtManager = new OnlyofficeJwtManager($appSettings);
     list($hashData, $error) = $jwtManager->readHash($_GET['hash'], api_get_security_key());
     if (null === $hashData) {
-        $callbackResponseArray['status'] = 'error';
-        $callbackResponseArray['error'] = $error;
-        exit(json_encode($callbackResponseArray));
+        exit(json_encode(['status' => 'error', 'error' => $error]));
     }
 
     $type = $hashData->type;
@@ -52,8 +49,7 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
     if (!empty($userId)) {
         $userInfo = api_get_user_info($userId);
     } else {
-        $result['error'] = 'User not found';
-        exit(json_encode($result));
+        exit(json_encode(['error' => 'User not found']));
     }
 
     if (api_is_anonymous()) {
@@ -80,9 +76,7 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
             $callbackResponseArray = emptyFile();
             exit(json_encode($callbackResponseArray));
         default:
-            $callbackResponseArray['status'] = 'error';
-            $callbackResponseArray['error'] = '404 Method not found';
-            exit(json_encode($callbackResponseArray));
+            exit(json_encode(['status' => 'error', 'error' => '404 Method not found']));
     }
 }
 
@@ -91,8 +85,6 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
  */
 function track(): array
 {
-    $result = [];
-
     global $plugin;
     global $courseCode;
     global $userId;
@@ -105,16 +97,13 @@ function track(): array
     global $jwtManager;
 
     if (($body_stream = file_get_contents('php://input')) === false) {
-        $result['error'] = 'Bad Request';
-
-        return $result;
+        return ['error' => 'Bad Request'];
     }
 
     $data = json_decode($body_stream, true);
 
     if (null === $data) {
-        $result['error'] = 'Bad Response';
-        return $result;
+        return ['error' => 'Bad Response'];
     }
 
     if ($data['status'] == 4) {
@@ -126,10 +115,7 @@ function track(): array
             try {
                 $payload = $jwtManager->decode($data['token'], $appSettings->getJwtKey());
             } catch (UnexpectedValueException $e) {
-                $result['status'] = 'error';
-                $result['error'] = '403 Access denied';
-
-                return $result;
+                return ['status' => 'error', 'error' => '403 Access denied'];
             }
         } else {
             $token = substr(getallheaders()[$appSettings->getJwtHeader()], strlen('Bearer '));
@@ -137,10 +123,7 @@ function track(): array
                 $decodeToken = $jwtManager->decode($token, $appSettings->getJwtKey());
                 $payload = $decodeToken->payload;
             } catch (UnexpectedValueException $e) {
-                $result['status'] = 'error';
-                $result['error'] = '403 Access denied';
-
-                return $result;
+                return ['status' => 'error', 'error' => '403 Access denied'];
             }
         }
     }
@@ -226,10 +209,7 @@ function download()
         try {
             $payload = $jwtManager->decode($token, $appSettings->getJwtKey());
         } catch (UnexpectedValueException $e) {
-            $result['status'] = 'error';
-            $result['error'] = '403 Access denied';
-
-            return $result;
+            return ['status' => 'error', 'error' => '403 Access denied'];
         }
     }
 
@@ -280,9 +260,7 @@ function emptyFile()
 
 
     if ($type !== 'empty') {
-        $result['status'] = 'error';
-        $result['error'] = 'Download empty with other action';
-        return $result;
+        return ['status' => 'error', 'error' => 'Download empty with other action'];
     }
 
     if ($jwtManager->isJwtEnabled()) {
@@ -290,18 +268,14 @@ function emptyFile()
         try {
             $payload = $jwtManager->decode($token, $appSettings->getJwtKey());
         } catch (UnexpectedValueException $e) {
-            $result['status'] = 'error';
-            $result['error'] = '403 Access denied';
-            return $result;
+            return ['status' => 'error', 'error' => '403 Access denied'];
         }
     }
 
     $template = TemplateManager::getEmptyTemplate('docx');
 
     if (!$template) {
-        $result['status'] = 'error';
-        $result['error'] = 'File not found';
-        return $result;
+        return ['status' => 'error', 'error' => 'File not found'];
     }
 
     @header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
