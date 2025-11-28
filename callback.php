@@ -32,6 +32,7 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
     $jwtManager = new OnlyofficeJwtManager($appSettings);
     list($hashData, $error) = $jwtManager->readHash($_GET['hash'], api_get_security_key());
     if (null === $hashData) {
+        error_log("ONLYOFFICE CALLBACK: ERROR - Invalid hash: ".$error);
         exit(json_encode(['status' => 'error', 'error' => $error]));
     }
 
