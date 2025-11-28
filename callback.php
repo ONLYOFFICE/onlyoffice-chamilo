@@ -85,7 +85,6 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
  */
 function track(): array
 {
-    global $plugin;
     global $courseCode;
     global $userId;
     global $docId;
@@ -96,7 +95,8 @@ function track(): array
     global $appSettings;
     global $jwtManager;
 
-    if (($body_stream = file_get_contents('php://input')) === false) {
+    $body_stream = file_get_contents('php://input');
+    if ($body_stream === false) {
         return ['error' => 'Bad Request'];
     }
 

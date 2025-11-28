@@ -139,7 +139,7 @@ if (!$docInfo || !$fileId) {
 
 $langInfo = LangManager::getLangUser();
 $jwtManager = new OnlyofficeJwtManager($appSettings);
-if (isset($_GET['forceEdit']) && (bool)$_GET['forceEdit'] === true) {
+if (isset($_GET['forceEdit']) && (bool) $_GET['forceEdit'] === true) {
     $docInfo['forceEdit'] = $_GET['forceEdit'];
 }
 $documentManager = new OnlyofficeDocumentManager($appSettings, $docInfo);

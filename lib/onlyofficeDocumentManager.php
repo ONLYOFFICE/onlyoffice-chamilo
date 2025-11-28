@@ -23,7 +23,7 @@ class OnlyofficeDocumentManager extends DocumentManager
 
     public function __construct($settingsManager, array $docInfo, $formats = null, $systemLangCode = 'en')
     {
-        $formats = new OnlyofficeFormatsManager;
+        $formats = new OnlyofficeFormatsManager();
         parent::__construct($settingsManager, $formats, $systemLangCode);
         $this->docInfo = $docInfo;
     }
@@ -105,7 +105,7 @@ class OnlyofficeDocumentManager extends DocumentManager
         return api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl;
     }
 
-    public function getGobackUrl(string $fileId)
+    public function getGobackUrl(string $fileId): string
     {
         if (!empty($this->docInfo)) {
             if (isset($this->docInfo['path']) && str_contains($this->docInfo['path'], 'exercises/')) {
