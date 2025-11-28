@@ -36,8 +36,10 @@ if (empty($documentServerUrl)) {
 
 $config = [];
 $docApiUrl = $appSettings->getDocumentServerApiUrl();
-$docId = $_GET['docId'];
-$groupId = isset($_GET['groupId']) && !empty($_GET['groupId']) ? $_GET['groupId'] : null;
+$docId = isset($_GET['docId']) ? (int) $_GET['docId'] : null;
+$docPath = isset($_GET['doc']) ? urldecode($_GET['doc']) : null;
+
+$groupId = isset($_GET['groupId']) && !empty($_GET['groupId']) ? (int) $_GET['groupId'] : (!empty($_GET['gidReq']) ? (int) $_GET['gidReq'] : null);
 $userId = api_get_user_id();
 $userInfo = api_get_user_info($userId);
 $sessionId = api_get_session_id();
@@ -47,7 +49,99 @@ if (empty($courseInfo)) {
     api_not_allowed(true);
 }
 $courseCode = $courseInfo['code'];
-$docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
+$exerciseId = isset($_GET['exerciseId']) ? (int) $_GET['exerciseId'] : null;
+$exeId = isset($_GET['exeId']) ? (int) $_GET['exeId'] : null;
+$questionId = isset($_GET['questionId']) ? (int) $_GET['questionId'] : null;
+$isReadOnly = isset($_GET['readOnly']) ? (int) $_GET['readOnly'] : null;
+$docInfo = null;
+$fileId = null;
+$fileUrl = null;
+
+if ($docPath) {
+    $filePath = api_get_path(SYS_COURSE_PATH).$docPath;
+    if (!file_exists($filePath)) {
+        error_log("ERROR: Original file not found -> ".$filePath);
+        exit("Error: Document not found.");
+    }
+
+    $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+    $fileUrl = api_get_path(WEB_COURSE_PATH).$docPath;
+    $newDocPath = $docPath;
+    $userFilePath = $filePath;
+
+    if ($exeId) {
+        $newDocPath = api_get_course_path()."/exercises/onlyoffice/{$exerciseId}/{$questionId}/{$userId}/response_{$exeId}.{$extension}";
+        $userFilePath = api_get_path(SYS_COURSE_PATH).$newDocPath;
+
+        if (!file_exists($userFilePath)) {
+            if (!is_dir(dirname($userFilePath))) {
+                mkdir(dirname($userFilePath), 0775, true);
+            }
+            if (!copy($filePath, $userFilePath)) {
+                exit("Error: Failed to create a copy of the file.");
+            }
+        }
+        $fileUrl = api_get_path(WEB_COURSE_PATH).$newDocPath;
+    }
+
+    $fileId = basename($newDocPath);
+    $absolutePath = $userFilePath;
+    $absoluteParentPath = dirname($userFilePath).'/';
+    $data = [
+        'type' => 'download',
+        'doctype' => 'exercise',
+        'docPath' => urlencode($newDocPath),
+        'courseId' => api_get_course_int_id(),
+        'userId' => api_get_user_id(),
+        'docId' => $fileId,
+        'sessionId' => api_get_session_id(),
+    ];
+
+    $jwtManager = new OnlyofficeJwtManager($appSettings);
+    $hashUrl = $jwtManager->getHash($data);
+    $callbackUrl = api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl;
+    if ($exeId) {
+        $callbackUrl .= '&docPath='.urlencode($newDocPath);
+    } else {
+        $callbackUrl .= '&docPath='.urlencode($newDocPath);
+    }
+
+    $docInfo = [
+        'iid' => null,
+        'id' => null,
+        'c_id' => $courseId,
+        'path' => $newDocPath,
+        'comment' => null,
+        'title' => basename($userFilePath),
+        'filetype' => 'file',
+        'size' => filesize($userFilePath),
+        'readonly' => (int) $isReadOnly,
+        'session_id' => $sessionId,
+        'url' => api_get_path(WEB_PLUGIN_PATH)."onlyoffice/editor.php?doc=".urlencode($newDocPath).($exeId ? "&exeId={$exeId}" : "").($isReadOnly ? "&readOnly={$isReadOnly}" : ""),
+        'document_url' => $callbackUrl,
+        'absolute_path' => $absolutePath,
+        'absolute_path_from_document' => '/document/'.basename($userFilePath),
+        'absolute_parent_path' => $absoluteParentPath,
+        'direct_url' => $callbackUrl,
+        'basename' => basename($userFilePath),
+        'parent_id' => false,
+        'parents' => [],
+        'forceEdit' => $_GET['forceEdit'] ?? false,
+        'exercise_id' => $exerciseId,
+    ];
+} elseif ($docId) {
+    $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
+    if ($docInfo) {
+        $fileId = $docId;
+        $fileUrl = (new OnlyofficeDocumentManager($appSettings, $docInfo))->getFileUrl($docId);
+    }
+}
+
+if (!$docInfo || !$fileId) {
+    error_log("ERROR: Document not found.");
+    exit("Error: Document not found.");
+}
+
 $langInfo = LangManager::getLangUser();
 $jwtManager = new OnlyofficeJwtManager($appSettings);
 if (isset($_GET['forceEdit']) && (bool)$_GET['forceEdit'] === true) {
@@ -56,17 +150,24 @@ if (isset($_GET['forceEdit']) && (bool)$_GET['forceEdit'] === true) {
 $documentManager = new OnlyofficeDocumentManager($appSettings, $docInfo);
 $extension = $documentManager->getExt($documentManager->getDocInfo('title'));
 $docType = $documentManager->getDocType($extension);
-$key = $documentManager->getDocumentKey($docId, $courseCode);
-$fileUrl = $documentManager->getFileUrl($docId);
+$fileIdentifier = $docId ? (string) $docId : md5($docPath);
+$key = $documentManager->getDocumentKey($fileIdentifier, $courseCode);
+$fileUrl = $fileUrl ?? $documentManager->getFileUrl($fileIdentifier);
 
-if (!empty($appSettings->getStorageUrl())) {
+if (!empty($appSettings->getStorageUrl()) && !empty($fileUrl)) {
     $fileUrl = str_replace(api_get_path(WEB_PATH), $appSettings->getStorageUrl(), $fileUrl);
 }
 
 $configService = new OnlyofficeConfigService($appSettings, $jwtManager, $documentManager);
 $editorsMode = $configService->getEditorsMode();
-$config = $configService->createConfig($docId, $editorsMode, $_SERVER['HTTP_USER_AGENT']);
+$config = $configService->createConfig($fileIdentifier, $editorsMode, $_SERVER['HTTP_USER_AGENT']);
 $config = json_decode(json_encode($config), true);
+
+if (empty($config)) {
+    error_log("ERROR: Failed to generate the configuration for OnlyOffice");
+    exit("Error: Failed to generate the configuration for OnlyOffice.");
+}
+
 $isMobileAgent = $configService->isMobileAgent($_SERVER['HTTP_USER_AGENT']);
 
 $showHeaders = true;

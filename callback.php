@@ -44,7 +44,8 @@ if (isset($_GET['hash']) && !empty($_GET['hash'])) {
     $docId = $hashData->docId;
     $groupId = $hashData->groupId;
     $sessionId = $hashData->sessionId;
-
+    $docPath = isset($_GET['docPath']) ? urldecode($_GET['docPath']) : ($hashData->docPath ?? null);
+    // Load courseCode for various uses from global scope in other functions
     $courseInfo = api_get_course_info_by_id($courseId);
     $courseCode = $courseInfo['code'];
 
@@ -96,6 +97,7 @@ function track(): array
     global $courseCode;
     global $userId;
     global $docId;
+    global $docPath;
     global $groupId;
     global $sessionId;
     global $courseInfo;
@@ -112,8 +114,11 @@ function track(): array
 
     if (null === $data) {
         $result['error'] = 'Bad Response';
-
         return $result;
+    }
+
+    if ($data['status'] == 4) {
+        return ['status' => 'success', 'message' => 'No changes detected'];
     }
 
     if ($jwtManager->isJwtEnabled()) {
@@ -138,15 +143,48 @@ function track(): array
                 return $result;
             }
         }
+    }
 
-        $data['url'] = isset($payload->url) ? $payload->url : null;
+    if (!empty($docPath)) {
+        $docPath = urldecode($docPath);
+        $filePath = api_get_path(SYS_COURSE_PATH).$docPath;
+
+        if (!file_exists($filePath)) {
+            return ['status' => 'error', 'error' => 'File not found'];
+        }
+
+        $documentKey = basename($docPath);
+        if ($data['status'] == 2 || $data['status'] == 3) {
+            if (!empty($data['url'])) {
+                $newContent = file_get_contents($data['url']);
+                if ($newContent === false) {
+                    return ['status' => 'error', 'error' => 'Failed to fetch document'];
+                }
+
+                if (file_put_contents($filePath, $newContent) === false) {
+                    return ['status' => 'error', 'error' => 'Failed to save document'];
+                }
+            } else {
+                return ['status' => 'error', 'error' => 'No file URL provided'];
+            }
+        }
+    } elseif (!empty($docId)) {
+        $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
+        if (!$docInfo || !file_exists($docInfo['absolute_path'])) {
+            return ['status' => 'error', 'error' => 'File not found'];
+        }
+
+        $documentKey = $docId;
+        $data['url'] = $payload->url ?? null;
         $data['status'] = $payload->status;
+    } else {
+        return ['status' => 'error', 'error' => 'File not found'];
     }
 
     $docStatus = new CallbackDocStatus($data['status']);
     $callback = new OnlyofficeCallback();
     $callback->setStatus($docStatus);
-    $callback->setKey($docId);
+    $callback->setKey($documentKey);
     $callback->setUrl($data['url']);
     $callbackService = new OnlyofficeCallbackService(
         $appSettings,
@@ -154,12 +192,15 @@ function track(): array
         [
             'courseCode' => $courseCode,
             'userId' => $userId,
-            'docId' => $docId,
+            'docId' => $docId ?? '',
+            'docPath' => $docPath ?? '',
             'groupId' => $groupId,
             'sessionId' => $sessionId,
             'courseInfo' => $courseInfo,
-        ]);
-    $result = $callbackService->processCallback($callback, $docId);
+        ]
+    );
+
+    $result = $callbackService->processCallback($callback, $documentKey);
 
     return $result;
 }
@@ -174,6 +215,7 @@ function download()
     global $userId;
     global $docId;
     global $groupId;
+    global $docPath;
     global $sessionId;
     global $courseInfo;
     global $appSettings;
@@ -191,20 +233,26 @@ function download()
         }
     }
 
-    if (!empty($docId) && !empty($courseCode)) {
+    if (!empty($docPath)) {
+        $filePath = api_get_path(SYS_COURSE_PATH).urldecode($docPath);
+
+        if (!file_exists($filePath)) {
+            return ['status' => 'error', 'error' => 'File not found'];
+        }
+
+        $docInfo = [
+            'title' => basename($filePath),
+            'absolute_path' => $filePath,
+        ];
+    } elseif (!empty($docId) && !empty($courseCode)) {
         $docInfo = DocumentManager::get_document_data_by_id($docId, $courseCode, false, $sessionId);
-
-        if (false === $docInfo) {
-            $result['error'] = 'File not found';
-
-            return $result;
+        if (!$docInfo || !file_exists($docInfo['absolute_path'])) {
+            return ['status' => 'error', 'error' => 'File not found'];
         }
 
         $filePath = $docInfo['absolute_path'];
     } else {
-        $result['error'] = 'File not found';
-
-        return $result;
+        return ['status' => 'error', 'error' => 'Invalid request'];
     }
 
     @header('Content-Type: application/octet-stream');

@@ -102,7 +102,7 @@ class OnlyofficeCallbackService extends CallbackService
                         null,
                         $this->docData['sessionId']);
                     update_existing_document($this->docData['courseInfo'],
-                        $docId,
+                        $fileid,
                         filesize($filePath),
                         false);
                     $this->trackResult = 0;
