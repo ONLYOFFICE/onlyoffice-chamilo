@@ -22,16 +22,12 @@ $plugin = OnlyofficePlugin::create();
 $isEnable = 'true' === $plugin->get('enable_onlyoffice_plugin');
 if (!$isEnable) {
     exit("Document server isn't enabled");
-
-    return;
 }
 
 $appSettings = new OnlyofficeAppsettings($plugin);
 $documentServerUrl = $appSettings->getDocumentServerUrl();
 if (empty($documentServerUrl)) {
     exit("Document server isn't configured");
-
-    return;
 }
 
 $config = [];
