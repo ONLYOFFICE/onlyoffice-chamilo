@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once __DIR__.'/../../main/inc/global.inc.php';
 
 use ChamiloSession as Session;
@@ -258,7 +257,6 @@ function emptyFile()
     global $courseInfo;
     global $appSettings;
     global $jwtManager;
-
 
     if ($type !== 'empty') {
         return ['status' => 'error', 'error' => 'Download empty with other action'];
