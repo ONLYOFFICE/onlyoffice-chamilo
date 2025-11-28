@@ -196,11 +196,11 @@ if (!empty($_GET['nh'])) {
 
     var onRequestSaveAs = function (event) {
         var url = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH)); ?> + "onlyoffice/ajax/saveas.php";
-        var folderId = <?php echo json_encode($docInfo['parent_id']); ?>;
+        var folderId = <?php echo json_encode($docInfo['parent_id'] ?? 0); ?>;
         var saveData = {
             title: event.data.title,
             url: event.data.url,
-            folderId: folderId ? folderId : 0,
+            folderId: folderId,
             sessionId: <?php echo json_encode($sessionId); ?>,
             courseId: <?php echo json_encode($courseId); ?>,
             groupId: <?php echo json_encode($groupId); ?>
