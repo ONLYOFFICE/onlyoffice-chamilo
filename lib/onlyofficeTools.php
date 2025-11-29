@@ -34,7 +34,6 @@ class OnlyofficeTools
 
         $extension = strtolower(pathinfo($document_data['title'], PATHINFO_EXTENSION));
 
-        $canEdit = null !== $documentManager->getFormatInfo($extension) ? $documentManager->getFormatInfo($extension)->isEditable() : false;
         $canView = null !== $documentManager->getFormatInfo($extension) ? $documentManager->getFormatInfo($extension)->isViewable() : false;
 
         $groupId = api_get_group_id();
@@ -47,7 +46,7 @@ class OnlyofficeTools
         $documentId = $document_data['id'];
         $urlToEdit = $urlToEdit.'docId='.$documentId;
 
-        if ($canEdit || $canView) {
+        if ($canView) {
             $tooltip = $plugin->get_lang('openByOnlyoffice');
             if ('pdf' === $extension) {
                 $tooltip = $plugin->get_lang('fillInFormInOnlyoffice');
