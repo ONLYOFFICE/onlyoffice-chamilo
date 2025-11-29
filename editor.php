@@ -94,12 +94,7 @@ if ($docPath) {
 
     $jwtManager = new OnlyofficeJwtManager($appSettings);
     $hashUrl = $jwtManager->getHash($data);
-    $callbackUrl = api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl;
-    if ($exeId) {
-        $callbackUrl .= '&docPath='.urlencode($newDocPath);
-    } else {
-        $callbackUrl .= '&docPath='.urlencode($newDocPath);
-    }
+    $callbackUrl = api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl.'&docPath='.urlencode($newDocPath);
 
     $docInfo = [
         'iid' => null,
