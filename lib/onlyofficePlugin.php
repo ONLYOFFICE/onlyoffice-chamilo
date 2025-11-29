@@ -122,6 +122,12 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
         return $this->pluginName;
     }
 
+    /**
+     * Check if the given extension is supported by the editor
+     *
+     * @param string $extension
+     * @return bool
+     */
     public static function isExtensionAllowed(string $extension): bool
     {
         $officeExtensions = [
