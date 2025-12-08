@@ -62,6 +62,9 @@ class OnlyofficeSettingsFormBuilder
             'banner_main_text' => $plugin->get_lang('DocsCloudBannerMain'),
             'banner_button_text' => $plugin->get_lang('DocsCloudBannerButton'),
         ]);
+        $userVoiceTemplate = self::buildTemplate('user_voice');
+        $userVoice = $plugin_info['settings_form']->createElement('html', $userVoiceTemplate);
+        $plugin_info['settings_form']->insertElementBefore($userVoice, 'document_server_url');
         $plugin_info['settings_form']->insertElementBefore($connectDemoCheckbox, 'submit_button');
         $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
         $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
