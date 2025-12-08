@@ -1,0 +1,40 @@
+.onlyoffice-user-voice {
+    display: flex;
+    flex-direction: column;
+    row-gap: 11px;
+    margin-bottom: 40px;
+}
+
+.onlyoffice-user-voice h1 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29px;
+    margin-top: 0;
+}
+
+.onlyoffice-user-voice p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    margin-bottom: 0;
+}
+
+.onlyoffice-user-voice .useful-links {
+    display: flex;
+    column-gap: 24px;
+}
+
+.onlyoffice-user-voice .useful-links a {
+    display: flex;
+    gap: 4px;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+}
+
+.onlyoffice-user-voice .useful-links a::after {
+    content: url("/plugin/onlyoffice/resources/top-right-arrow.svg");
+    width: 12px;
+    height: 12px;
+}
