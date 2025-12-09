@@ -34,8 +34,9 @@ class OnlyofficeSettingsFormBuilder
         $plugin = $settingsManager->plugin;
         $demoData = $settingsManager->getDemoData();
         $plugin_info = $plugin->get_info();
+        $settings_form = $plugin_info['settings_form'];
         $message = '';
-        $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
+        $connectDemoCheckbox = $settings_form->createElement(
             'checkbox',
             'connect_demo',
             '',
@@ -62,13 +63,13 @@ class OnlyofficeSettingsFormBuilder
             'banner_main_text' => $plugin->get_lang('DocsCloudBannerMain'),
             'banner_button_text' => $plugin->get_lang('DocsCloudBannerButton'),
         ]);
-        $plugin_info['settings_form']->insertElementBefore($connectDemoCheckbox, 'submit_button');
-        $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
-        $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
-        $banner = $plugin_info['settings_form']->createElement('html', $bannerTemplate);
-        $plugin_info['settings_form']->insertElementBefore($banner, 'submit_button');
+        $settings_form->insertElementBefore($connectDemoCheckbox, 'submit_button');
+        $demoServerMessage = $settings_form->createElement('html', $demoServerMessageHtml);
+        $settings_form->insertElementBefore($demoServerMessage, 'submit_button');
+        $banner = $settings_form->createElement('html', $bannerTemplate);
+        $settings_form->insertElementBefore($banner, 'submit_button');
 
-        return $plugin_info['settings_form'];
+        return $settings_form;
     }
 
     /**
