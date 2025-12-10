@@ -83,4 +83,4 @@ if (isset($result['error'])) {
     return;
 }
 
-echo json_encode(['success' => 'File is created']);
+echo json_encode(['success' => get_plugin_lang('fileSavedAs', OnlyofficePlugin::class) . ' ' . $result['fileTitle']]);
