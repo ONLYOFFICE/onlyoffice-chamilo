@@ -41,3 +41,5 @@ $strings['badResponseErrors'] = 'Bad Response. Errors: ';
 $strings['mixedContent'] = 'Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required.';
 $strings['badHealthcheckStatus'] = 'Bad healthcheck status';
 $strings['notSupportedVersion'] = 'Not supported version';
+$strings['EmptyJwtWarning'] = 'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.
+To learn more, <a target="_blank" style="text-decoration:underline;" href="https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/security/">click here</a>.';
