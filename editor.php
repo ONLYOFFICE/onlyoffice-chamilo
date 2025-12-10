@@ -184,6 +184,7 @@ if (!empty($_GET['nh'])) {
 </style>
 <script type="text/javascript" src="<?php echo $docApiUrl; ?>"></script>
 <script type="text/javascript">
+    var docEditor = null;
     var onAppReady = function () {
         innerAlert("Document editor ready");
     };
@@ -209,6 +210,8 @@ if (!empty($_GET['nh'])) {
             success: function (response) {
                 if (response.error) {
                     console.error("Create error: ", response.error);
+                } else if (response.success) {
+                    docEditor.showMessage(response.success);
                 }
             },
             error: function (e) {
