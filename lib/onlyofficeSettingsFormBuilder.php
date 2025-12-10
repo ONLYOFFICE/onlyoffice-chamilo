@@ -99,6 +99,9 @@ class OnlyofficeSettingsFormBuilder
                 if (!empty($error)) {
                     $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
                     self::displayError($errorMsg);
+                } else if (empty($settingsManager->getJwtKey())) {
+                    $message = Display::return_message($plugin->get_lang('EmptyJwtWarning'), 'warning', false);
+                    Display::addFlash($message);
                 }
             }
         }
