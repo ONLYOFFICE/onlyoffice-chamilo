@@ -66,7 +66,8 @@ $result = OnlyofficeDocumentManager::createFile(
     $sessionId,
     $courseId,
     $groupId,
-    $url
+    $url,
+    true
 );
 
 if (isset($result['error'])) {
