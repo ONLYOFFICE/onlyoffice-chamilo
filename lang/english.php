@@ -41,3 +41,4 @@ $strings['badResponseErrors'] = 'Bad Response. Errors: ';
 $strings['mixedContent'] = 'Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required.';
 $strings['badHealthcheckStatus'] = 'Bad healthcheck status';
 $strings['notSupportedVersion'] = 'Not supported version';
+$strings['OnlyofficeUnreachable'] = 'ONLYOFFICE cannot be reached. Please contact admin';
