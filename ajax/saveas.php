@@ -18,12 +18,15 @@ require_once __DIR__.'/../../../main/inc/global.inc.php';
 
 use ChamiloSession as Session;
 
+$plugin = OnlyofficePlugin::create();
+$appSettings = new OnlyofficeAppsettings($plugin);
 $userId = api_get_user_id();
 
 $body = json_decode(file_get_contents('php://input'), true);
 
 $title = $body['title'];
 $url = $body['url'];
+$url = $appSettings->replaceDocumentServerUrlToInternal($url);
 
 $folderId = !empty($body['folderId']) ? $body['folderId'] : 0;
 $sessionId = !empty($body['sessionId']) ? $body['sessionId'] : 0;
