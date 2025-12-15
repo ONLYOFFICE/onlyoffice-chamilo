@@ -186,6 +186,9 @@ if (!empty($_GET['nh'])) {
 <script type="text/javascript">
     var docEditor = null;
     var onAppReady = function () {
+        <?php if($appSettings->useDemo()):?>
+            docEditor.showMessage('<?php echo $plugin->get_lang('demoUsingMessage'); ?>');
+        <?php endif; ?>
         innerAlert("Document editor ready");
     };
 

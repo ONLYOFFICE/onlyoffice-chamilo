@@ -11,6 +11,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 - hide a JWT secret from display
 - show warning popup when jwt secret is empty
 - set favicon on editor page
+- show warning message in editor when using public demo docs server
 
 ## Changed
 - create saved as file with a unique name instead of showing file exists error
