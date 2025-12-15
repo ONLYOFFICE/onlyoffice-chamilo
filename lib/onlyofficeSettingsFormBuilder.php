@@ -37,14 +37,20 @@ class OnlyofficeSettingsFormBuilder
         $settings_form = $plugin_info['settings_form'];
         $message = '';
 
+        $settingElement = $settings_form->getElement('jwt_header');
+        $settingElement->setAttribute('placeholder', 'Authorization');
+
+        $settingElement = $settings_form->getElement('jwt_secret');
+        $settingElement->setAttribute('placeholder', 'secret');
+
         $settingElement = $settings_form->getElement('document_server_url');
-        $settingElement->setAttribute('placeholder', 'https://');
+        $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
 
         $settingElement = $settings_form->getElement('document_server_internal');
-        $settingElement->setAttribute('placeholder', 'https://');
+        $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
 
         $settingElement = $settings_form->getElement('storage_url');
-        $settingElement->setAttribute('placeholder', 'https://');
+        $settingElement->setAttribute('placeholder', $settingsManager->getServerUrl());
 
         $connectDemoCheckbox = $settings_form->createElement(
             'checkbox',
