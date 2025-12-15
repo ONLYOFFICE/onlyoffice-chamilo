@@ -86,6 +86,12 @@ class OnlyofficeConfigService extends DocEditorConfigService
                 }
             }
         }
+
+        // Allow editing if the document is part of an exercise
+        if (!empty($_GET['exerciseId']) || !empty($_GET['exeId'])) {
+            return true;
+        }
+
         $accessRights = $isAllowToEdit || $isMyDir || $isGroupAccess;
 
         return $accessRights;
@@ -143,7 +149,7 @@ class OnlyofficeConfigService extends DocEditorConfigService
     {
         $permsEdit = $this->getAccessRights() && !$this->isReadOnly();
         $isFillable = $this->documentManager->isDocumentFillable($this->documentManager->getDocInfo('title'));
-        
+
         $permissions = new Permissions(null,
             null,
             null,
