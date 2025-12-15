@@ -53,7 +53,7 @@ if (!empty($folderId)) {
 $groupRights = Session::read('group_member_with_upload_rights');
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
 if (!($isAllowToEdit || $isMyDir || $groupRights)) {
-    echo json_encode(['error' => 'Not permitted']);
+    echo json_encode(['error' => $plugin->get_lang('fileCreateForbidden')]);
 
     return;
 }
@@ -75,10 +75,10 @@ $result = OnlyofficeDocumentManager::createFile(
 
 if (isset($result['error'])) {
     if ('fileIsExist' === $result['error']) {
-        $result['error'] = 'File already exists';
+        $result['error'] = $plugin->get_lang('fileIsExist');
     }
     if ('impossibleCreateFile' === $result['error']) {
-        $result['error'] = 'Impossible to create file';
+        $result['error'] = $plugin->get_lang('impossibleCreateFile');
     }
 
     echo json_encode($result);
@@ -86,4 +86,4 @@ if (isset($result['error'])) {
     return;
 }
 
-echo json_encode(['success' => get_plugin_lang('fileSavedAs', OnlyofficePlugin::class) . ' ' . $result['fileTitle']]);
+echo json_encode(['success' => $plugin->get_lang('fileSavedAs') . ' ' . $result['fileTitle']]);
