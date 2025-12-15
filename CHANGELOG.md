@@ -9,6 +9,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 - editor URL generation for documents with viewable extensions
 - plugin description and useful links in admin settings
 - hide a JWT secret from display
+- show warning popup when jwt secret is empty
 
 ## 1.5.0
 ## Added
