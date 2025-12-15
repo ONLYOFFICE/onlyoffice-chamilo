@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use Onlyoffice\DocsIntegrationSdk\Models\Format;
 
 /**
  * Plugin class for the Onlyoffice plugin.
@@ -120,5 +121,19 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     public function getPluginName()
     {
         return $this->pluginName;
+    }
+
+    /**
+     * Check if the given extension is supported by the editor
+     *
+     * @param string $extension
+     * @return bool
+     */
+    public static function isExtensionAllowed(string $extension): bool
+    {
+        $formatsManager = new OnlyofficeFormatsManager();
+        $vieweableList = array_map(fn(Format $format) => $format->getName(), $formatsManager->getViewableList());
+
+        return in_array($extension, $vieweableList);
     }
 }
