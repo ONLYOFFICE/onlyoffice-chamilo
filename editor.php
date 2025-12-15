@@ -208,11 +208,8 @@ if (!empty($_GET['nh'])) {
             contentType: "application/json",
             dataType: "json",
             success: function (response) {
-                if (response.error) {
-                    console.error("Create error: ", response.error);
-                } else if (response.success) {
-                    docEditor.showMessage(response.success);
-                }
+                const message = response.success ?? "Create error: " + response.error;
+                docEditor.showMessage(message);
             },
             error: function (e) {
                 console.error("Create error: ", e);
