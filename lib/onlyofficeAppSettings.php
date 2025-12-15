@@ -43,7 +43,7 @@ class OnlyofficeAppsettings extends SettingsManager
      *
      * @var string
      */
-    public $documentServerInternalUrl = 'onlyoffice_internal_url';
+    public $documentServerInternalUrl = 'onlyoffice_document_server_internal';
 
     /**
      * The config key for the storage url.
