@@ -42,3 +42,4 @@ $strings['mixedContent'] = 'Mixed Active Content is not allowed. HTTPS address f
 $strings['badHealthcheckStatus'] = 'Bad healthcheck status';
 $strings['notSupportedVersion'] = 'Not supported version';
 $strings['fileSavedAs'] = 'File saved as';
+$strings['fileCreateForbidden'] = 'File creation not allowed.';
