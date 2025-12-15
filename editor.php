@@ -222,6 +222,15 @@ if (!empty($_GET['nh'])) {
     }
 
     var connectEditor = function () {
+        if (typeof DocsAPI === 'undefined') {
+            var message = '<?php echo Display::return_message(
+                    $plugin->get_lang('OnlyofficeUnreachable'),
+                    'error'
+                )?>';
+            $("#cm-content .container").append(message);
+            return;
+        }
+
         var config = <?php echo json_encode($config); ?>;
         var errorPage = <?php echo json_encode(api_get_path(WEB_PLUGIN_PATH).'onlyoffice/error.php'); ?>;
 

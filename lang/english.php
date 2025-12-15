@@ -47,3 +47,4 @@ $strings['LearnMore'] = 'Learn more';
 $strings['SuggestFeature'] = 'Suggest a feature';
 $strings['EmptyJwtWarning'] = 'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.
 To learn more, <a target="_blank" style="text-decoration:underline;" href="https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/security/">click here</a>.';
+$strings['OnlyofficeUnreachable'] = 'ONLYOFFICE cannot be reached. Please contact admin';
