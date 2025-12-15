@@ -33,8 +33,10 @@ class OnlyofficeSettingsFormBuilder
         $plugin = $settingsManager->plugin;
         $demoData = $settingsManager->getDemoData();
         $plugin_info = $plugin->get_info();
+        $settings_form = $plugin_info['settings_form'];
         $message = '';
-        $jwtSecret = $plugin_info['settings_form']->createElement(
+
+        $jwtSecret = $settings_form->createElement(
             'password',
             'jwt_secret',
             $plugin->get_lang('jwt_secret'),
@@ -42,11 +44,24 @@ class OnlyofficeSettingsFormBuilder
                 'id' => 'onlyoffice_jwt_secret',
                 'show_hide' => true,
                 'value' => $settingsManager->getJwtKey(),
+                'placeholder' => 'secret',
             ],
         );
-        $plugin_info['settings_form']->insertElementBefore($jwtSecret, 'jwt_header');
+        $settings_form->insertElementBefore($jwtSecret, 'jwt_header');
 
-        $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
+        $settingElement = $settings_form->getElement('jwt_header');
+        $settingElement->setAttribute('placeholder', 'Authorization');
+
+        $settingElement = $settings_form->getElement('document_server_url');
+        $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
+
+        $settingElement = $settings_form->getElement('document_server_internal');
+        $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
+
+        $settingElement = $settings_form->getElement('storage_url');
+        $settingElement->setAttribute('placeholder', $settingsManager->getServerUrl());
+
+        $connectDemoCheckbox = $settings_form->createElement(
             'checkbox',
             'connect_demo',
             '',
@@ -74,15 +89,15 @@ class OnlyofficeSettingsFormBuilder
             'banner_button_text' => $plugin->get_lang('DocsCloudBannerButton'),
         ]);
         $userVoiceTemplate = self::buildTemplate('user_voice');
-        $userVoice = $plugin_info['settings_form']->createElement('html', $userVoiceTemplate);
-        $plugin_info['settings_form']->insertElementBefore($userVoice, 'document_server_url');
-        $plugin_info['settings_form']->insertElementBefore($connectDemoCheckbox, 'submit_button');
-        $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
-        $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
-        $banner = $plugin_info['settings_form']->createElement('html', $bannerTemplate);
-        $plugin_info['settings_form']->insertElementBefore($banner, 'submit_button');
+        $userVoice = $settings_form->createElement('html', $userVoiceTemplate);
+        $settings_form->insertElementBefore($userVoice, 'document_server_url');
+        $settings_form->insertElementBefore($connectDemoCheckbox, 'submit_button');
+        $demoServerMessage = $settings_form->createElement('html', $demoServerMessageHtml);
+        $settings_form->insertElementBefore($demoServerMessage, 'submit_button');
+        $banner = $settings_form->createElement('html', $bannerTemplate);
+        $settings_form->insertElementBefore($banner, 'submit_button');
 
-        return $plugin_info['settings_form'];
+        return $settings_form;
     }
 
     /**
