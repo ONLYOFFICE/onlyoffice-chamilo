@@ -202,19 +202,18 @@ class OnlyofficeDocumentManager extends DocumentManager
         int $sessionId,
         int $courseId,
         int $groupId,
-        string $templatePath = ''): array
-    {
+        string $templatePath = '',
+        bool $tryNewFilename = false
+    ): array {
         $courseInfo = api_get_course_info_by_id($courseId);
         $courseCode = $courseInfo['code'];
         $groupInfo = GroupManager::get_group_properties($groupId);
-
-        $fileTitle = Security::remove_XSS($basename).'.'.$fileExt;
 
         $fileNameSuffix = ChamiloDocumentManager::getDocumentSuffix($courseInfo, $sessionId, $groupId);
         // Try to avoid directories browsing (remove .., slashes and backslashes)
         $patterns = ['#\.\./#', '#\.\.#', '#/#', '#\\\#'];
         $replacements = ['', '', '', ''];
-        $fileName = preg_replace($patterns, $replacements, $basename).$fileNameSuffix.'.'.$fileExt;
+        $sanitizedBasename = preg_replace($patterns, $replacements, $basename).$fileNameSuffix;
 
         if (empty($templatePath)) {
             $templatePath = TemplateManager::getEmptyTemplate($fileExt);
@@ -230,20 +229,30 @@ class OnlyofficeDocumentManager extends DocumentManager
                 $sessionId
             );
             $folderPath = $document_data['absolute_path'];
-            $fileRelatedPath = $fileRelatedPath.substr($document_data['absolute_path_from_document'], 10).'/'.$fileName;
+            $fileRelatedPath = $fileRelatedPath.substr($document_data['absolute_path_from_document'], 10).'/';
         } else {
             $folderPath = api_get_path(SYS_COURSE_PATH).api_get_course_path($courseCode).'/document';
             if (!empty($groupId)) {
                 $folderPath = $folderPath.'/'.$groupInfo['directory'];
                 $fileRelatedPath = $groupInfo['directory'].'/';
             }
-            $fileRelatedPath = $fileRelatedPath.$fileName;
         }
-        $filePath = $folderPath.'/'.$fileName;
+        $filePath = "$folderPath/$sanitizedBasename.$fileExt";
 
-        if (file_exists($filePath)) {
+        if (file_exists($filePath) && !$tryNewFilename) {
             return ['error' => 'fileIsExist'];
         }
+
+        $newFileCounter = 1;
+        $newBasename = $basename;
+        $newSanitizedBasename = $sanitizedBasename;
+        while (file_exists($filePath)) {
+            $newBasename = "$basename ($newFileCounter)";
+            $newSanitizedBasename = "$sanitizedBasename ($newFileCounter)";
+            $filePath = "$folderPath/$newSanitizedBasename.$fileExt";
+            $newFileCounter++;
+        }
+        $fileTitle = Security::remove_XSS($newBasename).'.'.$fileExt;
 
         if ($fp = @fopen($filePath, 'w')) {
             $content = file_get_contents($templatePath);
@@ -254,7 +263,7 @@ class OnlyofficeDocumentManager extends DocumentManager
 
             $documentId = add_document(
                 $courseInfo,
-                $fileRelatedPath,
+                "$fileRelatedPath$newSanitizedBasename.$fileExt",
                 'file',
                 filesize($filePath),
                 $fileTitle,
@@ -279,6 +288,6 @@ class OnlyofficeDocumentManager extends DocumentManager
             }
         }
 
-        return ['documentId' => $documentId];
+        return ['documentId' => $documentId, 'fileTitle' => $fileTitle];
     }
 }

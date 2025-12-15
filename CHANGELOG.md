@@ -12,6 +12,9 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 - show warning popup when jwt secret is empty
 - set favicon on editor page
 
+## Changed
+- create saved as file with a unique name instead of showing file exists error
+
 ## 1.5.0
 ## Added
 - support learning path
