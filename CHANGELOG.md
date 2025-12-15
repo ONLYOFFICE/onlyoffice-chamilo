@@ -5,6 +5,11 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 ##
 ## Added
 - Catalan, Czech, Danish, Hungarian, Indonesian, Romanian, Albanian, Urdu empty file templates
+- support for office document question type
+- editor URL generation for documents with viewable extensions
+- plugin description and useful links in admin settings
+- hide a JWT secret from display
+- show warning popup when jwt secret is empty
 
 ## 1.5.0
 ## Added
