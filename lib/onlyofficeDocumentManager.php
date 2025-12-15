@@ -213,7 +213,7 @@ class OnlyofficeDocumentManager extends DocumentManager
         // Try to avoid directories browsing (remove .., slashes and backslashes)
         $patterns = ['#\.\./#', '#\.\.#', '#/#', '#\\\#'];
         $replacements = ['', '', '', ''];
-        $fileName = preg_replace($patterns, $replacements, $basename).$fileNameSuffix.'.'.$fileExt;
+        $sanitizedBasename = preg_replace($patterns, $replacements, $basename).$fileNameSuffix;
 
         if (empty($templatePath)) {
             $templatePath = TemplateManager::getEmptyTemplate($fileExt);
@@ -229,28 +229,28 @@ class OnlyofficeDocumentManager extends DocumentManager
                 $sessionId
             );
             $folderPath = $document_data['absolute_path'];
-            $fileRelatedPath = $fileRelatedPath.substr($document_data['absolute_path_from_document'], 10).'/'.$fileName;
+            $fileRelatedPath = $fileRelatedPath.substr($document_data['absolute_path_from_document'], 10).'/';
         } else {
             $folderPath = api_get_path(SYS_COURSE_PATH).api_get_course_path($courseCode).'/document';
             if (!empty($groupId)) {
                 $folderPath = $folderPath.'/'.$groupInfo['directory'];
                 $fileRelatedPath = $groupInfo['directory'].'/';
             }
-            $fileRelatedPath = $fileRelatedPath.$fileName;
         }
-        $filePath = $folderPath.'/'.$fileName;
+        $filePath = "$folderPath/$sanitizedBasename.$fileExt";
 
         if (file_exists($filePath) && !$tryNewFilename) {
             return ['error' => 'fileIsExist'];
-        } else {
-            $counter = 1;
-            $filePathWithoutExt = substr($filePath, 0, strrpos($filePath, ".$fileExt"));
-            $newBasename = $basename;
-            while (file_exists($filePath)) {
-                $filePath = "$filePathWithoutExt($counter).$fileExt";
-                $newBasename = "$basename($counter)";
-                $counter++;
-            }
+        }
+
+        $newFileCounter = 1;
+        $newBasename = $basename;
+        $newSanitizedBasename = $sanitizedBasename;
+        while (file_exists($filePath)) {
+            $newBasename = "$basename ($newFileCounter)";
+            $newSanitizedBasename = "$sanitizedBasename ($newFileCounter)";
+            $filePath = "$folderPath/$newSanitizedBasename.$fileExt";
+            $newFileCounter++;
         }
         $fileTitle = Security::remove_XSS($newBasename).'.'.$fileExt;
 
@@ -263,7 +263,7 @@ class OnlyofficeDocumentManager extends DocumentManager
 
             $documentId = add_document(
                 $courseInfo,
-                $fileRelatedPath,
+                "$fileRelatedPath$newSanitizedBasename.$fileExt",
                 'file',
                 filesize($filePath),
                 $fileTitle,
