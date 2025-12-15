@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once __DIR__.'/../../../main/inc/global.inc.php';
 
 class OnlyofficeSettingsFormBuilder
@@ -37,11 +36,21 @@ class OnlyofficeSettingsFormBuilder
         $settings_form = $plugin_info['settings_form'];
         $message = '';
 
+        $jwtSecret = $settings_form->createElement(
+            'password',
+            'jwt_secret',
+            $plugin->get_lang('jwt_secret'),
+            [
+                'id' => 'onlyoffice_jwt_secret',
+                'show_hide' => true,
+                'value' => $settingsManager->getJwtKey(),
+                'placeholder' => 'secret',
+            ],
+        );
+        $settings_form->insertElementBefore($jwtSecret, 'jwt_header');
+
         $settingElement = $settings_form->getElement('jwt_header');
         $settingElement->setAttribute('placeholder', 'Authorization');
-
-        $settingElement = $settings_form->getElement('jwt_secret');
-        $settingElement->setAttribute('placeholder', 'secret');
 
         $settingElement = $settings_form->getElement('document_server_url');
         $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
@@ -79,6 +88,9 @@ class OnlyofficeSettingsFormBuilder
             'banner_main_text' => $plugin->get_lang('DocsCloudBannerMain'),
             'banner_button_text' => $plugin->get_lang('DocsCloudBannerButton'),
         ]);
+        $userVoiceTemplate = self::buildTemplate('user_voice');
+        $userVoice = $settings_form->createElement('html', $userVoiceTemplate);
+        $settings_form->insertElementBefore($userVoice, 'document_server_url');
         $settings_form->insertElementBefore($connectDemoCheckbox, 'submit_button');
         $demoServerMessage = $settings_form->createElement('html', $demoServerMessageHtml);
         $settings_form->insertElementBefore($demoServerMessage, 'submit_button');
