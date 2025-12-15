@@ -10,6 +10,7 @@ This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoff
 - plugin description and useful links in admin settings
 - hide a JWT secret from display
 - show warning popup when jwt secret is empty
+- set favicon on editor page
 
 ## 1.5.0
 ## Added
