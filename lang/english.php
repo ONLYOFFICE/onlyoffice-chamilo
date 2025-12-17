@@ -53,3 +53,8 @@ To learn more, <a target="_blank" style="text-decoration:underline;" href="https
 $strings['OnlyofficeUnreachable'] = 'ONLYOFFICE cannot be reached. Please contact admin';
 $strings['fileSavedAs'] = 'File saved as';
 $strings['fileCreateForbidden'] = 'File creation not allowed.';
+$strings['docsUrlError'] = 'Unable to connect to ONLYOFFICE Docs. Please check if the server is running and accessible.';
+$strings['commandServiceError'] = 'Error when trying to check CommandService';
+$strings['convertServiceError'] = 'Error when trying to check ConvertService';
+$strings['docsUnknownError'] = 'Unexpected error occurred while checking connection';
+$strings['invalidSecret'] = 'Unable to connect to ONLYOFFICE Docs. Please check if the Secret key is correct.';
