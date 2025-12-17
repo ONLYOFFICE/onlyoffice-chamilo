@@ -124,10 +124,9 @@ class OnlyofficeSettingsFormBuilder
                 $httpClient = new OnlyofficeHttpClient();
                 $jwtManager = new OnlyofficeJwtManager($settingsManager);
                 $requestService = new OnlyofficeAppRequests($settingsManager, $httpClient, $jwtManager);
-                list($error, $version) = $requestService->checkDocServiceUrl();
+                list($error) = $requestService->validateDocService();
                 if (!empty($error)) {
-                    $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
-                    self::displayError($errorMsg);
+                    self::displayError($error);
                 } else if (empty($settingsManager->getJwtKey())) {
                     $message = Display::return_message($plugin->get_lang('EmptyJwtWarning'), 'warning', false);
                     Display::addFlash($message);
