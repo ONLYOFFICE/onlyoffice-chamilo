@@ -2,7 +2,7 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
-##
+## 1.6.0
 ## Added
 - Catalan, Czech, Danish, Hungarian, Indonesian, Romanian, Albanian, Urdu empty file templates
 - support for office document question type
