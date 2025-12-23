@@ -47,7 +47,7 @@ $strings['UserVoiceDescription'] = 'Работайте над документа
 $strings['LearnMore'] = 'Узнать больше';
 $strings['SuggestFeature'] = 'Предложите функцию';
 $strings['EmptyJwtWarning'] = 'Для обеспечения безопасности важных параметров в запросах ONLYOFFICE Docs, пожалуйста, установите секретный ключ на странице настроек.
-Чтобы узнать больше, перейдите по ссылке <a target="_blank" style="text-decoration:underline;" href="https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/security/">click here</a>.';
+Чтобы узнать больше, <a target="_blank" style="text-decoration:underline;" href="https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/security/">перейдите по ссылке</a>.';
 $strings['OnlyofficeUnreachable'] = 'ONLYOFFICE недоступен. Пожалуйста, свяжитесь с администратором';
 $strings['fileSavedAs'] = 'Файл сохранен как';
 $strings['fileCreateForbidden'] = 'Создание файлов запрещено.';
