@@ -1,6 +1,6 @@
 <?php
 /**
- * (c) Copyright Ascensio System SIA 2024.
+ * (c) Copyright Ascensio System SIA 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once __DIR__.'/../../../main/inc/global.inc.php';
 
 class OnlyofficeSettingsFormBuilder
@@ -34,8 +33,35 @@ class OnlyofficeSettingsFormBuilder
         $plugin = $settingsManager->plugin;
         $demoData = $settingsManager->getDemoData();
         $plugin_info = $plugin->get_info();
+        $settings_form = $plugin_info['settings_form'];
         $message = '';
-        $connectDemoCheckbox = $plugin_info['settings_form']->createElement(
+
+        $jwtSecret = $settings_form->createElement(
+            'password',
+            'jwt_secret',
+            $plugin->get_lang('jwt_secret'),
+            [
+                'id' => 'onlyoffice_jwt_secret',
+                'show_hide' => true,
+                'value' => $settingsManager->getJwtKey(),
+                'placeholder' => 'secret',
+            ],
+        );
+        $settings_form->insertElementBefore($jwtSecret, 'jwt_header');
+
+        $settingElement = $settings_form->getElement('jwt_header');
+        $settingElement->setAttribute('placeholder', 'Authorization');
+
+        $settingElement = $settings_form->getElement('document_server_url');
+        $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
+
+        $settingElement = $settings_form->getElement('document_server_internal');
+        $settingElement->setAttribute('placeholder', 'https://<documentserver>/');
+
+        $settingElement = $settings_form->getElement('storage_url');
+        $settingElement->setAttribute('placeholder', $settingsManager->getServerUrl());
+
+        $connectDemoCheckbox = $settings_form->createElement(
             'checkbox',
             'connect_demo',
             '',
@@ -62,13 +88,16 @@ class OnlyofficeSettingsFormBuilder
             'banner_main_text' => $plugin->get_lang('DocsCloudBannerMain'),
             'banner_button_text' => $plugin->get_lang('DocsCloudBannerButton'),
         ]);
-        $plugin_info['settings_form']->insertElementBefore($connectDemoCheckbox, 'submit_button');
-        $demoServerMessage = $plugin_info['settings_form']->createElement('html', $demoServerMessageHtml);
-        $plugin_info['settings_form']->insertElementBefore($demoServerMessage, 'submit_button');
-        $banner = $plugin_info['settings_form']->createElement('html', $bannerTemplate);
-        $plugin_info['settings_form']->insertElementBefore($banner, 'submit_button');
+        $userVoiceTemplate = self::buildTemplate('user_voice');
+        $userVoice = $settings_form->createElement('html', $userVoiceTemplate);
+        $settings_form->insertElementBefore($userVoice, 'document_server_url');
+        $settings_form->insertElementBefore($connectDemoCheckbox, 'submit_button');
+        $demoServerMessage = $settings_form->createElement('html', $demoServerMessageHtml);
+        $settings_form->insertElementBefore($demoServerMessage, 'submit_button');
+        $banner = $settings_form->createElement('html', $bannerTemplate);
+        $settings_form->insertElementBefore($banner, 'submit_button');
 
-        return $plugin_info['settings_form'];
+        return $settings_form;
     }
 
     /**
@@ -95,10 +124,12 @@ class OnlyofficeSettingsFormBuilder
                 $httpClient = new OnlyofficeHttpClient();
                 $jwtManager = new OnlyofficeJwtManager($settingsManager);
                 $requestService = new OnlyofficeAppRequests($settingsManager, $httpClient, $jwtManager);
-                list($error, $version) = $requestService->checkDocServiceUrl();
+                list($error) = $requestService->validateDocService();
                 if (!empty($error)) {
-                    $errorMsg = $plugin->get_lang('connectionError').'('.$error.')'.(!empty($version) ? '(Version '.$version.')' : '');
-                    self::displayError($errorMsg);
+                    self::displayError($error);
+                } else if (empty($settingsManager->getJwtKey())) {
+                    $message = Display::return_message($plugin->get_lang('EmptyJwtWarning'), 'warning', false);
+                    Display::addFlash($message);
                 }
             }
         }

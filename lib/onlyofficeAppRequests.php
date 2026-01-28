@@ -1,6 +1,6 @@
 <?php
 /**
- * (c) Copyright Ascensio System SIA 2024.
+ * (c) Copyright Ascensio System SIA 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,23 @@ class OnlyofficeAppRequests extends RequestService
             'sessionId' => api_get_session_id(),
         ];
         $hashUrl = $this->jwtManager->getHash($data);
+
         return api_get_path(WEB_PLUGIN_PATH).'onlyoffice/callback.php?hash='.$hashUrl;
     }
 
+    public function validateDocService(): array
+    {
+        $plugin = OnlyofficePlugin::create();
+
+        if (!empty(self::checkDocServiceUrl())) {
+            return [$plugin->get_lang('docsUrlError')];
+        } else if (!empty([$error] = self::checkCommandService())) {
+            $message = str_contains($error, 'Invalid token') ? $plugin->get_lang('invalidSecret') : $plugin->get_lang('commandServiceError');
+            return [$message];
+        } else if (!empty(self::checkConvertService())) {
+            return [$plugin->get_lang('convertServiceError')];
+        }
+
+        return [];
+    }
 }

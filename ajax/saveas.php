@@ -1,6 +1,6 @@
 <?php
 /**
- * (c) Copyright Ascensio System SIA 2024.
+ * (c) Copyright Ascensio System SIA 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once __DIR__.'/../../../main/inc/global.inc.php';
 
 use ChamiloSession as Session;
 
+$plugin = OnlyofficePlugin::create();
+$appSettings = new OnlyofficeAppsettings($plugin);
 $userId = api_get_user_id();
 
 $body = json_decode(file_get_contents('php://input'), true);
 
 $title = $body['title'];
 $url = $body['url'];
+$url = $appSettings->replaceDocumentServerUrlToInternal($url);
 
 $folderId = !empty($body['folderId']) ? $body['folderId'] : 0;
 $sessionId = !empty($body['sessionId']) ? $body['sessionId'] : 0;
@@ -51,13 +53,13 @@ if (!empty($folderId)) {
 $groupRights = Session::read('group_member_with_upload_rights');
 $isAllowToEdit = api_is_allowed_to_edit(true, true);
 if (!($isAllowToEdit || $isMyDir || $groupRights)) {
-    echo json_encode(['error' => 'Not permitted']);
+    echo json_encode(['error' => $plugin->get_lang('fileCreateForbidden')]);
 
     return;
 }
 
 $fileExt = strtolower(pathinfo($title, PATHINFO_EXTENSION));
-$baseName = strtolower(pathinfo($title, PATHINFO_FILENAME));
+$baseName = pathinfo($title, PATHINFO_FILENAME);
 
 $result = OnlyofficeDocumentManager::createFile(
     $baseName,
@@ -67,15 +69,16 @@ $result = OnlyofficeDocumentManager::createFile(
     $sessionId,
     $courseId,
     $groupId,
-    $url
+    $url,
+    true
 );
 
 if (isset($result['error'])) {
     if ('fileIsExist' === $result['error']) {
-        $result['error'] = 'File already exists';
+        $result['error'] = $plugin->get_lang('fileIsExist');
     }
     if ('impossibleCreateFile' === $result['error']) {
-        $result['error'] = 'Impossible to create file';
+        $result['error'] = $plugin->get_lang('impossibleCreateFile');
     }
 
     echo json_encode($result);
@@ -83,4 +86,4 @@ if (isset($result['error'])) {
     return;
 }
 
-echo json_encode(['success' => 'File is created']);
+echo json_encode(['success' => $plugin->get_lang('fileSavedAs') . ' ' . $result['fileTitle']]);

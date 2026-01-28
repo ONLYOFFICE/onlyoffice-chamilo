@@ -1,6 +1,6 @@
 <?php
 /**
- * (c) Copyright Ascensio System SIA 2024.
+ * (c) Copyright Ascensio System SIA 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ class OnlyofficeAppsettings extends SettingsManager
      *
      * @var string
      */
-    public $documentServerInternalUrl = 'onlyoffice_internal_url';
+    public $documentServerInternalUrl = 'onlyoffice_document_server_internal';
 
     /**
      * The config key for the storage url.
@@ -108,16 +108,22 @@ class OnlyofficeAppsettings extends SettingsManager
         }
         switch ($settingName) {
             case $this->jwtHeader:
-                $value = api_get_setting($settingName)[$this->plugin->getPluginName()];
+                $settings = api_get_setting($settingName);
+                $value = is_array($settings) && array_key_exists($this->plugin->getPluginName(), $settings)
+                    ? $settings[$this->plugin->getPluginName()]
+                    : null;
+
                 if (empty($value)) {
                     $value = 'Authorization';
                 }
                 break;
             case $this->documentServerInternalUrl:
-                $value = api_get_setting($settingName)[$this->plugin->getPluginName()];
+                $settings = api_get_setting($settingName);
+                $value = is_array($settings) ? ($settings[$this->plugin->getPluginName()] ?? null) : null;
                 break;
             case $this->useDemoName:
-                $value = api_get_setting($settingName)[0];
+                $settings = api_get_setting($settingName);
+                $value = is_array($settings) ? ($settings[0] ?? null) : null;
                 break;
             case $this->jwtPrefix:
                 $value = 'Bearer ';

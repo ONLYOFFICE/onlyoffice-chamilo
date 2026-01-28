@@ -1,6 +1,6 @@
 <?php
 /**
- * (c) Copyright Ascensio System SIA 2024.
+ * (c) Copyright Ascensio System SIA 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use Onlyoffice\DocsIntegrationSdk\Models\Format;
 
 /**
  * Plugin class for the Onlyoffice plugin.
@@ -33,12 +34,11 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     protected function __construct()
     {
         parent::__construct(
-            '1.5.0',
+            '1.6.0',
             'Asensio System SIA',
             [
                 'enable_onlyoffice_plugin' => 'boolean',
                 'document_server_url' => 'text',
-                'jwt_secret' => 'text',
                 'jwt_header' => 'text',
                 'document_server_internal' => 'text',
                 'storage_url' => 'text',
@@ -120,5 +120,19 @@ class OnlyofficePlugin extends Plugin implements HookPluginInterface
     public function getPluginName()
     {
         return $this->pluginName;
+    }
+
+    /**
+     * Check if the given extension is supported by the editor
+     *
+     * @param string $extension
+     * @return bool
+     */
+    public static function isExtensionAllowed(string $extension): bool
+    {
+        $formatsManager = new OnlyofficeFormatsManager();
+        $vieweableList = array_map(fn(Format $format) => $format->getName(), $formatsManager->getViewableList());
+
+        return in_array($extension, $vieweableList);
     }
 }

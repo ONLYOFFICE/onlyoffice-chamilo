@@ -1,6 +1,6 @@
 <?php
 /**
- * (c) Copyright Ascensio System SIA 2024.
+ * (c) Copyright Ascensio System SIA 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once __DIR__.'/../../main/inc/global.inc.php';
 require_once __DIR__.'/lib/onlyofficeSettingsFormBuilder.php';
 require_once __DIR__.'/lib/onlyofficeAppSettings.php';

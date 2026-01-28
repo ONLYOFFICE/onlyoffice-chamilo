@@ -2,6 +2,20 @@
 
 This plugin is developed and maintained at https://github.com/ONLYOFFICE/onlyoffice-chamilo.
 
+## 1.6.0
+## Added
+- Catalan, Czech, Danish, Hungarian, Indonesian, Romanian, Albanian, Urdu empty file templates
+- support for office document question type
+- editor URL generation for documents with viewable extensions
+- plugin description and useful links in admin settings
+- hide a JWT secret from display
+- show warning popup when jwt secret is empty
+- set favicon on editor page
+- show warning message in editor when using public demo docs server
+
+## Changed
+- create saved as file with a unique name instead of showing file exists error
+
 ## 1.5.0
 ## Added
 - support learning path
