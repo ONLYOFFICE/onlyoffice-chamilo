@@ -106,8 +106,7 @@ Return to the plugin list, select the ONLYOFFICE plugin, and click *Enable*.
 
 On the Plugins page, find ONLYOFFICE and click _Configure_. You'll see the _Settings_ page. Enable the plugin and specify the _Document Server address_ (the public URL of your running ONLYOFFICE Docs instance).
 
-Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
-Specify your own **Secret key** on the Chamilo **Settings** page. The key can be found on your ONLYOFFICE server, depending on the type of server. See the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/) page for more details.
+JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. If needed, specify your own **Secret key** on the Chamilo **Settings** page. The key can be found on your ONLYOFFICE server, depending on the type of server. See the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/) page for more details.
 Specify the same secret key (search for a long hash string next to "secret") and save.
 
 The plugin will tell you if anything is wrong.
