@@ -4,6 +4,6 @@
     <p>{{'UserVoiceDescription'|get_plugin_lang('onlyofficePlugin')}}</p>
     <div class="useful-links">
         <a href="https://helpcenter.onlyoffice.com/integration/chamilo.aspx" target="_blank">{{'LearnMore'|get_plugin_lang('onlyofficePlugin')}}</a>
-        <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" target="_blank">{{'SuggestFeature'|get_plugin_lang('onlyofficePlugin')}}</a>
+        <a href="https://community.onlyoffice.com/c/suggestions/integrations/56" target="_blank">{{'SuggestFeature'|get_plugin_lang('onlyofficePlugin')}}</a>
     </div>
 </div>
